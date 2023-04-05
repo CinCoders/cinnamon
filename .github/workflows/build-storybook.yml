@@ -1,0 +1,59 @@
+name: Deploy StoryBook
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_storybook:
+    name: Storybook Build
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies and run the storybook build
+        run: |
+          if [ -f /.env ]; then
+            echo ".env já existe"
+          else
+            echo "PUBLIC_URL="${{ secrets.REPO }} > .env
+          fi
+          npm ci
+          npm run build-storybook
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          name: github-pages
+          path: ./storybook-static
+
+  deploy_storybook:
+    name: Deploy Storybook
+
+    needs: build_storybook
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

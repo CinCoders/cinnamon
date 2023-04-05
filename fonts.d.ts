@@ -1,0 +1,1 @@
+declare module "*.otf"; //declare necessário para que o typescript reconheça as fontes que temos em assets, e possamos usar no styled components
