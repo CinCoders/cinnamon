@@ -20,7 +20,7 @@ npm install @cincoders/cinnamon
 
 ## Usage
 
-For a extensive list of all components, interfaces and examples on how to use them refer to our [usage guide](.github/USAGE.MD).
+For a extensive list of all components, interfaces and examples on how to use them refer to our [usage guide](/docs/USAGE.MD).
 
 ## Access Management
 
@@ -29,7 +29,7 @@ For a extensive list of all components, interfaces and examples on how to use th
 ## Contribution
 
 Contributions are welcome!
-To know a step by step guide on how to contribute refer to our [contribution guide](.github/CONTRIBUTING.md).
+To know a step by step guide on how to contribute refer to our [contribution guide](/docs/CONTRIBUTING.md).
 
 ## License
 
