@@ -4,7 +4,7 @@ To get started, start by accessing the repository:
 
 ```bash
 # Clone the repository
-$ git clone INSERIR LINK DO REPO
+$ git clone https://github.com/CinCoders/cinnamon.git
 
 # Access the project folder
 $ cd src
