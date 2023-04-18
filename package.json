@@ -1,6 +1,6 @@
 {
   "name": "@cincoders/cinnamon",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reusable React components",
   "main": "dist/cinnamon.ssr.js",
   "browser": "dist/cinnamon.esm.js",
@@ -22,7 +22,7 @@
   },
   "publishConfig": {
     "access": "public"
-  },  
+  },
   "author": "",
   "license": "MIT",
   "devDependencies": {
