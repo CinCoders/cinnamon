@@ -11,7 +11,7 @@ import {
   ListItemIcon,
   Collapse
 } from '@mui/material';
-
+import { useLocation } from 'react-router-dom';
 import { SideMenuLink } from '@/interfaces';
 
 export interface SideMenuProps {
@@ -36,6 +36,11 @@ export function SideMenu({
   setVisibility
 }: SideMenuProps) {
   const [showChildrenLinks, setShowChildrenLinks] = useState<boolean[]>([]);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     if (links && links.length > 0) {
