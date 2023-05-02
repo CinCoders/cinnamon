@@ -72,7 +72,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.8.4",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.8.6",
     "@react-keycloak/web": "^3.4.0",
     "@rollup/plugin-url": "^6.1.0",
