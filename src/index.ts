@@ -8,6 +8,7 @@ export { ForbiddenPage } from './lib-components/ForbiddenPage';
 export { KeycloakUtils } from './utils';
 export { ErrorScreen, httpErrors } from './lib-components/ErrorScreen';
 export { SideMenuLink } from './interfaces';
+export { System } from './interfaces';
 export { useNavbar } from './lib-components/Page/useNavbar';
 export { ToastContainer, toast } from './components/Toast';
 export { IconRenderer } from './lib-components/IconRender';
