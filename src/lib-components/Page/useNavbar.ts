@@ -17,7 +17,6 @@ export class NavbarContextValue implements NavbarProps {
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
-  haveCustomSideMenu?: boolean;
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
@@ -41,7 +40,6 @@ export class NavbarContextValue implements NavbarProps {
     this.logoutFunction = navbarProps.logoutFunction;
     this.user = navbarProps.user;
     this.sideMenuLinks = navbarProps.sideMenuLinks;
-    this.haveCustomSideMenu = navbarProps.haveCustomSideMenu;
     this.isLandingPage = navbarProps.isLandingPage;
     this.systemsList = navbarProps.systemsList;
     this.currentSystemIconUrl = navbarProps.currentSystemIconUrl;
