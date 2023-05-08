@@ -1,8 +1,6 @@
 import { Hamburger, HambBottom, HambMiddle, HambTop } from './styles';
-import { SideMenuLink } from '@/interfaces';
 
 interface HamburgerButtonProps {
-  links: SideMenuLink[];
   isOpen?: boolean;
   onClick?: () => void;
 }
