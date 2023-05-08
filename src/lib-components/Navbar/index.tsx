@@ -212,11 +212,15 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               <LeftContainer>
-                <HamburgerButton
-                  isOpen={sideMenuIsOpen}
-                  onClick={handleToggleSideMenu}
-                  links={sideMenuLinks}
-                />
+                {
+                  (sideMenuLinks.length !== 0 && (
+                    <HamburgerButton
+                      isOpen={sideMenuIsOpen}
+                      onClick={handleToggleSideMenu}
+                    />
+                  ))
+                }
+
                 <IconRenderer
                   iconUrl={currentSystemIconUrl}
                   IconComponent={IconComponent}
