@@ -62,25 +62,10 @@ export default {
       description: "String wich defines navbar's title",
       control: { type: 'text' }
     },
-    haveCustomSideMenu: {
-      name: 'haveCustomSideMenu',
-      type: { name: 'boolean', required: false },
-      options: [true, false],
-      control: 'boolean',
-      description:
-        'Boolean wich defines if the navbar has a custom side menu or not'
-    },
     sideMenuLinks: {
       name: 'sideMenuLinks',
       control: 'object',
       description: 'Array of Object which defines the custom side menu',
-      if: {
-        arg: 'haveCustomSideMenu',
-        eq: true,
-        table: {
-          disable: true
-        }
-      }
     },
     systemsList: {
       name: 'systemsList',
@@ -106,7 +91,6 @@ export interface NavbarStoryProps {
   hiddenUser: boolean;
   user: User;
   h1: boolean;
-  haveCustomSideMenu: boolean;
   sideMenuLinks: SideMenuLink[];
   systemsListPopup: boolean;
   title: string;
@@ -124,8 +108,7 @@ const Template: Story<NavbarStoryProps> = (args) => {
         user={args.hiddenUser ? undefined : args.user}
         h1={args.h1}
         title={args.title}
-        haveCustomSideMenu={args.haveCustomSideMenu}
-        sideMenuLinks={args.haveCustomSideMenu ? args.sideMenuLinks : testLinks}
+        sideMenuLinks={args.sideMenuLinks }
         systemsList={args.systemsListPopup ? args.systemsList : undefined}
         IconComponent={
           args.IconComponent ? () => <EngineeringIcon /> : () => <></>
@@ -142,7 +125,6 @@ Navbar_.args = {
   haveSearchBar: false,
   hiddenUser: false,
   user: testUser,
-  haveCustomSideMenu: false,
   sideMenuLinks: testLinks,
   systemsListPopup: false,
   systemsList: testSystems,

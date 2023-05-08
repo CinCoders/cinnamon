@@ -41,7 +41,6 @@ export interface NavbarProps {
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
-  haveCustomSideMenu?: boolean;
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
@@ -213,10 +212,15 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               <LeftContainer>
-                <HamburgerButton
-                  isOpen={sideMenuIsOpen}
-                  onClick={handleToggleSideMenu}
-                />
+                {
+                  (sideMenuLinks.lenght !== 0 && (
+                    <HamburgerButton
+                      isOpen={sideMenuIsOpen}
+                      onClick={handleToggleSideMenu}
+                    />
+                  ))
+                }
+ 
                 <IconRenderer
                   iconUrl={currentSystemIconUrl}
                   IconComponent={IconComponent}

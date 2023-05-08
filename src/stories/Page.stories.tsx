@@ -99,17 +99,6 @@ export default {
         category: 'Navbar'
       }
     },
-    haveCustomSideMenu: {
-      name: 'haveCustomSideMenu',
-      type: { name: 'boolean', required: false },
-      options: [true, false],
-      control: 'boolean',
-      description:
-        'Boolean wich defines if the navbar has a custom side menu or not',
-      table: {
-        category: 'Navbar'
-      }
-    },
     sideMenuLinks: {
       name: 'sideMenuLinks',
       control: 'object',
@@ -117,13 +106,6 @@ export default {
       table: {
         category: 'Navbar'
       },
-      if: {
-        arg: 'haveCustomSideMenu',
-        eq: true,
-        table: {
-          disable: true
-        }
-      }
     },
     systemsList: {
       name: 'systemsList',
@@ -249,7 +231,6 @@ interface StoryPageProps {
   hiddenUser: boolean;
   user: User;
   h1: boolean;
-  haveCustomSideMenu: boolean;
   sideMenuLinks: SideMenuLink[];
   systemsListPopup: boolean;
   systemsList: System[];
@@ -282,10 +263,7 @@ const Template: Story<StoryPageProps> = (args) => {
             h1: args.h1,
             children: undefined,
             title: args.title,
-            haveCustomSideMenu: args.haveCustomSideMenu,
-            sideMenuLinks: args.haveCustomSideMenu
-              ? args.sideMenuLinks
-              : testLinks,
+            sideMenuLinks: args.sideMenuLinks,
             systemsList: args.systemsList ? args.systemsList : undefined,
             IconComponent: args.IconComponent
               ? () => <EngineeringIcon />
@@ -330,7 +308,6 @@ Page_.args = {
   haveSearchBar: true,
   hiddenUser: false,
   user: testUser,
-  haveCustomSideMenu: false,
   sideMenuLinks: testLinks,
   systemsListPopup: false,
   systemsList: testSystems,
