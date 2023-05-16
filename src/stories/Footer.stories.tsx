@@ -92,6 +92,16 @@ export default {
         category: 'Footer'
       }
     }
+    ,
+    footerSignatureLink: {
+      name: 'signature link',
+      type: { name: 'string', required: false },
+      description: "String wich defines footer's signature link",
+      control: { type: 'text' },
+      table: {
+        category: 'Footer'
+      }
+    }
   }
 };
 

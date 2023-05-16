@@ -11,7 +11,7 @@ import {
   CopyrightText,
   StyledFooter,
   ParentFooter,
-  SignatureText,
+  SignatureText
 } from './styles';
 
 export interface FooterProps {
@@ -37,7 +37,7 @@ export const Footer = ({
   description,
   copyrightText,
   signatureText,
-  signatureLink,
+  signatureLink
 }: FooterProps) => {
   return (
     <ParentFooter>
@@ -86,8 +86,33 @@ export const Footer = ({
               ©{new Date().getFullYear()} {`${copyrightText}`}
             </CopyrightText>
           )}
-          {signatureText && (
-            <SignatureText> <a href={`${signatureLink}`} style={{ color: 'white', zIndex: 3 }}> {`${signatureText}`}</a></SignatureText>
+          {signatureText !== undefined ? (
+            <SignatureText>
+              {signatureLink ? (
+                <a
+                  href={`${signatureLink}`}
+                  style={{ color: 'white', zIndex: 3 }}
+                >{`${signatureText}`}</a>
+              ) : (
+                <a> {`${signatureText}`}</a>
+              )}
+            </SignatureText>
+          ) : (
+            <SignatureText>
+              {' '}
+              <a
+                href='https://cincoders.github.io/cinnamon/'
+                style={{ color: 'white', zIndex: 3 }}
+              >
+                Made with ❤️
+              </a>
+              <a
+                href='https://www.npmjs.com/package/@cincoders/cinnamon'
+                style={{ color: 'white', zIndex: 3 }}
+              >
+                by CInCoders
+              </a>
+            </SignatureText>
           )}
         </SmallDiv>
       </StyledFooter>
