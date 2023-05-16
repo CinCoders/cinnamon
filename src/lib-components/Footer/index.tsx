@@ -10,7 +10,8 @@ import {
   SmallDiv,
   CopyrightText,
   StyledFooter,
-  ParentFooter
+  ParentFooter,
+  SignatureText,
 } from './styles';
 
 export interface FooterProps {
@@ -22,6 +23,8 @@ export interface FooterProps {
   textLink?: string;
   description?: string;
   copyrightText?: string;
+  signatureText?: string;
+  signatureLink?: string;
 }
 
 export const Footer = ({
@@ -32,7 +35,9 @@ export const Footer = ({
   link,
   textLink,
   description,
-  copyrightText
+  copyrightText,
+  signatureText,
+  signatureLink,
 }: FooterProps) => {
   return (
     <ParentFooter>
@@ -44,13 +49,19 @@ export const Footer = ({
             </LeftColumn>
             <MiddleColumn className='middle'>
               <MiddleColumnText>
-                <a href={`tel:${telephone?.replace(/\(|\)|\s|-+?/g, '')}`} style={{ color: 'white', zIndex: 3 }}>
+                <a
+                  href={`tel:${telephone?.replace(/\(|\)|\s|-+?/g, '')}`}
+                  style={{ color: 'white', zIndex: 3 }}
+                >
                   {telephone && `${telephone} `}
                 </a>
                 {telephoneComplement && `${telephoneComplement}`}
                 <br></br>
                 {email && (
-                  <a href={`mailto:${email}`} style={{ color: 'white', zIndex: 3 }}>
+                  <a
+                    href={`mailto:${email}`}
+                    style={{ color: 'white', zIndex: 3 }}
+                  >
                     {`${email}`}
                   </a>
                 )}
@@ -74,6 +85,9 @@ export const Footer = ({
             <CopyrightText>
               ©{new Date().getFullYear()} {`${copyrightText}`}
             </CopyrightText>
+          )}
+          {signatureText && (
+            <SignatureText> <a href={`${signatureLink}`} style={{ color: 'white', zIndex: 3 }}> {`${signatureText}`}</a></SignatureText>
           )}
         </SmallDiv>
       </StyledFooter>
