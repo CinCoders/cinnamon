@@ -3,7 +3,7 @@ import { Footer, FooterProps } from '../lib-components/Footer';
 import './storiesGlobals.css';
 
 export default {
-  title: 'Footer',
+  title: 'Components/Footer',
   parameters: {
     docs: {
       page: null

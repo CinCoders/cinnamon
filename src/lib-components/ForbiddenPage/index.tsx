@@ -76,7 +76,7 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
         variant='outlined'
         startIcon={<LogoutIcon />}
       >
-        Deslogar
+        Log out
       </Button>
     </PageContent>
   );

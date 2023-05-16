@@ -1,52 +1,54 @@
 import { useState } from 'react';
-import { storiesOf } from '@storybook/react';
 import { SideMenu } from '../components/SideMenu';
 import { SideMenuLink } from '@/interfaces';
 import HomeIcon from '@mui/icons-material/Home';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { BrowserRouter } from 'react-router-dom';
 
-const testLinks: SideMenuLink[] = [
-  {
-    title: 'Tela Inicial',
-    href: '#',
-    IconComponent: () => <HomeIcon />
-  },
-  {
-    title: 'Processos',
-    href: '#',
-    IconComponent: () => <DescriptionIcon />,
-    children: [
-      {
-        title: 'Cadastrar/Editar',
-        href: '#'
-      },
-      {
-        title: 'Listar',
-        href: '#'
-      }
-    ]
-  },
-  {
-    title: 'Tipos',
-    href: '#',
-    IconComponent: () => <DescriptionIcon />,
-    children: [
-      {
-        title: 'Cadastrar/Editar',
-        href: '#'
-      },
-      {
-        title: 'Listar',
-        href: '#'
-      }
-    ]
-  }
-];
+export default {
+  title: 'Components/SideMenu',
+  component: SideMenu
+};
 
-const stories = storiesOf('SideMenu', module);
+export const Default = () => {
+  const testLinks: SideMenuLink[] = [
+    {
+      title: 'Tela Inicial',
+      href: '#',
+      IconComponent: () => <HomeIcon />
+    },
+    {
+      title: 'Processos',
+      href: '#',
+      IconComponent: () => <DescriptionIcon />,
+      children: [
+        {
+          title: 'Cadastrar/Editar',
+          href: '#'
+        },
+        {
+          title: 'Listar',
+          href: '#'
+        }
+      ]
+    },
+    {
+      title: 'Tipos',
+      href: '#',
+      IconComponent: () => <DescriptionIcon />,
+      children: [
+        {
+          title: 'Cadastrar/Editar',
+          href: '#'
+        },
+        {
+          title: 'Listar',
+          href: '#'
+        }
+      ]
+    }
+  ];
 
-stories.add('SideMenu', () => {
   const [drawerVisibility, setDrawerVisibility] = useState(true);
 
   return (
@@ -60,4 +62,4 @@ stories.add('SideMenu', () => {
       </BrowserRouter>
     </div>
   );
-});
+};

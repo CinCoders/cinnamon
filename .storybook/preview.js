@@ -12,8 +12,8 @@ export const parameters = {
     }
   },
   options: {
-    storySort: {
-      method: 'alphabetical'
-    }
+    method: 'configure',
+    includeNames: true,
+    order: ['Introduction', ['*']]
   }
 };

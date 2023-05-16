@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { storiesOf } from '@storybook/react';
-
 import { ImageInput } from '../lib-components/ImageInput';
-
 import './storiesGlobals.css';
 
-const stories = storiesOf('ImageInput', module);
+export default {
+  title: 'Components/ImageInput',
+  component: ImageInput
+};
 
-stories.add('ImageInput', () => {
+export const Default = () => {
   const [file, setFile] = useState<File>(new File([''], 'filename'));
 
   console.log(file);
@@ -17,4 +17,4 @@ stories.add('ImageInput', () => {
       <ImageInput setFile={setFile} id='image-input-test' />
     </div>
   );
-});
+};

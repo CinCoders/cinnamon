@@ -1,52 +1,133 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { Dialog, DialogProps } from '../lib-components/Dialog';
+import { useState, useEffect } from 'react';
+import { Button } from '@mui/material';
 
 export default {
-  title: 'Dialog',
+  title: 'Components/Dialog',
   component: Dialog,
   argTypes: {
     type: {
       options: ['information', 'alert', 'decision', 'confirmation'],
       control: { type: 'radio' }
+    },
+    visibility: {
+      name: 'visibility',
+      type: { name: 'boolean', required: false },
+      description: 'Boolean which defines the visibility of the Dialog.',
+      options: [true, false],
+      control: { type: 'boolean' }
     }
   }
 } as Meta;
 
-const Template: Story<DialogProps> = (args) => <Dialog {...args} />;
+const TemplateMessage: StoryFn<DialogProps> = (args) => {
+  console.log('args.visibility', args.visibility);
 
-export const DialogInformation = Template.bind({});
+  const [dialogVisibility, setDialogVisibility] = useState(
+    args.visibility == undefined ? false : args.visibility
+  );
+
+  useEffect(() => {
+    setDialogVisibility(args.visibility == undefined ? false : args.visibility);
+  }, [args.visibility]);
+
+  return (
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          left: '45%',
+          top: '50%'
+        }}
+      >
+        <Button
+          sx={{ bottom: '18px' }}
+          onClick={() => setDialogVisibility(!dialogVisibility)}
+        >
+          Show Dialog
+        </Button>
+        <Dialog
+          {...args}
+          visibility={dialogVisibility}
+          setVisibility={setDialogVisibility}
+        />
+      </div>
+    </>
+  );
+};
+
+const TemplateOption: StoryFn<DialogProps> = (args) => {
+  console.log('args.visibility', args.visibility);
+
+  const [dialogVisibility, setDialogVisibility] = useState(
+    args.visibility == undefined ? false : args.visibility
+  );
+
+  useEffect(() => {
+    setDialogVisibility(args.visibility == undefined ? false : args.visibility);
+  }, [args.visibility]);
+
+  return (
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          left: '45%',
+          top: '50%'
+        }}
+      >
+        <Button
+          sx={{ bottom: '15px' }}
+          onClick={() => setDialogVisibility(!dialogVisibility)}
+        >
+          Show Dialog
+        </Button>
+        <Dialog
+          {...args}
+          visibility={dialogVisibility}
+          rejectFunction={() => {
+            setDialogVisibility(!dialogVisibility);
+          }}
+          acceptFunction={() => {
+            setDialogVisibility(!dialogVisibility);
+          }}
+        />
+      </div>
+    </>
+  );
+};
+
+export const DialogInformation = TemplateMessage.bind({});
 DialogInformation.args = {
   type: 'information',
-  title: 'Tela de criação e edição de tipo de processo',
+  title: 'Information Dialog Title',
   children:
     'Nesta tela é possível tanto criar um tipo de processo ao usar o botão “+”, como é possível editar um tipo de processo ao buscar um pelo nome usando o botão de lupa.',
   acceptLabel: 'Confirmar',
-  setVisibility: () => {}
+  visibility: false
 };
 
-export const DialogAlert = Template.bind({});
+export const DialogAlert = TemplateMessage.bind({});
 DialogAlert.args = {
   type: 'alert',
-  title: 'Tipo de processo não existente',
+  title: 'Alert Message Title',
   children:
-    'Você está buscando um tipo de processo não existente. Por favor, verifique o nome e tente novamente.',
-  setVisibility: () => {}
+    'DialogAlert is an option to display important information through an alert message, ensuring that the user is aware of a critical information.'
 };
 
-export const DialogDecision = Template.bind({});
+export const DialogDecision = TemplateOption.bind({});
 DialogDecision.args = {
   type: 'decision',
   title: 'Tipo de processo já existente',
   children:
-    'Você está tentando adicionar um tipo de processo que já existe. Deseja carregar o Tipo de Processo ‘Convênio’ já existente?',
-  setVisibility: () => {}
+    'Você está tentando adicionar um tipo de processo que já existe. Deseja carregar o Tipo de Processo ‘Convênio’ já existente?'
 };
 
-export const DialogConfirmation = Template.bind({});
+export const DialogConfirmation = TemplateOption.bind({});
 DialogConfirmation.args = {
   type: 'confirmation',
   title: 'Você deseja criar o tipo de processo?',
   children:
-    'Deseja realmente criar esse tipo de processo? Aperte em ‘Ok’ se deseja criar, ou em ‘Cancelar’ se deseja confirmar os dados.',
-  setVisibility: () => {}
+    'Deseja realmente criar esse tipo de processo? Aperte em ‘Ok’ se deseja criar, ou em ‘Cancelar’ se deseja confirmar os dados.'
 };

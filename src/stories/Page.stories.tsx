@@ -9,7 +9,7 @@ import EngineeringIcon from '@mui/icons-material/Engineering';
 import { JSXElementConstructor } from 'react';
 
 export default {
-  title: 'Page',
+  title: 'Components/Page',
   parameters: {
     docs: {
       page: null

@@ -8,7 +8,7 @@ import { JSXElementConstructor } from 'react';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 
 export default {
-  title: 'Navbar',
+  title: 'Components/Navbar',
   parameters: {
     docs: {
       page: null

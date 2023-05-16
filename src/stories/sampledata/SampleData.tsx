@@ -19,16 +19,16 @@ export const testLinks: SideMenuLink[] = [
     IconComponent: () => <HomeIcon />
   },
   {
-    title: 'Contato',
+    title: 'Contact',
     href: '#',
     IconComponent: () => <DescriptionIcon />,
     children: [
       {
-        title: 'Cadastrar/Editar',
+        title: 'Register/Edit',
         href: '#'
       },
       {
-        title: 'Listar',
+        title: 'List',
         href: '#'
       }
     ]
@@ -36,12 +36,12 @@ export const testLinks: SideMenuLink[] = [
 ];
 
 export const testUser: User = {
-  name: 'Usuario Teste',
-  email: 'teste@gmail.com',
+  name: 'Test User',
+  email: 'test@gmail.com',
   positions: [
     {
       id: 1,
-      name: 'Posição 1',
+      name: 'Position 1',
       roles: [
         {
           id: 1,
@@ -57,7 +57,7 @@ export const testUser: User = {
     },
     {
       id: 2,
-      name: 'Posição 2',
+      name: 'Position 2',
       roles: [
         {
           id: 1,
@@ -87,13 +87,17 @@ export const testSystems: System[] = [
   },
   {
     title: 'Gestão de Usuários',
-    IconComponent: () => <ManageAccountsIcon fontSize='large' htmlColor='#DB1E2F' />,
+    IconComponent: () => (
+      <ManageAccountsIcon fontSize='large' htmlColor='#DB1E2F' />
+    ),
     description: 'Sistema de gerenciamento de usuários',
     href: '#'
   },
   {
     title: 'Gestão de Recursos Humanos',
-    IconComponent: () => <RecentActorsIcon fontSize='large' htmlColor='#DB1E2F' />,
+    IconComponent: () => (
+      <RecentActorsIcon fontSize='large' htmlColor='#DB1E2F' />
+    ),
     description: 'Sistema para gestão de recursos humanos',
     href: '#'
   },
@@ -111,7 +115,9 @@ export const testSystems: System[] = [
   },
   {
     title: 'Análise de Entradas',
-    IconComponent: () => <PersonSearchIcon fontSize='large' htmlColor='#DB1E2F' />,
+    IconComponent: () => (
+      <PersonSearchIcon fontSize='large' htmlColor='#DB1E2F' />
+    ),
     description: 'Sistema de análise de entradas com crachá',
     href: '#'
   },
@@ -129,17 +135,20 @@ export const testSystems: System[] = [
   },
   {
     title: 'Sistema de Pesquisa',
-    IconComponent: () => <AccountBalance fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para levantamento e análise de indicadores de pesquisa.',
+    IconComponent: () => (
+      <AccountBalance fontSize='large' htmlColor='#DB1E2F' />
+    ),
+    description:
+      'Sistema para levantamento e análise de indicadores de pesquisa.',
     href: '#'
   },
   {
     title: 'SGA',
     IconComponent: () => <School fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para levantamento e análise de dados de demanda de seleção.',
+    description:
+      'Sistema para levantamento e análise de dados de demanda de seleção.',
     href: '#'
-  },
-
+  }
 ];
 
 export function searchFunction(searchString: string) {
