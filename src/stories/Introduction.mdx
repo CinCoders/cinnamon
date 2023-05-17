@@ -141,30 +141,38 @@ That makes it easy to develop hard-to-reach states. Save these UI states as **st
 
 <div className='subheading'>Repository information</div>
 
-<div className='link-list'>
-  <a className='link-item' href='.github/CONTRIBUTING.md' target='_blank'>
+<div className='link-list' >
+  <a className='link-item' href='https://github.com/CinCoders/cinnamon/blob/main/docs/CONTRIBUTING.md' target='_blank'>
     <img src={Comments} alt='repo' />
     <span>
       <strong>Contributions are welcome!</strong>
       To know a step by step guide on how to contribute
-      refer to our contribution guide.
+      refer to our contribution guide. <br></br><br></br><br></br>
+      Show your ❤️ and support by giving a ⭐.
     </span>
   </a>
-  <a className='link-item' href='https://nodejs.org/' target='_blank'>
-    <img src={InstallIcon} alt='Usage' />
+  <a className='link-item' style={{height: '140px'}} href='https://nodejs.org/' target='_blank'>
+     <div>
+     <div style={{display:'flex'}}>
+     <img src={InstallIcon} alt='Usage' />
 
       <span>
         <strong>Installation in other projects</strong>
         To install the Cinnamon package into your project use the node package manager
         and run the command:
-      <div style={{margin: '8px'}}> ```bash npm install @cincoders/cinnamon ``` </div>
       </span>
+      </div>
+      ```bash
+       npm install @cincoders/cinnamon
+       ```
+      </div>
 
   </a>
   <a
     className='link-item'
-    href='https://github.com/storybookjs/storybook'
+    href='https://github.com/CinCoders'
     target='_blank'
+    style={{height: '80px'}}
   >
     <img src={GitImg} alt='code' />
     <span>
@@ -176,11 +184,12 @@ That makes it easy to develop hard-to-reach states. Save these UI states as **st
     className='link-item'
     href='https://github.com/CinCoders/cinnamon/blob/main/LICENSE'
     target='_blank'
+    style={{height: '80px'}}
   >
     <img src={LicenseImg} alt='comments' />
     <span>
-      <strong>License</strong>
-      Sets the terms and conditions for the use and distribution of copyrighted works.
+      <strong>MIT License</strong>
+      Terms and conditions for the use and distribution of copyrighted works.
     </span>
   </a>
 </div>

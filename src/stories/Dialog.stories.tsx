@@ -78,7 +78,7 @@ const TemplateOption: StoryFn<DialogProps> = (args) => {
         }}
       >
         <Button
-          sx={{ bottom: '15px' }}
+          sx={{ bottom: '18px' }}
           onClick={() => setDialogVisibility(!dialogVisibility)}
         >
           Show Dialog
@@ -103,7 +103,7 @@ DialogInformation.args = {
   type: 'information',
   title: 'Information Dialog Title',
   children:
-    'Nesta tela é possível tanto criar um tipo de processo ao usar o botão “+”, como é possível editar um tipo de processo ao buscar um pelo nome usando o botão de lupa.',
+    'DialogInformation appears in front of app content to provide additional information to the users.',
   acceptLabel: 'Confirmar',
   visibility: false
 };
@@ -119,15 +119,15 @@ DialogAlert.args = {
 export const DialogDecision = TemplateOption.bind({});
 DialogDecision.args = {
   type: 'decision',
-  title: 'Tipo de processo já existente',
+  title: 'Decision Dialog Title',
   children:
-    'Você está tentando adicionar um tipo de processo que já existe. Deseja carregar o Tipo de Processo ‘Convênio’ já existente?'
+    'DialogDecision presents a message to the user and includes a confirmation button and a cancel button, enabling the user to make a decision regarding a specific question.'
 };
 
 export const DialogConfirmation = TemplateOption.bind({});
 DialogConfirmation.args = {
   type: 'confirmation',
-  title: 'Você deseja criar o tipo de processo?',
+  title: 'Confirmation Dialog Title',
   children:
-    'Deseja realmente criar esse tipo de processo? Aperte em ‘Ok’ se deseja criar, ou em ‘Cancelar’ se deseja confirmar os dados.'
+    'DialogConfirmation presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.'
 };
