@@ -105,7 +105,7 @@ export default {
       description: 'Array of Object which defines the custom side menu',
       table: {
         category: 'Navbar'
-      },
+      }
     },
     systemsList: {
       name: 'systemsList',
@@ -311,12 +311,12 @@ Page_.args = {
   sideMenuLinks: testLinks,
   systemsListPopup: false,
   systemsList: testSystems,
-  footerTitle: 'TITULO DO FOOTER',
+  footerTitle: 'FOOTER TITLE',
   footerTelephone: '(xx) xxxx-xxxx',
-  footerTelephoneComplement: 'Ramal: xxxx / xxxx',
+  footerTelephoneComplement: 'Internal number: xxxx / xxxx',
   footerEmail: 'sample@email.com',
   footerLink: 'https://www.google.com',
   footerTextLink: 'Site',
-  footerDescription: 'Descrição do footer com \n quebra de linha',
-  footerCopyrightText: 'CIn UFPE | Todos os direitos reservados'
+  footerDescription: 'Footer description with \n line break',
+  footerCopyrightText: 'CIn UFPE | All rights reserved'
 };

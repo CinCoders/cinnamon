@@ -9,44 +9,44 @@ export default {
 
 export const Default = () => {
   const testUser: User = {
-    name: 'Usuário Teste',
-    email: 'teste@gmail.com',
+    name: 'User Test',
+    email: 'test@gmail.com',
     positions: [
       {
         id: 1,
-        name: 'Posição 1',
+        name: 'Position 1',
         roles: [
           {
             id: 1,
-            name: 'Papel 1',
-            description: 'Papel 1'
+            name: 'Role 1',
+            description: 'Role 1'
           },
           {
             id: 2,
-            name: 'Papel 2',
-            description: 'Papel 2'
+            name: 'Role 2',
+            description: 'Role 2'
           }
         ]
       },
       {
         id: 2,
-        name: 'Posição 2',
+        name: 'Position 2',
         roles: [
           {
             id: 1,
-            name: 'Papel 1',
-            description: 'Papel 1'
+            name: 'Role 1',
+            description: 'Role 1'
           },
           {
             id: 2,
-            name: 'Papel 2',
-            description: 'Papel 2'
+            name: 'Role 2',
+            description: 'Role 2'
           }
         ]
       },
       {
         id: 3,
-        name: 'Posição 3'
+        name: 'Position 3'
       }
     ]
   };

@@ -13,36 +13,36 @@ export default {
 export const Default = () => {
   const testLinks: SideMenuLink[] = [
     {
-      title: 'Tela Inicial',
+      title: 'Hompage',
       href: '#',
       IconComponent: () => <HomeIcon />
     },
     {
-      title: 'Processos',
+      title: 'Process',
       href: '#',
       IconComponent: () => <DescriptionIcon />,
       children: [
         {
-          title: 'Cadastrar/Editar',
+          title: 'Register/Edit',
           href: '#'
         },
         {
-          title: 'Listar',
+          title: 'List',
           href: '#'
         }
       ]
     },
     {
-      title: 'Tipos',
+      title: 'Types',
       href: '#',
       IconComponent: () => <DescriptionIcon />,
       children: [
         {
-          title: 'Cadastrar/Editar',
+          title: 'Register/Edit',
           href: '#'
         },
         {
-          title: 'Listar',
+          title: 'List',
           href: '#'
         }
       ]
