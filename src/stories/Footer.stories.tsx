@@ -129,7 +129,7 @@ const Template: Story<FooterStoryProps> = (args) => {
       textLink={`${args.footerLink}`}
       description={`${args.footerDescription}`}
       copyrightText={`${args.footerCopyrightText}`}
-      signatureText={`${args.footerSignatureText}`}
+      signatureText={args.footerSignatureText}
       signatureLink={`${args.footerSignatureLink}`}
     />
   );
@@ -145,6 +145,4 @@ Footer_.args = {
   footerTextLink: 'Site',
   footerDescription: 'Descrição do footer com \n quebra de linha',
   footerCopyrightText: 'CIn UFPE | Todos os direitos reservados',
-  footerSignatureText: 'Made with ❤️ by CInCoders',
-  footerSignatureLink: 'https://cincoders.github.io/cinnamon/'
 };

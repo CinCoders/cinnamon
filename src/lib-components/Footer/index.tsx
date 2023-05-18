@@ -99,18 +99,18 @@ export const Footer = ({
             </SignatureText>
           ) : (
             <SignatureText>
-              {' '}
               <a
                 href='https://cincoders.github.io/cinnamon/'
                 style={{ color: 'white', zIndex: 3 }}
               >
                 Made with ❤️
               </a>
+              <span> by </span>
               <a
                 href='https://www.npmjs.com/package/@cincoders/cinnamon'
                 style={{ color: 'white', zIndex: 3 }}
               >
-                by CInCoders
+                CInCoders
               </a>
             </SignatureText>
           )}
