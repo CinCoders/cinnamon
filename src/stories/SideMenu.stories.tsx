@@ -13,7 +13,7 @@ export default {
 export const Default = () => {
   const testLinks: SideMenuLink[] = [
     {
-      title: 'Hompage',
+      title: 'Homepage',
       href: '#',
       IconComponent: () => <HomeIcon />
     },

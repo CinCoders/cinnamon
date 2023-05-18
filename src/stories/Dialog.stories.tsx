@@ -22,8 +22,6 @@ export default {
 } as Meta;
 
 const TemplateMessage: StoryFn<DialogProps> = (args) => {
-  console.log('args.visibility', args.visibility);
-
   const [dialogVisibility, setDialogVisibility] = useState(
     args.visibility == undefined ? false : args.visibility
   );
@@ -33,33 +31,29 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
   }, [args.visibility]);
 
   return (
-    <>
-      <div
-        style={{
-          position: 'absolute',
-          left: '45%',
-          top: '50%'
-        }}
+    <div
+      style={{
+        position: 'absolute',
+        left: '45%',
+        top: '50%'
+      }}
+    >
+      <Button
+        sx={{ bottom: '18px' }}
+        onClick={() => setDialogVisibility(!dialogVisibility)}
       >
-        <Button
-          sx={{ bottom: '18px' }}
-          onClick={() => setDialogVisibility(!dialogVisibility)}
-        >
-          Show Dialog
-        </Button>
-        <Dialog
-          {...args}
-          visibility={dialogVisibility}
-          setVisibility={setDialogVisibility}
-        />
-      </div>
-    </>
+        Show Dialog
+      </Button>
+      <Dialog
+        {...args}
+        visibility={dialogVisibility}
+        setVisibility={setDialogVisibility}
+      />
+    </div>
   );
 };
 
 const TemplateOption: StoryFn<DialogProps> = (args) => {
-  console.log('args.visibility', args.visibility);
-
   const [dialogVisibility, setDialogVisibility] = useState(
     args.visibility == undefined ? false : args.visibility
   );
@@ -104,8 +98,7 @@ DialogInformation.args = {
   title: 'Information Dialog Title',
   children:
     'DialogInformation appears in front of app content to provide additional information to the users.',
-  acceptLabel: 'Confirmar',
-  visibility: false
+  acceptLabel: 'Confirmar'
 };
 
 export const DialogAlert = TemplateMessage.bind({});

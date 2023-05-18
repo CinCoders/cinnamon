@@ -317,6 +317,6 @@ Page_.args = {
   footerEmail: 'sample@email.com',
   footerLink: 'https://www.google.com',
   footerTextLink: 'Site',
-  footerDescription: 'Footer description with \n line break',
+  footerDescription: "Footer's description with \n line break",
   footerCopyrightText: 'CIn UFPE | All rights reserved'
 };
