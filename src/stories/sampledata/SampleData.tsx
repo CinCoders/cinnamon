@@ -19,16 +19,16 @@ export const testLinks: SideMenuLink[] = [
     IconComponent: () => <HomeIcon />
   },
   {
-    title: 'Contato',
+    title: 'Contact',
     href: '#',
     IconComponent: () => <DescriptionIcon />,
     children: [
       {
-        title: 'Cadastrar/Editar',
+        title: 'Register/Edit',
         href: '#'
       },
       {
-        title: 'Listar',
+        title: 'List',
         href: '#'
       }
     ]
@@ -36,44 +36,44 @@ export const testLinks: SideMenuLink[] = [
 ];
 
 export const testUser: User = {
-  name: 'Usuario Teste',
-  email: 'teste@gmail.com',
+  name: 'Test User',
+  email: 'test@gmail.com',
   positions: [
     {
       id: 1,
-      name: 'Posição 1',
+      name: 'Position 1',
       roles: [
         {
           id: 1,
-          name: 'Papel 1',
-          description: 'Papel 1'
+          name: 'Role 1',
+          description: 'Role 1'
         },
         {
           id: 2,
-          name: 'Papel 2',
-          description: 'Papel 2'
+          name: 'Role 2',
+          description: 'Role 2'
         }
       ]
     },
     {
       id: 2,
-      name: 'Posição 2',
+      name: 'Position 2',
       roles: [
         {
           id: 1,
-          name: 'Papel 1',
-          description: 'Papel 1'
+          name: 'Role 1',
+          description: 'Role 1'
         },
         {
           id: 2,
-          name: 'Papel 2',
-          description: 'Papel 2'
+          name: 'Role 2',
+          description: 'Role 2'
         }
       ]
     },
     {
       id: 3,
-      name: 'Posição 3'
+      name: 'Position 3'
     }
   ]
 };
@@ -82,68 +82,75 @@ export const testSystems: System[] = [
   {
     title: 'Dashboard',
     IconComponent: () => <DashboardIcon fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema de gerenciamento de processos do SIPAC',
+    description: 'SIPAC Process Management System',
     href: '#'
   },
   {
-    title: 'Gestão de Usuários',
-    IconComponent: () => <ManageAccountsIcon fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema de gerenciamento de usuários',
+    title: 'User Management',
+    IconComponent: () => (
+      <ManageAccountsIcon fontSize='large' htmlColor='#DB1E2F' />
+    ),
+    description: 'User Management System',
     href: '#'
   },
   {
-    title: 'Gestão de Recursos Humanos',
-    IconComponent: () => <RecentActorsIcon fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para gestão de recursos humanos',
+    title: 'Human Resources',
+    IconComponent: () => (
+      <RecentActorsIcon fontSize='large' htmlColor='#DB1E2F' />
+    ),
+    description: 'Human Resources Management System',
     href: '#'
   },
   {
     title: 'Allocation',
     IconComponent: () => <EventIcon fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para alocação e planejamento de disciplinas',
+    description: 'Course Scheduling and Planning System',
     href: '#'
   },
   {
-    title: 'Seleção Pós-Graduação',
+    title: 'Graduate Selection',
     IconComponent: () => <HowToReg fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema de seleção para pós-graduação',
+    description: 'Graduate Admissions System',
     href: '#'
   },
   {
-    title: 'Análise de Entradas',
-    IconComponent: () => <PersonSearchIcon fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema de análise de entradas com crachá',
+    title: 'Input Analysis',
+    IconComponent: () => (
+      <PersonSearchIcon fontSize='large' htmlColor='#DB1E2F' />
+    ),
+    description: 'Badge-based Input Analysis System',
     href: '#'
   },
   {
     title: 'FrequenCIn',
     IconComponent: () => <FactCheck fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para realizar a frequência dos alunos',
+    description: 'Student Attendance System',
     href: '#'
   },
   {
     title: 'Prints',
     IconComponent: () => <Print fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para consulta de saldo e logs de impressão',
+    description: 'Balance and Print Log Inquiry System',
     href: '#'
   },
   {
-    title: 'Sistema de Pesquisa',
-    IconComponent: () => <AccountBalance fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para levantamento e análise de indicadores de pesquisa.',
+    title: 'Research System',
+    IconComponent: () => (
+      <AccountBalance fontSize='large' htmlColor='#DB1E2F' />
+    ),
+    description: 'Research Indicators Survey and Analysis System',
     href: '#'
   },
   {
     title: 'SGA',
     IconComponent: () => <School fontSize='large' htmlColor='#DB1E2F' />,
-    description: 'Sistema para levantamento e análise de dados de demanda de seleção.',
+    description: 'Selection Demand Data Survey and Analysis System.',
     href: '#'
-  },
-
+  }
 ];
 
 export function searchFunction(searchString: string) {
   console.log(searchString);
 }
 
-export const testInputLabels = ['Nome', 'CPF', 'Login'];
+export const testInputLabels = ['Name', 'CPF (National ID)', 'Login'];

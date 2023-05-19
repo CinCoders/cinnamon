@@ -3,7 +3,7 @@ import { Footer } from '../lib-components/Footer';
 import './storiesGlobals.css';
 
 export default {
-  title: 'Footer',
+  title: 'Components/Footer',
   parameters: {
     docs: {
       page: null
@@ -137,12 +137,12 @@ const Template: Story<FooterStoryProps> = (args) => {
 
 export const Footer_ = Template.bind({});
 Footer_.args = {
-  footerTitle: 'TITULO DO FOOTER',
+  footerTitle: 'FOOTER TITLE',
   footerTelephone: '(xx) xxxx-xxxx',
-  footerTelephoneComplement: 'Ramal: xxxx / xxxx',
+  footerTelephoneComplement: 'Internal number: xxxx / xxxx',
   footerEmail: 'sample@email.com',
   footerLink: 'https://www.google.com',
-  footerTextLink: 'Site',
-  footerDescription: 'Descrição do footer com \n quebra de linha',
-  footerCopyrightText: 'CIn UFPE | Todos os direitos reservados',
+  footerTextLink: 'Website',
+  footerDescription: "Footer's description with \n line break",
+  footerCopyrightText: 'CIn UFPE |  All rights reserved'
 };

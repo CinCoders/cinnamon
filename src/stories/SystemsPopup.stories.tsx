@@ -1,10 +1,12 @@
-import { storiesOf } from '@storybook/react';
 import { SystemsPopup } from '../components/SystemsPopup';
 import './storiesGlobals.css';
 import { testSystems } from './sampledata/SampleData';
 
-const stories = storiesOf('SystemsPopup', module);
+export default {
+  title: 'Components/SystemsPopup',
+  component: SystemsPopup
+};
 
-stories.add('SystemsPopup', () => {
+export const Default = () => {
   return <SystemsPopup systemsList={testSystems} />;
-});
+};
