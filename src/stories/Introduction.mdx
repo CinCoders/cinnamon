@@ -1,0 +1,194 @@
+import { Meta } from '@storybook/blocks';
+import Comments from '../assets/icons/comments.svg';
+import GitImg from '../assets/icons/github-mark.svg';
+import InstallIcon from '../assets/icons/plugin.svg';
+import KeycloakImg from '../assets/icons/keycloakicon.svg';
+import LicenseImg from '../assets/icons/repo.svg';
+import MUIimg from '../assets/icons/mui.svg';
+import ReactImg from '../assets/icons/react-icon.svg';
+import RollupImg from '../assets/icons/rolluplogo.svg';
+
+<Meta title='About/Introduction' />
+
+<style>
+  {`
+    .subheading {
+      --mediumdark: '#999999';
+      font-weight: 700;
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 6px;
+      line-height: 24px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      margin-top: 40px;
+    }
+
+    .link-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      row-gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .link-list {
+        row-gap: 20px;
+        column-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media all and (-ms-high-contrast:none) {
+    .link-list {
+        display: -ms-grid;
+        -ms-grid-columns: 1fr 1fr;
+        -ms-grid-rows: 1fr 1fr;
+      }
+    }
+
+    .link-item {
+      display: block;
+      padding: 20px;
+      border: 1px solid #00000010;
+      border-radius: 5px;
+      transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+      color: #333333;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .link-item:hover {
+      border-color: #1EA7FD50;
+      transform: translate3d(0, -3px, 0);
+      box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+    }
+
+    .link-item:active {
+      border-color: #1EA7FD;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .link-item strong {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .link-item img {
+      height: 40px;
+      width: 40px;
+      margin-right: 15px;
+      flex: none;
+    }
+
+    .link-item span,
+    .link-item p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+  `}
+</style>
+
+# Welcome to Cinnamon's Storybook
+
+Storybook will help you build UI components in isolation from your app's business logic, data, and context.
+That makes it easy to develop hard-to-reach states. Save these UI states as **stories** to revisit during development.
+
+<div className='subheading'>Technologies used</div>
+
+<div className='link-list'>
+  <a className='link-item' href='https://react.dev/' target='_blank'>
+    <img src={ReactImg} alt='React' />
+    <span>
+      <strong>React</strong>
+      Cinnamon is a library specifically designed for React projects, offering an extensive collection of components carefully tailored for seamless integration with React applications.
+    </span>
+  </a>
+  <a className='link-item' href='https://www.keycloak.org/' target='_blank'>
+    <img src={KeycloakImg} alt='Keycloak' />
+    <span>
+      <strong>Keycloak</strong>
+      We use Keycloak to implement access management. You can use it as well or use
+      your own solution.
+    </span>
+  </a>
+  <a
+    className='link-item'
+    href='https://mui.com/'
+    target='_blank'
+  >
+    <img src={MUIimg} alt='MUI' />
+    <span>
+      <strong>MUI</strong>
+     Cinnamon uses the MUI comprehensive suite of UI tools as the foundation for the components.
+    </span>
+  </a>
+  <a className='link-item' href='https://rollupjs.org/guide/en/' target='_blank'>
+    <img src={RollupImg} alt='Rollup' />
+    <span>
+      <strong>Rollup</strong>
+
+      Rollup is a module bundler for JavaScript which compiles small pieces of code
+      into something larger and more complex, such as a library or application.
+    </span>
+
+  </a>
+</div>
+
+<div className='subheading'>Repository information</div>
+
+<div className='link-list' >
+  <a className='link-item' href='https://github.com/CinCoders/cinnamon/blob/main/docs/CONTRIBUTING.md' target='_blank'>
+    <img src={Comments} alt='repo' />
+    <span>
+      <strong>Contributions are welcome!</strong>
+      To know a step by step guide on how to contribute
+      refer to our contribution guide. <br></br><br></br><br></br>
+      Show your ❤️ and support by giving a ⭐.
+    </span>
+  </a>
+  <a className='link-item' style={{height: '140px'}} href='https://www.npmjs.com/package/@cincoders/cinnamon' target='_blank'>
+     <div>
+     <div style={{display:'flex'}}>
+     <img src={InstallIcon} alt='Usage' />
+
+      <span>
+        <strong>Installation in other projects</strong>
+        To install the Cinnamon package into your project use the node package manager
+        and run the command:
+      </span>
+      </div>
+      ```bash
+       npm install @cincoders/cinnamon
+       ```
+      </div>
+
+  </a>
+  <a
+    className='link-item'
+    href='https://github.com/CinCoders'
+    target='_blank'
+  >
+    <img src={GitImg} alt='code' />
+    <span>
+      <strong>GitHub project</strong>
+      View the source and add issues.
+    </span>
+  </a>
+  <a
+    className='link-item'
+    href='https://github.com/CinCoders/cinnamon/blob/main/LICENSE'
+    target='_blank'
+  >
+    <img src={LicenseImg} alt='comments' />
+    <span>
+      <strong>MIT License</strong>
+      CInnamon is released under the MIT license, which means that you have the freedom to use, modify, and distribute the package for any purpose.
+      The MIT license promotes openness and collaboration in software development, allowing you to integrate CInnamon into your projects with ease.
+      See MIT License for more details.
+    </span>
+  </a>
+</div>

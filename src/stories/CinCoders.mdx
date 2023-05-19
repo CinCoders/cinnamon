@@ -1,0 +1,127 @@
+import { Meta } from '@storybook/blocks';
+import Brackets from '../assets/icons/code-brackets.svg';
+import LogoCoders from '../assets/icons/cincodersicon.svg';
+
+<Meta title='About/CinCoders' />
+
+<style>
+  {`
+    .subheading {
+      --mediumdark: '#999999';
+      font-weight: 700;
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 6px;
+      line-height: 24px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      margin-top: 40px;
+    }
+
+    .link-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      row-gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .link-list {
+        row-gap: 20px;
+        column-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media all and (-ms-high-contrast:none) {
+    .link-list {
+        display: -ms-grid;
+        -ms-grid-columns: 1fr 1fr;
+        -ms-grid-rows: 1fr 1fr;
+      }
+    }
+
+    .link-item {
+      display: block;
+      padding: 20px;
+      border: 1px solid #00000010;
+      border-radius: 5px;
+      transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+      color: #333333;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .link-item:hover {
+      border-color: #1EA7FD50;
+      transform: translate3d(0, -3px, 0);
+      box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+    }
+
+    .link-item:active {
+      border-color: #1EA7FD;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .link-item strong {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .link-item img {
+      height: 40px;
+      width: 40px;
+      margin-right: 15px;
+      flex: none;
+    }
+
+    .link-item span,
+    .link-item p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .divlogo{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+
+    .divlogo img{
+      height: 100px;
+      width: 100px;
+      margin-right: 15px;
+
+    }
+  `}
+</style>
+
+<div className='divlogo'>
+  <img src={LogoCoders} alt='Cinnamon' />
+</div>
+
+# Welcome to CInCoders
+
+A dynamic and innovative development team from the Center of Informatics (CIn) at the University of Pernambuco (UFPE).
+We are a group of passionate coders, driven by the desire to create impactful solutions that shape the future of technology.
+With a strong foundation in software development and a relentless pursuit of excellence, we thrive on transforming ideas into practical, user-centric applications.
+Join us on this exciting journey as we push boundaries, collaborate, and unleash the power of code to build a better tomorrow.
+
+<div className='subheading'>Open source projects</div>
+
+<div className='link-list'>
+  <a
+    className='link-item'
+    href='/cinnamon/?path=/docs/about-introduction--docs'
+  >
+    <img src={Brackets} alt='Cinnamon' />
+    <span>
+      <strong>Cinnamon</strong>
+      Browse example stories now by navigating to them in the sidebar. View their
+      code in the `stories` directory to learn how they work.
+    </span>
+  </a>
+</div>

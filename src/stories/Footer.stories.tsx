@@ -1,9 +1,9 @@
 import { Story } from '@storybook/react';
-import { Footer, FooterProps } from '../lib-components/Footer';
+import { Footer } from '../lib-components/Footer';
 import './storiesGlobals.css';
 
 export default {
-  title: 'Footer',
+  title: 'Components/Footer',
   parameters: {
     docs: {
       page: null
@@ -82,6 +82,26 @@ export default {
         category: 'Footer'
       }
     }
+    ,
+    footerSignatureText: {
+      name: 'signature text',
+      type: { name: 'string', required: false },
+      description: "String wich defines footer's signature text",
+      control: { type: 'text' },
+      table: {
+        category: 'Footer'
+      }
+    }
+    ,
+    footerSignatureLink: {
+      name: 'signature link',
+      type: { name: 'string', required: false },
+      description: "String wich defines footer's signature link",
+      control: { type: 'text' },
+      table: {
+        category: 'Footer'
+      }
+    }
   }
 };
 
@@ -94,6 +114,8 @@ export interface FooterStoryProps {
   footerTextLink: string;
   footerDescription: string;
   footerCopyrightText: string;
+  footerSignatureText: string;
+  footerSignatureLink: string;
 }
 
 const Template: Story<FooterStoryProps> = (args) => {
@@ -107,18 +129,20 @@ const Template: Story<FooterStoryProps> = (args) => {
       textLink={`${args.footerLink}`}
       description={`${args.footerDescription}`}
       copyrightText={`${args.footerCopyrightText}`}
+      signatureText={args.footerSignatureText}
+      signatureLink={`${args.footerSignatureLink}`}
     />
   );
 };
 
 export const Footer_ = Template.bind({});
 Footer_.args = {
-  footerTitle: 'TITULO DO FOOTER',
+  footerTitle: 'FOOTER TITLE',
   footerTelephone: '(xx) xxxx-xxxx',
-  footerTelephoneComplement: 'Ramal: xxxx / xxxx',
+  footerTelephoneComplement: 'Internal number: xxxx / xxxx',
   footerEmail: 'sample@email.com',
   footerLink: 'https://www.google.com',
-  footerTextLink: 'Site',
-  footerDescription: 'Descrição do footer com \n quebra de linha',
-  footerCopyrightText: 'CIn UFPE | Todos os direitos reservados'
+  footerTextLink: 'Website',
+  footerDescription: "Footer's description with \n line break",
+  footerCopyrightText: 'CIn UFPE |  All rights reserved'
 };

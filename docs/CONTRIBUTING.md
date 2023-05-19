@@ -1,6 +1,6 @@
 # Welcome to our contributing guide
 
-Thank you for your intentions on evolving our project. Every contribution is welcomed!
+Thank you for your intentions on evolving our project. Every contribution is welcomed! Show your ❤️ and support by giving a ⭐.
 
 ## Getting started
 

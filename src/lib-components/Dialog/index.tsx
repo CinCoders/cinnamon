@@ -25,7 +25,7 @@ export const Dialog = ({
   type,
   title,
   children,
-  visibility = false,
+  visibility = true,
   setVisibility,
   acceptLabel = 'Ok',
   rejectLabel = 'Cancelar',
