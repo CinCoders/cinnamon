@@ -63,32 +63,30 @@ const TemplateOption: StoryFn<DialogProps> = (args) => {
   }, [args.visibility]);
 
   return (
-    <>
-      <div
-        style={{
-          position: 'absolute',
-          left: '45%',
-          top: '50%'
-        }}
+    <div
+      style={{
+        position: 'absolute',
+        left: '45%',
+        top: '50%'
+      }}
+    >
+      <Button
+        sx={{ bottom: '18px' }}
+        onClick={() => setDialogVisibility(!dialogVisibility)}
       >
-        <Button
-          sx={{ bottom: '18px' }}
-          onClick={() => setDialogVisibility(!dialogVisibility)}
-        >
-          Show Dialog
-        </Button>
-        <Dialog
-          {...args}
-          visibility={dialogVisibility}
-          rejectFunction={() => {
-            setDialogVisibility(!dialogVisibility);
-          }}
-          acceptFunction={() => {
-            setDialogVisibility(!dialogVisibility);
-          }}
-        />
-      </div>
-    </>
+        Show Dialog
+      </Button>
+      <Dialog
+        {...args}
+        visibility={dialogVisibility}
+        rejectFunction={() => {
+          setDialogVisibility(!dialogVisibility);
+        }}
+        acceptFunction={() => {
+          setDialogVisibility(!dialogVisibility);
+        }}
+      />
+    </div>
   );
 };
 
