@@ -23,11 +23,11 @@ export default {
 
 const TemplateMessage: StoryFn<DialogProps> = (args) => {
   const [dialogVisibility, setDialogVisibility] = useState(
-    args.visibility == undefined ? false : args.visibility
+    args.visibility ?? false
   );
 
   useEffect(() => {
-    setDialogVisibility(args.visibility == undefined ? false : args.visibility);
+    setDialogVisibility(args.visibility ?? false);
   }, [args.visibility]);
 
   return (
@@ -55,11 +55,11 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
 
 const TemplateOption: StoryFn<DialogProps> = (args) => {
   const [dialogVisibility, setDialogVisibility] = useState(
-    args.visibility == undefined ? false : args.visibility
+    args.visibility ?? false
   );
 
   useEffect(() => {
-    setDialogVisibility(args.visibility == undefined ? false : args.visibility);
+    setDialogVisibility(args.visibility ?? false);
   }, [args.visibility]);
 
   return (
