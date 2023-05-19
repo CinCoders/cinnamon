@@ -76,7 +76,7 @@
     "@mui/material": "^5.11.14",
     "@react-keycloak/web": "^3.4.0",
     "@rollup/plugin-url": "^6.1.0",
-    "jquery": "^3.6.0",
+    "jquery": "^3.6.4",
     "keycloak-js": "^18.0.0",
     "postcss": "^8.3.6",
     "react-toastify": "^9.1.1",
