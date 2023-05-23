@@ -1,6 +1,6 @@
 {
   "name": "@cincoders/cinnamon",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Reusable React components",
   "main": "dist/cinnamon.ssr.js",
   "browser": "dist/cinnamon.esm.js",
