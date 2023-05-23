@@ -50,7 +50,7 @@ export const Footer = ({
             <MiddleColumn className='middle'>
               <MiddleColumnText>
                 <a
-                  href={`tel:${telephone?.replace(/\(|\)|\s|-+?/g, '')}`}
+                  href={`tel:${telephone?.replace(/\(|\)|\s|-+/g, '')}`}
                   style={{ color: 'white', zIndex: 3 }}
                 >
                   {telephone && `${telephone} `}
@@ -106,7 +106,7 @@ export const Footer = ({
                 Made with ❤️
               </a>
               <span> by </span>
-              <a 
+              <a
                 href='https://cincoders.github.io/cinnamon/'
                 style={{ color: 'white', zIndex: 3 }}
               >

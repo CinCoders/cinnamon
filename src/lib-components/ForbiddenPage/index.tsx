@@ -35,12 +35,18 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
     async function getEmail() {
       setEmail(keycloak.tokenParsed?.email);
     }
-    getEmail();
-    if (location.state?.from !== undefined) {
-      setFrom(location.state.from.pathname);
-    } else {
-      navigate(process.env.PUBLIC_URL as To);
-    }
+
+    getEmail()
+      .then(() => {
+        if (location.state?.from !== undefined) {
+          setFrom(location.state.from.pathname);
+        } else {
+          navigate(process.env.PUBLIC_URL as To);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const logout = async () => {
