@@ -55,7 +55,7 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
         src={forbidden_403}
         alt='Imagem indicando erro 403 - Acesso negado'
       />
-      <MediumText>Você está logado como:</MediumText>
+      <MediumText>You are logged in as:</MediumText>
       <EmailContainer>
         <Avatar src='/broken-image.jpg' />
         <EmailText>{email}</EmailText>
@@ -76,7 +76,7 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
         variant='outlined'
         startIcon={<LogoutIcon />}
       >
-        Deslogar
+        Log out
       </Button>
     </PageContent>
   );
