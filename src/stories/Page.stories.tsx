@@ -250,6 +250,18 @@ interface StoryPageProps {
   centralized: boolean;
 }
 
+interface IconComponentProps {
+  haveIcon: JSXElementConstructor<any>;
+}
+
+const IconComponent = ({ haveIcon }: IconComponentProps) => {
+  if (!haveIcon) {
+    return <></>;
+  } else {
+    return <EngineeringIcon />;
+  }
+};
+
 const Template: Story<StoryPageProps> = (args) => {
   return (
     <ScopedCssBaseline>
@@ -265,9 +277,7 @@ const Template: Story<StoryPageProps> = (args) => {
             title: args.title,
             sideMenuLinks: args.sideMenuLinks,
             systemsList: args.systemsList ? args.systemsList : undefined,
-            IconComponent: args.IconComponent
-              ? () => <EngineeringIcon />
-              : () => <></>
+            IconComponent
           }}
           footer={{
             title: args.footerTitle,

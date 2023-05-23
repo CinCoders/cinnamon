@@ -42,9 +42,9 @@ export const UserPopup = (props: UserPopupProps) => {
     accountManagementUrl
   } = props;
 
-  function logoutFunction() {
-    logoutMethod ? logoutMethod() : keycloak!.logout();
-  }
+
+  }function logoutFunction() {
+   keycloak && (logoutMethod ? logoutMethod() : keycloak.logout())
 
   return (
     <ScopedCssBaseline>
