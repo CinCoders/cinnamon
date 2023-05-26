@@ -25,10 +25,18 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
   const [dialogVisibility, setDialogVisibility] = useState(
     args.visibility ?? false
   );
+  const [templateMessage, setTemplateMessage] = useState<boolean>(false);
 
   useEffect(() => {
     setDialogVisibility(args.visibility ?? false);
   }, [args.visibility]);
+  useEffect(() => {
+    if (args.type === 'information' || args.type === 'alert') {
+      setTemplateMessage(true);
+    } else {
+      setTemplateMessage(false);
+    }
+  }, [args.type]);
 
   return (
     <div
@@ -48,43 +56,20 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
         {...args}
         visibility={dialogVisibility}
         setVisibility={setDialogVisibility}
-      />
-    </div>
-  );
-};
-
-const TemplateOption: StoryFn<DialogProps> = (args) => {
-  const [dialogVisibility, setDialogVisibility] = useState(
-    args.visibility ?? false
-  );
-
-  useEffect(() => {
-    setDialogVisibility(args.visibility ?? false);
-  }, [args.visibility]);
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: '45%',
-        top: '50%'
-      }}
-    >
-      <Button
-        sx={{ bottom: '18px' }}
-        onClick={() => setDialogVisibility(!dialogVisibility)}
-      >
-        Show Dialog
-      </Button>
-      <Dialog
-        {...args}
-        visibility={dialogVisibility}
-        rejectFunction={() => {
-          setDialogVisibility(!dialogVisibility);
-        }}
-        acceptFunction={() => {
-          setDialogVisibility(!dialogVisibility);
-        }}
+        rejectFunction={
+          !templateMessage
+            ? () => {
+                setDialogVisibility(!dialogVisibility);
+              }
+            : undefined
+        }
+        acceptFunction={
+          !templateMessage
+            ? () => {
+                setDialogVisibility(!dialogVisibility);
+              }
+            : undefined
+        }
       />
     </div>
   );
@@ -107,7 +92,7 @@ DialogAlert.args = {
     'DialogAlert is an option to display important information through an alert message, ensuring that the user is aware of a critical information.'
 };
 
-export const DialogDecision = TemplateOption.bind({});
+export const DialogDecision = TemplateMessage.bind({});
 DialogDecision.args = {
   type: 'decision',
   title: 'Decision Dialog Title',
@@ -115,7 +100,7 @@ DialogDecision.args = {
     'DialogDecision presents a message to the user and includes a confirmation button and a cancel button, enabling the user to make a decision regarding a specific question.'
 };
 
-export const DialogConfirmation = TemplateOption.bind({});
+export const DialogConfirmation = TemplateMessage.bind({});
 DialogConfirmation.args = {
   type: 'confirmation',
   title: 'Confirmation Dialog Title',
