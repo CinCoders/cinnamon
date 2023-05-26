@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.6] - 2023-05-123
+## [0.2.0] - 2023-05-26
+
+### Added
+
+- [Page] New property to override default toastContainer
+
+### Changed
+
+- [toast] Toast interface exported directly from react-toastfy
+
+## [0.1.6] - 2023-05-23
 
 ### Fixed
 
@@ -31,7 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Empty SideMenu
 - Issue template
 
-[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.6...develop
+[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.0...develop
+[0.2.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.6...version/v0.2.0
 [0.1.6]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.5...version/v0.1.6
 [0.1.5]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.4...version/v0.1.5
 [0.1.4]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.3...version/v0.1.4
