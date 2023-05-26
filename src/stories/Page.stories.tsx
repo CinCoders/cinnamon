@@ -7,6 +7,7 @@ import { testLinks, testSystems, testUser } from './sampledata/SampleData';
 import { BrowserRouter } from 'react-router-dom';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import { JSXElementConstructor } from 'react';
+import { footerArgTypes } from './Footer.stories';
 
 export default {
   title: 'Components/Page',
@@ -123,78 +124,7 @@ export default {
         category: 'Navbar'
       }
     },
-    footerTitle: {
-      name: 'title',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's title",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerTelephone: {
-      name: 'telephone',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's telephone",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerTelephoneComplement: {
-      name: 'telephone complement',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's telephone complement",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerEmail: {
-      name: 'email',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's email",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerLink: {
-      name: 'link',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's link",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerTextLink: {
-      name: 'text link',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's text link",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerDescription: {
-      name: 'description',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's description",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerCopyrightText: {
-      name: 'copyright text',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's copyright text",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
+    footerArgTypes,
     width: {
       name: 'width',
       type: { name: 'string', required: false },
