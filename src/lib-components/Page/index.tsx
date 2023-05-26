@@ -14,6 +14,7 @@ interface PageProps {
   components?: {
     navbar?: JSX.Element;
     footer?: JSX.Element;
+    toastContainer?: JSX.Element;
   };
   createNavbarContext: boolean;
 }
@@ -86,13 +87,18 @@ export function Page({
           justifyContent: centralized ? 'center' : 'normal'
         }}
       >
+        {haveToast &&
+          (components?.toastContainer ? (
+            components.toastContainer
+          ) : (
+            <ToastContainer
+              toastProps={{
+                position: 'top-right'
+              }}
+              topInitialPosition={dimensions.navHeight}
+            />
+          ))}
         {children}
-        {haveToast && (
-          <ToastContainer
-            toastProps={{ position: 'top-right' }}
-            topInitialPosition={dimensions.navHeight}
-          />
-        )}
       </MainDiv>
       <div ref={footerRef} style={{ display: 'inline' }}>
         {components?.footer ? components.footer : <Footer {...footer} />}
