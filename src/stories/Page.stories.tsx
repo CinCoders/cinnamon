@@ -7,7 +7,7 @@ import { testLinks, testSystems, testUser } from './sampledata/SampleData';
 import { BrowserRouter } from 'react-router-dom';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import { JSXElementConstructor } from 'react';
-import { footerArgTypes } from './Footer.stories';
+import { footerArgTypes, navbarArgTypes } from '../utils/argTypes';
 
 export default {
   title: 'Components/Page',
@@ -35,96 +35,8 @@ export default {
       options: [true, false],
       control: { type: 'boolean' }
     },
-    isLandingPage: {
-      name: 'isLandingPage',
-      type: { name: 'boolean', required: false },
-      description: 'Boolean which defines if the navbar is for a landing page.',
-      options: [true, false],
-      control: { type: 'boolean' },
-      table: {
-        category: 'Navbar'
-      }
-    },
-    haveSearchBar: {
-      name: 'haveSearchBar',
-      type: { name: 'boolean', required: false },
-      description: 'Boolean which defines if the navbar has a search bar.',
-      options: [true, false],
-      control: { type: 'boolean' },
-      table: {
-        category: 'Navbar'
-      }
-    },
-    hiddenUser: {
-      name: 'hiddenUser',
-      type: { name: 'boolean', required: false },
-      description: 'Boolean which defines if the navbar hides the user.',
-      options: [true, false],
-      control: { type: 'boolean' },
-      table: {
-        category: 'Navbar'
-      }
-    },
-    user: {
-      name: 'user',
-      control: 'object',
-      description:
-        'Object wich defines all the informations about the current user',
-      table: {
-        category: 'Navbar'
-      },
-      if: {
-        arg: 'hiddenUser',
-        eq: false,
-        table: {
-          disable: true
-        }
-      }
-    },
-    h1: {
-      name: 'h1',
-      type: { name: 'boolean', required: false },
-      description: "Boolean wich defines the height of navbar's title",
-      options: [true, false],
-      control: { type: 'boolean' },
-      table: {
-        category: 'Navbar'
-      }
-    },
-    title: {
-      name: 'title',
-      type: { name: 'string', required: true },
-      description: "String wich defines navbar's title",
-      control: { type: 'text' },
-      table: {
-        category: 'Navbar'
-      }
-    },
-    sideMenuLinks: {
-      name: 'sideMenuLinks',
-      control: 'object',
-      description: 'Array of Object which defines the custom side menu',
-      table: {
-        category: 'Navbar'
-      }
-    },
-    systemsList: {
-      name: 'systemsList',
-      control: 'object',
-      description: 'Array which defines the systems contained in popup'
-    },
-    systemsListPopup: {
-      name: 'systemsListPopup',
-      type: { name: 'boolean', required: false },
-      options: [true, false],
-      control: { type: 'boolean' },
-      description:
-        'Boolean which defines if ttemplatehe navbar has a menu popup',
-      table: {
-        category: 'Navbar'
-      }
-    },
-    footerArgTypes,
+    ...footerArgTypes,
+    ...navbarArgTypes,
     width: {
       name: 'width',
       type: { name: 'string', required: false },
