@@ -33,7 +33,6 @@ export const Dialog = ({
   rejectFunction
 }: DialogProps) => {
   const theme = useTheme();
-
   const color = {
     information: theme.palette.secondary.main,
     alert: theme.palette.warning.main,
@@ -86,6 +85,7 @@ export const Dialog = ({
         onClose={onHide}
         aria-labelledby='customized-dialog-title'
         open={visibility}
+        sx={{ maxWidth: '100vw' }}
       >
         <ScopedCssBaseline>
           <DialogTitle id='customized-dialog-title'>{header}</DialogTitle>
