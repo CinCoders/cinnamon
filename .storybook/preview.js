@@ -14,6 +14,6 @@ export const parameters = {
   options: {
     method: 'configure',
     includeNames: true,
-    order: ['Introduction', ['*']]
+    order: ['Cinnamon', ['*']]
   }
 };
