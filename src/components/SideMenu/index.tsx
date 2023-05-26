@@ -12,12 +12,19 @@ import {
   Collapse
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { SideMenuLink } from '@/interfaces';
+import { SideMenuLink, link } from '@/interfaces';
 
 export interface SideMenuProps {
   links: SideMenuLink[];
   visibility?: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface NewTabLinkDivProps {
+  link?: SideMenuLink;
+  toggleDrawer: () => void;
+  child?: link;
+  children: JSX.Element | JSX.Element[];
 }
 
 function SideMenuIcon({ iconUrl, title, IconComponent }: any) {
@@ -28,6 +35,91 @@ function SideMenuIcon({ iconUrl, title, IconComponent }: any) {
       {IconComponent && <IconComponent />}
     </ListItemIcon>
   );
+}
+
+function NewTabLinkWithoutChild(props: { link: SideMenuLink }) {
+  const { link } = props;
+  return (
+    <>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          justifyItems: 'center',
+          maxWidth: '20%'
+        }}
+      >
+        <SideMenuIcon
+          iconUrl={link.iconUrl}
+          title={link.iconUrl}
+          IconComponent={link.IconComponent}
+        />
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'left',
+          minWidth: '78%'
+        }}
+      >
+        {link.title}
+      </div>
+    </>
+  );
+}
+
+function NewTabLinkDiv({
+  link,
+  toggleDrawer,
+  child,
+  children
+}: NewTabLinkDivProps) {
+  if (link) {
+    return (
+      <NewTabLink
+        style={{ minHeight: '54px' }}
+        href={link.href as string}
+        target='_blank'
+        rel='noopener noreferrer'
+        onClick={toggleDrawer}
+      >
+        {children}
+      </NewTabLink>
+    );
+  } else {
+    return (
+      <NewTabLink
+        style={{
+          minHeight: '35px'
+        }}
+        href={child!.href as string}
+        target='_blank'
+        rel='noopener noreferrer'
+        onClick={toggleDrawer}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            minHeight: '100%',
+            overflow: 'clip',
+            flexWrap: 'nowrap'
+          }}
+        >
+          <img src={itemBulletIcon} alt={`${child!.title} Icon`} />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'left',
+            minWidth: '80%'
+          }}
+        >
+          {child!.title}
+        </div>
+      </NewTabLink>
+    );
+  }
 }
 
 export function SideMenu({
@@ -108,37 +200,9 @@ export function SideMenu({
                   onClick={() => toggleChildrenLinks(index)}
                 >
                   {link.external ? (
-                    <NewTabLink
-                      style={{ minHeight: '54px' }}
-                      href={link.href as string}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      onClick={toggleDrawer}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          justifyItems: 'center',
-                          maxWidth: '20%'
-                        }}
-                      >
-                        <SideMenuIcon
-                          iconUrl={link.iconUrl}
-                          title={link.iconUrl}
-                          IconComponent={link.IconComponent}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'left',
-                          minWidth: '78%'
-                        }}
-                      >
-                        {link.title}
-                      </div>
-                    </NewTabLink>
+                    <NewTabLinkDiv link={link} toggleDrawer={toggleDrawer}>
+                      <NewTabLinkWithoutChild link={link} />
+                    </NewTabLinkDiv>
                   ) : (
                     <SameTabLink
                       to={link.href as string}
@@ -207,14 +271,9 @@ export function SideMenu({
                           }}
                         >
                           {child.external ? (
-                            <NewTabLink
-                              style={{
-                                minHeight: '35px'
-                              }}
-                              href={child.href as string}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                              onClick={toggleDrawer}
+                            <NewTabLinkDiv
+                              child={child}
+                              toggleDrawer={toggleDrawer}
                             >
                               <div
                                 style={{
@@ -239,7 +298,7 @@ export function SideMenu({
                               >
                                 {child.title}
                               </div>
-                            </NewTabLink>
+                            </NewTabLinkDiv>
                           ) : (
                             <SameTabLink
                               to={child.href as string}
@@ -291,37 +350,9 @@ export function SideMenu({
                   }}
                 >
                   {link.external ? (
-                    <NewTabLink
-                      style={{ minHeight: '54px' }}
-                      href={link.href as string}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      onClick={toggleDrawer}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          justifyItems: 'center',
-                          maxWidth: '20%'
-                        }}
-                      >
-                        <SideMenuIcon
-                          iconUrl={link.iconUrl}
-                          title={link.iconUrl}
-                          IconComponent={link.IconComponent}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'left',
-                          minWidth: '80%'
-                        }}
-                      >
-                        {link.title}
-                      </div>
-                    </NewTabLink>
+                    <NewTabLinkDiv link={link} toggleDrawer={toggleDrawer}>
+                      <NewTabLinkWithoutChild link={link} />
+                    </NewTabLinkDiv>
                   ) : (
                     <SameTabLink
                       to={link.href as string}
