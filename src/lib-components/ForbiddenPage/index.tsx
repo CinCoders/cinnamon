@@ -26,12 +26,10 @@ interface Location {
 }
 
 export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
-  const [email, setEmail] = useState<string>();
+  const email = keycloak.tokenParsed?.email;
   const [from, setFrom] = useState<string>();
   const navigate = useNavigate();
   const location = useLocation() as Location;
-
-  setEmail(keycloak.tokenParsed?.email);
 
   useEffect(() => {
 
