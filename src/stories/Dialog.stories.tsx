@@ -30,52 +30,37 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
     setDialogVisibility(args.visibility ?? false);
   }, [args.visibility]);
 
-  if (args.type === 'information' || args.type === 'alert') {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          left: '45%',
-          top: '50%'
-        }}
+  const dialogWithoutFunction = ['alert', 'information'];
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: '45%',
+        top: '50%'
+      }}
+    >
+      <Button
+        sx={{ bottom: '18px' }}
+        onClick={() => setDialogVisibility(!dialogVisibility)}
       >
-        <Button
-          sx={{ bottom: '18px' }}
-          onClick={() => setDialogVisibility(!dialogVisibility)}
-        >
-          Show Dialog
-        </Button>
+        Show Dialog
+      </Button>
+      {dialogWithoutFunction.includes(args.type) ? (
         <Dialog
           {...args}
           visibility={dialogVisibility}
           setVisibility={setDialogVisibility}
         />
-      </div>
-    );
-  } else {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          left: '45%',
-          top: '50%'
-        }}
-      >
-        <Button
-          sx={{ bottom: '18px' }}
-          onClick={() => setDialogVisibility(!dialogVisibility)}
-        >
-          Show Dialog
-        </Button>
+      ) : (
         <Dialog
           {...args}
           visibility={dialogVisibility}
           rejectFunction={() => setDialogVisibility(!dialogVisibility)}
           acceptFunction={() => setDialogVisibility(!dialogVisibility)}
         />
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 };
 
 export const DialogInformation = TemplateMessage.bind({});
