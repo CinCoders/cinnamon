@@ -8,7 +8,7 @@ export default {
   component: Dialog,
   argTypes: {
     type: {
-      options: ['information', 'alert', 'decision', 'confirmation'],
+      options: ['information', 'alert', 'decision', 'confirmation', 'error'],
       control: { type: 'radio' }
     },
     visibility: {
@@ -25,54 +25,57 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
   const [dialogVisibility, setDialogVisibility] = useState(
     args.visibility ?? false
   );
-  const [templateMessage, setTemplateMessage] = useState<boolean>(false);
 
   useEffect(() => {
     setDialogVisibility(args.visibility ?? false);
   }, [args.visibility]);
-  useEffect(() => {
-    if (args.type === 'information' || args.type === 'alert') {
-      setTemplateMessage(true);
-    } else {
-      setTemplateMessage(false);
-    }
-  }, [args.type]);
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: '45%',
-        top: '50%'
-      }}
-    >
-      <Button
-        sx={{ bottom: '18px' }}
-        onClick={() => setDialogVisibility(!dialogVisibility)}
+  if (args.type === 'information' || args.type === 'alert') {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: '45%',
+          top: '50%'
+        }}
       >
-        Show Dialog
-      </Button>
-      <Dialog
-        {...args}
-        visibility={dialogVisibility}
-        setVisibility={setDialogVisibility}
-        rejectFunction={
-          !templateMessage
-            ? () => {
-                setDialogVisibility(!dialogVisibility);
-              }
-            : undefined
-        }
-        acceptFunction={
-          !templateMessage
-            ? () => {
-                setDialogVisibility(!dialogVisibility);
-              }
-            : undefined
-        }
-      />
-    </div>
-  );
+        <Button
+          sx={{ bottom: '18px' }}
+          onClick={() => setDialogVisibility(!dialogVisibility)}
+        >
+          Show Dialog
+        </Button>
+        <Dialog
+          {...args}
+          visibility={dialogVisibility}
+          setVisibility={setDialogVisibility}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: '45%',
+          top: '50%'
+        }}
+      >
+        <Button
+          sx={{ bottom: '18px' }}
+          onClick={() => setDialogVisibility(!dialogVisibility)}
+        >
+          Show Dialog
+        </Button>
+        <Dialog
+          {...args}
+          visibility={dialogVisibility}
+          rejectFunction={() => setDialogVisibility(!dialogVisibility)}
+          acceptFunction={() => setDialogVisibility(!dialogVisibility)}
+        />
+      </div>
+    );
+  }
 };
 
 export const DialogInformation = TemplateMessage.bind({});
@@ -106,4 +109,12 @@ DialogConfirmation.args = {
   title: 'Confirmation Dialog Title',
   children:
     'DialogConfirmation presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.'
+};
+
+export const DialogError = TemplateMessage.bind({});
+DialogError.args = {
+  type: 'error',
+  title: 'Error Dialog Title',
+  children:
+    'DialogError presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.'
 };
