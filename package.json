@@ -1,7 +1,13 @@
 {
   "name": "@cincoders/cinnamon",
-  "version": "0.1.6",
-  "description": "Reusable React components",
+  "version": "0.2.0",
+  "description": "A collection components for standardized system appearance and functionality, easing development in web applications.",
+  "license": "MIT",
+  "author": "CInCoders <cincoders@cin.ufpe.br> (https://cincoders.github.io/cinnamon/)",
+  "homepage": "https://cincoders.github.io/cinnamon/",
+  "bugs": {
+    "url": "https://github.com/CinCoders/cinnamon/issues"
+  },
   "main": "dist/cinnamon.ssr.js",
   "browser": "dist/cinnamon.esm.js",
   "module": "dist/cinnamon.esm.js",
@@ -23,8 +29,17 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
-  "license": "MIT",
+  "keywords": [
+    "react",
+    "mui",
+    "styled-components",
+    "keycloak",
+    "storybook",
+    "typescript",
+    "design-system",
+    "web-components",
+    "components"
+  ],
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.21.5",

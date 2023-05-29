@@ -10,17 +10,24 @@ export default {
   component: SideMenu
 };
 
+const HomeIconComponent = () => {
+  return <HomeIcon />;
+};
+const DescriptionIconComponent = () => {
+  return <DescriptionIcon />;
+};
+
 export const Default = () => {
   const testLinks: SideMenuLink[] = [
     {
       title: 'Homepage',
       href: '#',
-      IconComponent: () => <HomeIcon />
+      IconComponent: HomeIconComponent
     },
     {
       title: 'Process',
       href: '#',
-      IconComponent: () => <DescriptionIcon />,
+      IconComponent: DescriptionIconComponent,
       children: [
         {
           title: 'Register/Edit',
@@ -35,7 +42,7 @@ export const Default = () => {
     {
       title: 'Types',
       href: '#',
-      IconComponent: () => <DescriptionIcon />,
+      IconComponent: DescriptionIconComponent,
       children: [
         {
           title: 'Register/Edit',

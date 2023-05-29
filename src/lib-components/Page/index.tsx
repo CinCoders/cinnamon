@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from 'react';
+import { createContext, useEffect, useMemo, useRef, useState } from 'react';
 import { MainDiv } from './styles';
 import { Navbar, NavbarProps } from '../Navbar/index';
 import { Footer, FooterProps } from '../Footer/index';
@@ -14,6 +14,7 @@ interface PageProps {
   components?: {
     navbar?: JSX.Element;
     footer?: JSX.Element;
+    toastContainer?: JSX.Element;
   };
   createNavbarContext: boolean;
 }
@@ -66,9 +67,12 @@ export function Page({
     }
   }, [navbar]);
 
-  const navbarContextClass = createNavbarContext
-    ? new NavbarContextValue({ ...navbarProps }, setNavbarProps)
-    : undefined;
+  const navbarContextClass = useMemo(() => {
+    if (createNavbarContext) {
+      return new NavbarContextValue({ ...navbarProps }, setNavbarProps);
+    }
+    return undefined;
+  }, [createNavbarContext, navbarProps, setNavbarProps]);
 
   useEffect(() => {
     firstRender.current = true;
@@ -86,13 +90,18 @@ export function Page({
           justifyContent: centralized ? 'center' : 'normal'
         }}
       >
+        {haveToast &&
+          (components?.toastContainer ? (
+            components.toastContainer
+          ) : (
+            <ToastContainer
+              toastProps={{
+                position: 'top-right'
+              }}
+              topInitialPosition={dimensions.navHeight}
+            />
+          ))}
         {children}
-        {haveToast && (
-          <ToastContainer
-            toastProps={{ position: 'top-right' }}
-            topInitialPosition={dimensions.navHeight}
-          />
-        )}
       </MainDiv>
       <div ref={footerRef} style={{ display: 'inline' }}>
         {components?.footer ? components.footer : <Footer {...footer} />}

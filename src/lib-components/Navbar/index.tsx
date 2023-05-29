@@ -46,7 +46,7 @@ export interface NavbarProps {
   currentSystemIconUrl?: string;
   IconComponent?: JSXElementConstructor<any>;
   children?: JSX.Element;
-  accountManagementUrl?: String;
+  accountManagementUrl?: string;
 }
 
 export const Navbar = ({
