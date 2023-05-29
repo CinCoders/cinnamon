@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from 'react';
+import { createContext, useEffect, useMemo, useRef, useState } from 'react';
 import { MainDiv } from './styles';
 import { Navbar, NavbarProps } from '../Navbar/index';
 import { Footer, FooterProps } from '../Footer/index';
@@ -67,9 +67,12 @@ export function Page({
     }
   }, [navbar]);
 
-  const navbarContextClass = createNavbarContext
-    ? new NavbarContextValue({ ...navbarProps }, setNavbarProps)
-    : undefined;
+  const navbarContextClass = useMemo(() => {
+    if (createNavbarContext) {
+      return new NavbarContextValue({ ...navbarProps }, setNavbarProps);
+    }
+    return undefined;
+  }, [createNavbarContext, navbarProps, setNavbarProps]);
 
   useEffect(() => {
     firstRender.current = true;

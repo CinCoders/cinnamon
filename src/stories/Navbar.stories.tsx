@@ -98,6 +98,19 @@ export interface NavbarStoryProps {
   IconComponent: JSXElementConstructor<any>;
 }
 
+interface IconComponentProps {
+  haveIcon: JSXElementConstructor<any>;
+}
+
+const IconComponent = ({ haveIcon }: IconComponentProps) => {
+  if (!haveIcon) {
+    return <></>;
+  } else {
+    return <EngineeringIcon />;
+  }
+};
+
+
 const Template: Story<NavbarStoryProps> = (args) => {
   return (
     <BrowserRouter>
@@ -110,9 +123,7 @@ const Template: Story<NavbarStoryProps> = (args) => {
         title={args.title}
         sideMenuLinks={args.sideMenuLinks }
         systemsList={args.systemsListPopup ? args.systemsList : undefined}
-        IconComponent={
-          args.IconComponent ? () => <EngineeringIcon /> : () => <></>
-        }
+        IconComponent={IconComponent}
       />
     </BrowserRouter>
   );

@@ -1,5 +1,4 @@
 import { UserPopup } from '../components/UserPopup';
-import { User } from '@/interfaces';
 import './storiesGlobals.css';
 import { testUser } from './sampledata/SampleData';
 

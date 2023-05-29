@@ -27,7 +27,7 @@ export interface System {
   href: string;
 }
 
-export interface link {
+export interface Link {
   iconUrl?: string;
   IconComponent?: JSXElementConstructor<any>;
   title: string;
@@ -35,8 +35,8 @@ export interface link {
   external?: boolean;
 }
 
-export interface SideMenuLink extends link {
-  children?: link[];
+export interface SideMenuLink extends Link {
+  children?: Link[];
 }
 
 export interface Option {
