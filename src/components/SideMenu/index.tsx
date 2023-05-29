@@ -12,7 +12,7 @@ import {
   Collapse
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { SideMenuLink, link } from '@/interfaces';
+import { SideMenuLink, Link } from '../../interfaces/index';
 
 export interface SideMenuProps {
   links: SideMenuLink[];
@@ -23,7 +23,7 @@ export interface SideMenuProps {
 interface NewTabLinkDivProps {
   link?: SideMenuLink;
   toggleDrawer: () => void;
-  child?: link;
+  child?: Link;
   children: JSX.Element | JSX.Element[];
 }
 
@@ -74,6 +74,11 @@ function NewTabLinkDiv({
   child,
   children
 }: NewTabLinkDivProps) {
+  useEffect(() => {
+    if (!link && !child) {
+      throw new Error('No child or link passed to newTabLinkDiv component');
+    }
+  }, []);
   if (link) {
     return (
       <NewTabLink
@@ -86,13 +91,13 @@ function NewTabLinkDiv({
         {children}
       </NewTabLink>
     );
-  } else {
+  } else if (child) {
     return (
       <NewTabLink
         style={{
           minHeight: '35px'
         }}
-        href={child!.href as string}
+        href={child.href as string}
         target='_blank'
         rel='noopener noreferrer'
         onClick={toggleDrawer}
@@ -106,7 +111,7 @@ function NewTabLinkDiv({
             flexWrap: 'nowrap'
           }}
         >
-          <img src={itemBulletIcon} alt={`${child!.title} Icon`} />
+          <img src={itemBulletIcon} alt={`${child.title} Icon`} />
         </div>
         <div
           style={{
@@ -115,10 +120,12 @@ function NewTabLinkDiv({
             minWidth: '80%'
           }}
         >
-          {child!.title}
+          {child.title}
         </div>
       </NewTabLink>
     );
+  } else {
+    return <></>;
   }
 }
 
