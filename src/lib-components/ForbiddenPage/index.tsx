@@ -31,22 +31,16 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
   const navigate = useNavigate();
   const location = useLocation() as Location;
 
+  setEmail(keycloak.tokenParsed?.email);
+
   useEffect(() => {
-    async function getEmail() {
-      setEmail(keycloak.tokenParsed?.email);
+
+    if (location.state?.from !== undefined) {
+      setFrom(location.state.from.pathname);
+    } else {
+      navigate(process.env.PUBLIC_URL as To);
     }
 
-    getEmail()
-      .then(() => {
-        if (location.state?.from !== undefined) {
-          setFrom(location.state.from.pathname);
-        } else {
-          navigate(process.env.PUBLIC_URL as To);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }, []);
 
   const logout = async () => {

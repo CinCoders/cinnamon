@@ -42,9 +42,9 @@ export const UserPopup = (props: UserPopupProps) => {
     accountManagementUrl
   } = props;
 
-
-  }function logoutFunction() {
-   keycloak && (logoutMethod ? logoutMethod() : keycloak.logout())
+  function logoutFunction() {
+    logoutMethod ? logoutMethod() : keycloak?.logout();
+  }
 
   return (
     <ScopedCssBaseline>
@@ -101,7 +101,10 @@ export const UserPopup = (props: UserPopupProps) => {
                     </>
                   ) : (
                     <>
-                      <StyledAccordion disabled key={`position_${position_index}`}>
+                      <StyledAccordion
+                        disabled
+                        key={`position_${position_index}`}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel3a-content'
