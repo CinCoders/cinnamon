@@ -6,7 +6,7 @@ import { testLinks, testSystems, testUser } from './sampledata/SampleData';
 import { BrowserRouter } from 'react-router-dom';
 import { JSXElementConstructor } from 'react';
 import EngineeringIcon from '@mui/icons-material/Engineering';
-import { navbarArgTypes } from '../utils/argTypes';
+import { navbarArgTypes } from './utils/argTypes';
 
 export default {
   title: 'Components/Navbar',

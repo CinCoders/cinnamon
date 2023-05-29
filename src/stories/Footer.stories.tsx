@@ -1,7 +1,7 @@
 import { Story } from '@storybook/react';
 import { Footer } from '../lib-components/Footer';
 import './storiesGlobals.css';
-import { footerArgTypes } from '../utils/argTypes';
+import { footerArgTypes } from './utils/argTypes';
 
 export default {
   title: 'Components/Footer',

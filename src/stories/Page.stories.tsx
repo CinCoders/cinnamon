@@ -7,7 +7,7 @@ import { testLinks, testSystems, testUser } from './sampledata/SampleData';
 import { BrowserRouter } from 'react-router-dom';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import { JSXElementConstructor } from 'react';
-import { footerArgTypes, navbarArgTypes } from '../utils/argTypes';
+import { footerArgTypes, navbarArgTypes } from './utils/argTypes';
 
 export default {
   title: 'Components/Page',
