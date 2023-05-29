@@ -21,7 +21,7 @@ export class NavbarContextValue implements NavbarProps {
   systemsList?: System[];
   currentSystemIconUrl?: string;
   children?: JSX.Element;
-  accountManagementUrl?: String;
+  accountManagementUrl?: string;
   setNavbarProps: React.Dispatch<React.SetStateAction<NavbarProps>>;
 
   constructor(
