@@ -18,10 +18,13 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   let haveAccess = false;
 
   if (!initialized) {
-    setTimeout(() => {
-      if (waiting && !initialized) setWaiting(false);
-    }, 6000);
     if (waiting) {
+      setTimeout(() => {
+        if (!initialized) {
+          setWaiting(false);
+        }
+      }, 6000);
+
       return (
         <Box
           minHeight='100vh'

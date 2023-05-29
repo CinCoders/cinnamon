@@ -28,9 +28,9 @@ import Keycloak from 'keycloak-js';
 interface UserPopupProps {
   user?: User;
   logoutMethod?(): void;
-  keycloak?: Keycloak | undefined;
+  keycloak?: Keycloak;
   id?: string;
-  accountManagementUrl?: String;
+  accountManagementUrl?: string;
 }
 
 export const UserPopup = (props: UserPopupProps) => {
@@ -43,7 +43,7 @@ export const UserPopup = (props: UserPopupProps) => {
   } = props;
 
   function logoutFunction() {
-    logoutMethod ? logoutMethod() : keycloak!.logout();
+    logoutMethod ? logoutMethod() : keycloak?.logout();
   }
 
   return (
@@ -65,10 +65,10 @@ export const UserPopup = (props: UserPopupProps) => {
           {user.positions !== undefined && user.positions.length > 0 && (
             <PositionsContainer>
               {user.positions.map((position, position_index) => (
-                <div key={position_index}>
+                <div key={`position_${position_index}`}>
                   {position.roles !== undefined && position.roles.length > 0 ? (
                     <>
-                      <StyledAccordion key={position_index}>
+                      <StyledAccordion key={`position_${position_index}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel1a-content'
@@ -101,7 +101,10 @@ export const UserPopup = (props: UserPopupProps) => {
                     </>
                   ) : (
                     <>
-                      <StyledAccordion disabled key={position_index}>
+                      <StyledAccordion
+                        disabled
+                        key={`position_${position_index}`}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel3a-content'
