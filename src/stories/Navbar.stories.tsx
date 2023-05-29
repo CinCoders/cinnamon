@@ -6,6 +6,7 @@ import { testLinks, testSystems, testUser } from './sampledata/SampleData';
 import { BrowserRouter } from 'react-router-dom';
 import { JSXElementConstructor } from 'react';
 import EngineeringIcon from '@mui/icons-material/Engineering';
+import { navbarArgTypes } from './utils/argTypes';
 
 export default {
   title: 'Components/Navbar',
@@ -15,73 +16,7 @@ export default {
     }
   },
   argTypes: {
-    isLandingPage: {
-      name: 'isLandingPage',
-      type: { name: 'boolean', required: false },
-      description: 'Boolean which defines if the navbar is for a landing page.',
-      options: [true, false],
-      control: { type: 'boolean' }
-    },
-    haveSearchBar: {
-      name: 'haveSearchBar',
-      type: { name: 'boolean', required: false },
-      description: 'Boolean which defines if the navbar has a search bar.',
-      options: [true, false],
-      control: { type: 'boolean' }
-    },
-    hiddenUser: {
-      name: 'hiddenUser',
-      type: { name: 'boolean', required: false },
-      description: 'Boolean which defines if the navbar hides the user.',
-      options: [true, false],
-      control: { type: 'boolean' }
-    },
-    user: {
-      name: 'user',
-      control: 'object',
-      description:
-        'Object wich defines all the informations about the current user',
-      if: {
-        arg: 'hiddenUser',
-        eq: false,
-        table: {
-          disable: true
-        }
-      }
-    },
-    h1: {
-      name: 'h1',
-      type: { name: 'boolean', required: false },
-      description: "Boolean wich defines the height of navbar's title",
-      options: [true, false],
-      control: { type: 'boolean' }
-    },
-    title: {
-      name: 'title',
-      type: { name: 'boolean', required: true },
-      description: "String wich defines navbar's title",
-      control: { type: 'text' }
-    },
-    sideMenuLinks: {
-      name: 'sideMenuLinks',
-      control: 'object',
-      description: 'Array of Object which defines the custom side menu',
-    },
-    systemsList: {
-      name: 'systemsList',
-      control: 'object',
-      description: 'Array which defines the systems contained in popup'
-    },
-    systemsListPopup: {
-      name: 'systemsListPopup',
-      type: { name: 'boolean', required: false },
-      options: [true, false],
-      control: { type: 'boolean' },
-      description: 'Boolean which defines if the navbar has a menu popup',
-      table: {
-        category: 'Navbar'
-      }
-    }
+    ...navbarArgTypes
   }
 };
 
@@ -95,7 +30,7 @@ export interface NavbarStoryProps {
   systemsListPopup: boolean;
   title: string;
   systemsList: System[];
-  IconComponent: JSXElementConstructor<any>;
+  iconComponent: JSXElementConstructor<any>;
 }
 
 interface IconComponentProps {
@@ -121,7 +56,7 @@ const Template: Story<NavbarStoryProps> = (args) => {
         user={args.hiddenUser ? undefined : args.user}
         h1={args.h1}
         title={args.title}
-        sideMenuLinks={args.sideMenuLinks }
+        sideMenuLinks={args.sideMenuLinks}
         systemsList={args.systemsListPopup ? args.systemsList : undefined}
         IconComponent={IconComponent}
       />
@@ -139,5 +74,5 @@ Navbar_.args = {
   sideMenuLinks: testLinks,
   systemsListPopup: false,
   systemsList: testSystems,
-  IconComponent: () => <></>
+  iconComponent: () => <></>
 };
