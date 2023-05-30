@@ -5,7 +5,7 @@ import { Footer, FooterProps } from '../Footer/index';
 import { NavbarContextValue } from './useNavbar';
 import { ToastContainer } from '../../components/Toast';
 
-interface PageProps {
+export interface PageProps {
   navbar?: NavbarProps;
   footer?: FooterProps;
   children: JSX.Element | JSX.Element[];
@@ -51,7 +51,7 @@ export function Page({
       navHeight: navbarRef.current ? navbarRef.current.offsetHeight : 0,
       footHeight: footerRef.current ? footerRef.current.offsetHeight : 0
     });
-  }, [navbarRef, footerRef]);
+  }, [navbarRef.current?.offsetHeight, footerRef.current?.offsetHeight]);
   let diff = navbar ? dimensions.navHeight : 0;
   diff += footer ? dimensions.footHeight : 0;
 

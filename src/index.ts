@@ -12,3 +12,4 @@ export { System } from './interfaces';
 export { useNavbar } from './lib-components/Page/useNavbar';
 export { ToastContainer, toast } from './components/Toast';
 export { IconRenderer } from './lib-components/IconRender';
+export { PageWithAuth } from './lib-components/PageWithAuth';

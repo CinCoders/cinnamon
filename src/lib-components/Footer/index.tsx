@@ -107,7 +107,7 @@ export const Footer = ({
               </a>
               <span> by </span>
               <a
-                href='https://cincoders.github.io/cinnamon/'
+                href='https://cincoders.cin.ufpe.br/'
                 style={{ color: 'white', zIndex: 3 }}
               >
                 CInCoders
