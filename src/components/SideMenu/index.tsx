@@ -22,7 +22,7 @@ export interface SideMenuProps {
 
 interface NewTabLinkDivProps {
   link?: SideMenuLink;
-  toggleDrawer: () => void;
+  toggleDrawer: (() => void) | undefined;
   child?: Link;
   children: JSX.Element | JSX.Element[];
 }
@@ -207,7 +207,12 @@ export function SideMenu({
                   onClick={() => toggleChildrenLinks(index)}
                 >
                   {link.external ? (
-                    <NewTabLinkDiv link={link} toggleDrawer={toggleDrawer}>
+                    <NewTabLinkDiv
+                      link={link}
+                      toggleDrawer={
+                        showChildrenLinks.length ? undefined : toggleDrawer
+                      }
+                    >
                       <NewTabLinkWithoutChild link={link} />
                     </NewTabLinkDiv>
                   ) : (
@@ -219,7 +224,9 @@ export function SideMenu({
                         justifyContent: 'center',
                         justifyItems: 'center'
                       }}
-                      onClick={toggleDrawer}
+                      onClick={
+                        showChildrenLinks.length ? undefined : toggleDrawer
+                      }
                     >
                       <div
                         style={{
