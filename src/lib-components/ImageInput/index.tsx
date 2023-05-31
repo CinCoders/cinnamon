@@ -4,7 +4,7 @@ import { StyledFieldset, StyledImage, StyledLabel, StyledSpan } from './styles';
 
 import blankAvatar from '../../assets/default-profile-picture.jpg';
 
-interface ImageInputProps {
+export interface ImageInputProps {
   required?: boolean;
   disabled?: boolean;
   id: string;

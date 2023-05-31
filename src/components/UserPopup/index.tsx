@@ -25,7 +25,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Keycloak from 'keycloak-js';
 
-interface UserPopupProps {
+export interface UserPopupProps {
   user?: User;
   logoutMethod?(): void;
   keycloak?: Keycloak;
@@ -64,11 +64,11 @@ export const UserPopup = (props: UserPopupProps) => {
 
           {user.positions !== undefined && user.positions.length > 0 && (
             <PositionsContainer>
-              {user.positions.map((position, position_index) => (
-                <div key={`position_${position_index}`}>
+              {user.positions.map((position) => (
+                <div key={`position_${position}`}>
                   {position.roles !== undefined && position.roles.length > 0 ? (
                     <>
-                      <StyledAccordion key={`position_${position_index}`}>
+                      <StyledAccordion key={`position_${position}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel1a-content'
@@ -101,10 +101,7 @@ export const UserPopup = (props: UserPopupProps) => {
                     </>
                   ) : (
                     <>
-                      <StyledAccordion
-                        disabled
-                        key={`position_${position_index}`}
-                      >
+                      <StyledAccordion disabled key={`position_${position}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel3a-content'
