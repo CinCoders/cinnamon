@@ -85,7 +85,7 @@ export function SideMenu({
     >
       {links.map((link, index) => {
         return (
-          <div key={`link_${link.title}`}>
+          <div key={`link_${link.id}`}>
             {link.children !== undefined && link.children.length > 0 ? (
               <List
                 sx={{
@@ -199,7 +199,7 @@ export function SideMenu({
                       return (
                         <ListItem
                           button
-                          key={`linkChild_${child.title}`}
+                          key={`linkChild_${child.id}`}
                           sx={{
                             display: 'flex',
                             minWidth: '100%',
@@ -285,8 +285,7 @@ export function SideMenu({
               <List sx={{ padding: '0px' }}>
                 <ListItem
                   button
-                  key={`linkChildren_${link.title
-                  }`}
+                  key={`linkChildren_${link.id}`}
                   sx={{
                     padding: '0px'
                   }}

@@ -28,6 +28,7 @@ export interface System {
 }
 
 export interface Link {
+  id: number;
   iconUrl?: string;
   IconComponent?: JSXElementConstructor<any>;
   title: string;
