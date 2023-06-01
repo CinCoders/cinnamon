@@ -84,7 +84,6 @@ export function SideMenu({
       }}
     >
       {links.map((link, index) => {
-        console.log(link);
         return (
           <div key={`link_${link.title}`}>
             {link.children !== undefined && link.children.length > 0 ? (
