@@ -84,8 +84,9 @@ export function SideMenu({
       }}
     >
       {links.map((link, index) => {
+        console.log(link);
         return (
-          <div key={`link_${link}`}>
+          <div key={`link_${link.title}`}>
             {link.children !== undefined && link.children.length > 0 ? (
               <List
                 sx={{
@@ -195,11 +196,11 @@ export function SideMenu({
                   unmountOnExit
                 >
                   <List component='div' disablePadding>
-                    {link.children.map((child, index) => {
+                    {link.children.map((child) => {
                       return (
                         <ListItem
                           button
-                          key={`linkChild_${link}`}
+                          key={`linkChild_${child.title}`}
                           sx={{
                             display: 'flex',
                             minWidth: '100%',
@@ -285,7 +286,8 @@ export function SideMenu({
               <List sx={{ padding: '0px' }}>
                 <ListItem
                   button
-                  key={`linkChildren_${link}`}
+                  key={`linkChildren_${link.title
+                  }`}
                   sx={{
                     padding: '0px'
                   }}

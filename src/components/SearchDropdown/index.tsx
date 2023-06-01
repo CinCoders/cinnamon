@@ -59,8 +59,9 @@ export const SearchDropdown = ({
     <DropdownWrapper>
       <SearchDropdownContainer>
         {inputLabelList.map((label, index) => {
+          console.log(label);
           return (
-            <Field key={`field_${label}`}>
+            <Field key={`field_${label + index}`}>
               <DropdownLabel>{label}:</DropdownLabel>
               <DropdownInput
                 type='text'

@@ -29,7 +29,7 @@ export const SystemsPopup = ({
             return (
               <SystemItem
                 href={system.href}
-                key={`system_${system}`}
+                key={`system_${system.title}`}
                 className='system-item'
               >
                 <Tooltip title={system.description} arrow>

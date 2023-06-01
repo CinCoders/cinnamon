@@ -65,10 +65,10 @@ export const UserPopup = (props: UserPopupProps) => {
           {user.positions !== undefined && user.positions.length > 0 && (
             <PositionsContainer>
               {user.positions.map((position) => (
-                <div key={`position_${position}`}>
+                <div key={`position_${position.id}`}>
                   {position.roles !== undefined && position.roles.length > 0 ? (
                     <>
-                      <StyledAccordion key={`position_${position}`}>
+                      <StyledAccordion key={`positions_${position.id}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel1a-content'
@@ -101,7 +101,7 @@ export const UserPopup = (props: UserPopupProps) => {
                     </>
                   ) : (
                     <>
-                      <StyledAccordion disabled key={`position_${position}`}>
+                      <StyledAccordion disabled key={`positions_${position.id}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel3a-content'
