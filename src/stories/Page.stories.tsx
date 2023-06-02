@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline/ScopedCssBaseline';
 import './storiesGlobals.css';
 import { Page } from '../lib-components/Page';
@@ -104,7 +104,7 @@ const IconComponent = ({ haveIcon }: IconComponentProps) => {
   }
 };
 
-const Template: Story<StoryPageProps> = (args) => {
+const Template: StoryFn<StoryPageProps> = (args) => {
   return (
     <ScopedCssBaseline>
       <BrowserRouter>
