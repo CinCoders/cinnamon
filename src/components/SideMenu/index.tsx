@@ -104,7 +104,7 @@ export function SideMenu({
                     maxWidth: '100%',
                     minHeight: '54px'
                   }}
-                  key={`links_${link}`}
+                  key={`links_${link.id}`}
                   onClick={() => toggleChildrenLinks(index)}
                 >
                   {link.external ? (
