@@ -14,16 +14,12 @@ import { IconRenderer } from '../../lib-components/IconRender';
 
 export interface SystemsPopupProps {
   systemsList?: System[];
-  id?: string;
 }
 
-export const SystemsPopup = ({
-  systemsList = [],
-  id = ''
-}: SystemsPopupProps) => {
+export const SystemsPopup = ({ systemsList = [] }: SystemsPopupProps) => {
   return (
     <ScopedCssBaseline>
-      <SystemsPopupContainer id={id}>
+      <SystemsPopupContainer>
         <SystemsPopupContent>
           {systemsList.map((system) => {
             return (
