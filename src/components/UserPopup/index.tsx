@@ -1,5 +1,4 @@
 import { User } from '../../interfaces';
-
 import {
   ScopedCssBaseline,
   AccordionSummary,
@@ -29,7 +28,6 @@ export interface UserPopupProps {
   user?: User;
   logoutMethod?(): void;
   keycloak?: Keycloak;
-  id?: string;
   accountManagementUrl?: string;
 }
 
@@ -38,7 +36,6 @@ export const UserPopup = (props: UserPopupProps) => {
     user = { name: 'User Display Name', email: 'user@example.com' },
     logoutMethod,
     keycloak,
-    id,
     accountManagementUrl
   } = props;
 
@@ -48,7 +45,7 @@ export const UserPopup = (props: UserPopupProps) => {
 
   return (
     <ScopedCssBaseline>
-      <UserPopUp id={id}>
+      <UserPopUp>
         <UserPopUpContainer>
           <StyledAvatar alt={user.name[0]}>
             {user.name[0].charAt(0)}
@@ -101,7 +98,10 @@ export const UserPopup = (props: UserPopupProps) => {
                     </>
                   ) : (
                     <>
-                      <StyledAccordion disabled key={`positions_${position.id}`}>
+                      <StyledAccordion
+                        disabled
+                        key={`positions_${position.id}`}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel3a-content'

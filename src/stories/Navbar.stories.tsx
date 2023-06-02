@@ -1,4 +1,4 @@
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { Navbar } from '../lib-components/Navbar';
 import './storiesGlobals.css';
 import { SideMenuLink, System, User } from '@/interfaces';
@@ -45,8 +45,7 @@ const IconComponent = ({ haveIcon }: IconComponentProps) => {
   }
 };
 
-
-const Template: Story<NavbarStoryProps> = (args) => {
+const Template: StoryFn<NavbarStoryProps> = (args) => {
   return (
     <BrowserRouter>
       <Navbar
