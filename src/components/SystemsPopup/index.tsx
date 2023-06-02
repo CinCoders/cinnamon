@@ -12,7 +12,7 @@ import {
 
 import { IconRenderer } from '../../lib-components/IconRender';
 
-interface SystemsPopupProps {
+export interface SystemsPopupProps {
   systemsList?: System[];
   id?: string;
 }
@@ -25,11 +25,11 @@ export const SystemsPopup = ({
     <ScopedCssBaseline>
       <SystemsPopupContainer id={id}>
         <SystemsPopupContent>
-          {systemsList.map((system, index) => {
+          {systemsList.map((system) => {
             return (
               <SystemItem
                 href={system.href}
-                key={index}
+                key={`system_${system.title}`}
                 className='system-item'
               >
                 <Tooltip title={system.description} arrow>

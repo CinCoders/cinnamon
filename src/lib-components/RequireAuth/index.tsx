@@ -20,9 +20,7 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   if (!initialized) {
     if (waiting) {
       setTimeout(() => {
-        if (!initialized) {
-          setWaiting(false);
-        }
+        setWaiting(false);
       }, 6000);
 
       return (
