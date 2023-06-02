@@ -23,6 +23,13 @@ export default {
         category: 'SideMenu'
       }
     },
+    top: {
+      name: 'top',
+      description: 'Top spacing of sidemenu to top of your page.',
+      table: {
+        category: 'SideMenu'
+      }
+    },
     setVisibility: {
       name: 'setVisibility',
       control: { disable: true },
@@ -44,6 +51,7 @@ export default {
 
 interface SideMenuStoryProps {
   links: SideMenuLink[];
+  top: string;
 }
 
 const Template: StoryFn<SideMenuStoryProps> = (args) => {
@@ -73,6 +81,7 @@ const Template: StoryFn<SideMenuStoryProps> = (args) => {
         visibility={drawerVisibility}
         setVisibility={setDrawerVisibility}
         links={args.links}
+        top={args.top}
       />
     </BrowserRouter>
   );
@@ -80,5 +89,6 @@ const Template: StoryFn<SideMenuStoryProps> = (args) => {
 
 export const SideMenu_ = Template.bind({});
 SideMenu_.args = {
-  links: testLinks
+  links: testLinks,
+  top: '64px'
 };
