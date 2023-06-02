@@ -13,24 +13,15 @@ import AccountBalance from '@mui/icons-material/AccountBalance';
 import { SideMenuLink, System, User } from '@/interfaces';
 
 export const testLinks: SideMenuLink[] = [
+  { id: 0, title: 'Home', href: '#', IconComponent: () => <HomeIcon /> },
   {
-    title: 'Home',
-    href: '#',
-    IconComponent: () => <HomeIcon />
-  },
-  {
+    id: 1,
     title: 'Contact',
     href: '#',
     IconComponent: () => <DescriptionIcon />,
     children: [
-      {
-        title: 'Register/Edit',
-        href: '#'
-      },
-      {
-        title: 'List',
-        href: '#'
-      }
+      { id: 2, title: 'Register/Edit', href: '#' },
+      { id: 3, title: 'List', href: '#' }
     ]
   }
 ];
