@@ -1,4 +1,4 @@
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { Footer } from '../lib-components/Footer';
 import './storiesGlobals.css';
 import { footerArgTypes } from './utils/argTypes';
@@ -26,7 +26,7 @@ export interface FooterStoryProps {
   footerSignatureLink: string;
 }
 
-const Template: Story<FooterStoryProps> = (args) => {
+const Template: StoryFn<FooterStoryProps> = (args) => {
   return (
     <Footer
       title={`${args.footerTitle}`}

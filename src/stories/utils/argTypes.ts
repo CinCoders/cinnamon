@@ -178,7 +178,7 @@ export const navbarArgTypes = {
     type: { name: 'boolean', required: false },
     options: [true, false],
     control: { type: 'boolean' },
-    description: 'Boolean which defines if ttemplatehe navbar has a menu popup',
+    description: 'Boolean which defines if the navbar has a menu popup',
     table: {
       category: 'Navbar'
     }
