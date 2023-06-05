@@ -212,14 +212,12 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               <LeftContainer>
-                {
-                  (sideMenuLinks.length !== 0 && (
-                    <HamburgerButton
-                      isOpen={sideMenuIsOpen}
-                      onClick={handleToggleSideMenu}
-                    />
-                  ))
-                }
+                {sideMenuLinks.length !== 0 && (
+                  <HamburgerButton
+                    isOpen={sideMenuIsOpen}
+                    onClick={handleToggleSideMenu}
+                  />
+                )}
 
                 <IconRenderer
                   iconUrl={currentSystemIconUrl}
@@ -336,6 +334,7 @@ export const Navbar = ({
           ) : (
             <SideMenu
               visibility={sideMenuIsOpen}
+              top={'64px'}
               setVisibility={handleToggleSideMenu}
               links={sideMenuLinks}
             />

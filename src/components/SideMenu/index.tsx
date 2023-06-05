@@ -16,6 +16,7 @@ import { SideMenuLink, Link } from '../../interfaces/index';
 
 export interface SideMenuProps {
   links: SideMenuLink[];
+  top: string;
   visibility?: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -131,6 +132,7 @@ function NewTabLinkDiv({
 
 export function SideMenu({
   links,
+  top,
   visibility = false,
   setVisibility
 }: SideMenuProps) {
@@ -411,7 +413,7 @@ export function SideMenu({
   return (
     <div>
       <ScopedCssBaseline>
-        <StyledDrawer open={visibility} onClose={toggleDrawer}>
+        <StyledDrawer top={top} open={visibility} onClose={toggleDrawer}>
           {list}
         </StyledDrawer>
       </ScopedCssBaseline>
