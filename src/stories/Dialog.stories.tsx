@@ -8,7 +8,7 @@ export default {
   component: Dialog,
   argTypes: {
     type: {
-      options: ['information', 'alert', 'decision', 'confirmation'],
+      options: ['information', 'alert', 'decision', 'confirmation', 'error'],
       control: { type: 'radio' }
     },
     visibility: {
@@ -30,6 +30,7 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
     setDialogVisibility(args.visibility ?? false);
   }, [args.visibility]);
 
+  const dialogWithoutFunction = ['alert', 'information'];
   return (
     <div
       style={{
@@ -44,48 +45,20 @@ const TemplateMessage: StoryFn<DialogProps> = (args) => {
       >
         Show Dialog
       </Button>
-      <Dialog
-        {...args}
-        visibility={dialogVisibility}
-        setVisibility={setDialogVisibility}
-      />
-    </div>
-  );
-};
-
-const TemplateOption: StoryFn<DialogProps> = (args) => {
-  const [dialogVisibility, setDialogVisibility] = useState(
-    args.visibility ?? false
-  );
-
-  useEffect(() => {
-    setDialogVisibility(args.visibility ?? false);
-  }, [args.visibility]);
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: '45%',
-        top: '50%'
-      }}
-    >
-      <Button
-        sx={{ bottom: '18px' }}
-        onClick={() => setDialogVisibility(!dialogVisibility)}
-      >
-        Show Dialog
-      </Button>
-      <Dialog
-        {...args}
-        visibility={dialogVisibility}
-        rejectFunction={() => {
-          setDialogVisibility(!dialogVisibility);
-        }}
-        acceptFunction={() => {
-          setDialogVisibility(!dialogVisibility);
-        }}
-      />
+      {dialogWithoutFunction.includes(args.type) ? (
+        <Dialog
+          {...args}
+          visibility={dialogVisibility}
+          setVisibility={setDialogVisibility}
+        />
+      ) : (
+        <Dialog
+          {...args}
+          visibility={dialogVisibility}
+          rejectFunction={() => setDialogVisibility(!dialogVisibility)}
+          acceptFunction={() => setDialogVisibility(!dialogVisibility)}
+        />
+      )}
     </div>
   );
 };
@@ -107,7 +80,7 @@ DialogAlert.args = {
     'DialogAlert is an option to display important information through an alert message, ensuring that the user is aware of a critical information.'
 };
 
-export const DialogDecision = TemplateOption.bind({});
+export const DialogDecision = TemplateMessage.bind({});
 DialogDecision.args = {
   type: 'decision',
   title: 'Decision Dialog Title',
@@ -115,10 +88,18 @@ DialogDecision.args = {
     'DialogDecision presents a message to the user and includes a confirmation button and a cancel button, enabling the user to make a decision regarding a specific question.'
 };
 
-export const DialogConfirmation = TemplateOption.bind({});
+export const DialogConfirmation = TemplateMessage.bind({});
 DialogConfirmation.args = {
   type: 'confirmation',
   title: 'Confirmation Dialog Title',
   children:
     'DialogConfirmation presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.'
+};
+
+export const DialogError = TemplateMessage.bind({});
+DialogError.args = {
+  type: 'error',
+  title: 'Error Dialog Title',
+  children:
+    'DialogError presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.'
 };

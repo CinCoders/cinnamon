@@ -5,7 +5,7 @@ import { Footer, FooterProps } from '../Footer/index';
 import { NavbarContextValue } from './useNavbar';
 import { ToastContainer } from '../../components/Toast';
 
-interface PageProps {
+export interface PageProps {
   navbar?: NavbarProps;
   footer?: FooterProps;
   children: JSX.Element | JSX.Element[];
@@ -14,6 +14,7 @@ interface PageProps {
   components?: {
     navbar?: JSX.Element;
     footer?: JSX.Element;
+    toastContainer?: JSX.Element;
   };
   createNavbarContext: boolean;
 }
@@ -50,7 +51,7 @@ export function Page({
       navHeight: navbarRef.current ? navbarRef.current.offsetHeight : 0,
       footHeight: footerRef.current ? footerRef.current.offsetHeight : 0
     });
-  }, [navbarRef, footerRef]);
+  }, [navbarRef.current?.offsetHeight, footerRef.current?.offsetHeight]);
   let diff = navbar ? dimensions.navHeight : 0;
   diff += footer ? dimensions.footHeight : 0;
 
@@ -89,13 +90,18 @@ export function Page({
           justifyContent: centralized ? 'center' : 'normal'
         }}
       >
+        {haveToast &&
+          (components?.toastContainer ? (
+            components.toastContainer
+          ) : (
+            <ToastContainer
+              toastProps={{
+                position: 'top-right'
+              }}
+              topInitialPosition={dimensions.navHeight}
+            />
+          ))}
         {children}
-        {haveToast && (
-          <ToastContainer
-            toastProps={{ position: 'top-right' }}
-            topInitialPosition={dimensions.navHeight}
-          />
-        )}
       </MainDiv>
       <div ref={footerRef} style={{ display: 'inline' }}>
         {components?.footer ? components.footer : <Footer {...footer} />}

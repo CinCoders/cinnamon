@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2023-05-30
+
+### Added
+
+- [PageWithAuth] New component to avoid boilerplate code on required auth pages
+- [docs] Usage guide for new components
+
+### Fixed
+
+- [storybook] Broken link
+
+## [0.2.1] - 2023-05-29
+
+### Fixed
+
+- [dialog] Children max width
+- [storybook] Logo size
+- Code smells
+- Code duplications
+
+## [0.2.0] - 2023-05-26
+
+### Added
+
+- [Page] New property to override default toastContainer
+
+### Changed
+
+- [toast] Toast interface exported directly from react-toastfy
+
+## [0.1.6] - 2023-05-23
+
+### Fixed
+
+- [dialog] Default visibility false
+- [footer] Default footer links order
+
 ## [0.1.5] - 2023-05-19
 
 ### Fixed
@@ -24,7 +61,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Empty SideMenu
 - Issue template
 
-[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.5...develop
+[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v0.3.0...develop
+[0.2.1]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.1...version/v0.3.0
+[0.2.1]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.0...version/v0.2.1
+[0.2.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.6...version/v0.2.0
+[0.1.6]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.5...version/v0.1.6
 [0.1.5]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.4...version/v0.1.5
 [0.1.4]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.3...version/v0.1.4
 [0.1.3]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.2...version/v0.1.3
