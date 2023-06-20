@@ -88,6 +88,16 @@ export const footerArgTypes = {
     table: {
       category: 'Footer'
     }
+  },
+  footerLargeFooter: {
+    name: 'large footer',
+    type: { name: 'boolean', required: false },
+    description: 'Boolean which defines if the footer is large or tiny',
+    options: [true, false],
+    control: { type: 'boolean' },
+    table: {
+      category: 'Footer'
+    }
   }
 };
 

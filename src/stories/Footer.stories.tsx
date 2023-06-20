@@ -24,6 +24,7 @@ export interface FooterStoryProps {
   footerCopyrightText: string;
   footerSignatureText: string;
   footerSignatureLink: string;
+  footerLargeFooter: boolean;
 }
 
 const Template: StoryFn<FooterStoryProps> = (args) => {
@@ -39,6 +40,7 @@ const Template: StoryFn<FooterStoryProps> = (args) => {
       copyrightText={`${args.footerCopyrightText}`}
       signatureText={args.footerSignatureText}
       signatureLink={`${args.footerSignatureLink}`}
+      largeFooter={args.footerLargeFooter}
     />
   );
 };
@@ -52,5 +54,6 @@ Footer_.args = {
   footerLink: 'https://www.google.com',
   footerTextLink: 'Website',
   footerDescription: "Footer's description with \n line break",
-  footerCopyrightText: 'CIn UFPE |  All rights reserved'
+  footerCopyrightText: 'CIn UFPE |  All rights reserved',
+  footerLargeFooter: true
 };

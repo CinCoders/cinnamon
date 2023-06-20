@@ -25,6 +25,7 @@ export interface FooterProps {
   copyrightText?: string;
   signatureText?: string;
   signatureLink?: string;
+  largeFooter?: boolean;
 }
 
 export const Footer = ({
@@ -37,49 +38,52 @@ export const Footer = ({
   description,
   copyrightText,
   signatureText,
-  signatureLink
+  signatureLink,
+  largeFooter = true
 }: FooterProps) => {
   return (
     <ParentFooter>
       <StyledFooter>
-        <LargeDiv>
-          <Columns>
-            <LeftColumn>
-              <LeftColumnText>{title && `${title}`}</LeftColumnText>
-            </LeftColumn>
-            <MiddleColumn className='middle'>
-              <MiddleColumnText>
-                <a
-                  href={`tel:${telephone?.replace(/\(|\)|\s|-+/g, '')}`}
-                  style={{ color: 'white', zIndex: 3 }}
-                >
-                  {telephone && `${telephone} `}
-                </a>
-                {telephoneComplement && `${telephoneComplement}`}
-                <br></br>
-                {email && (
+        {largeFooter && (
+          <LargeDiv>
+            <Columns>
+              <LeftColumn>
+                <LeftColumnText>{title && `${title}`}</LeftColumnText>
+              </LeftColumn>
+              <MiddleColumn className='middle'>
+                <MiddleColumnText>
                   <a
-                    href={`mailto:${email}`}
+                    href={`tel:${telephone?.replace(/\(|\)|\s|-+/g, '')}`}
                     style={{ color: 'white', zIndex: 3 }}
                   >
-                    {`${email}`}
+                    {telephone && `${telephone} `}
                   </a>
-                )}
-                <br></br>
-                {link && (
-                  <a href={`${link}`} style={{ color: 'white', zIndex: 3 }}>
-                    {`${textLink}`}
-                  </a>
-                )}
-              </MiddleColumnText>
-            </MiddleColumn>
-            {description && (
-              <RightColumn>
-                <RightColumnText>{`${description}`}</RightColumnText>
-              </RightColumn>
-            )}
-          </Columns>
-        </LargeDiv>
+                  {telephoneComplement && `${telephoneComplement}`}
+                  <br></br>
+                  {email && (
+                    <a
+                      href={`mailto:${email}`}
+                      style={{ color: 'white', zIndex: 3 }}
+                    >
+                      {`${email}`}
+                    </a>
+                  )}
+                  <br></br>
+                  {link && (
+                    <a href={`${link}`} style={{ color: 'white', zIndex: 3 }}>
+                      {`${textLink}`}
+                    </a>
+                  )}
+                </MiddleColumnText>
+              </MiddleColumn>
+              {description && (
+                <RightColumn>
+                  <RightColumnText>{`${description}`}</RightColumnText>
+                </RightColumn>
+              )}
+            </Columns>
+          </LargeDiv>
+        )}
         <SmallDiv>
           {copyrightText && (
             <CopyrightText>
