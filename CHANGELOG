@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2023-06-22
+
+### Added
+
+- [storybook] Make stories editable
+- [footer] Large footer as an option (default true)
+- [docs] Add react-toastfy as a technology
+- [sidemenu] Add top property
+
+### Changed
+
+- [packages] Upgrade dependencies
+
+### Fixed
+
+- [sidemenu] Group button closing on click
+
 ## [0.3.0] - 2023-05-30
 
 ### Added
@@ -61,8 +78,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Empty SideMenu
 - Issue template
 
-[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v0.3.0...develop
-[0.2.1]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.1...version/v0.3.0
+[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v0.4.0...develop
+[0.4.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.3.0...version/v0.4.0
+[0.3.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.1...version/v0.3.0
 [0.2.1]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.0...version/v0.2.1
 [0.2.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.6...version/v0.2.0
 [0.1.6]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.5...version/v0.1.6

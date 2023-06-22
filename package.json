@@ -1,10 +1,10 @@
 {
   "name": "@cincoders/cinnamon",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A collection components for standardized system appearance and functionality, easing development in web applications.",
   "license": "MIT",
   "author": "CInCoders <cincoders@cin.ufpe.br> (https://cincoders.cin.ufpe.br)",
-  "homepage": "http://cincoders.cin.ufpe.br/",
+  "homepage": "https://cincoders.cin.ufpe.br/",
   "bugs": {
     "url": "https://github.com/CinCoders/cinnamon/issues"
   },
