@@ -2,21 +2,33 @@ import { ForbiddenPage } from '../lib-components/ForbiddenPage';
 import Keycloak from 'keycloak-js';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { BrowserRouter } from 'react-router-dom';
+import { Meta, StoryFn } from '@storybook/react';
 
 export default {
   title: 'Components/ForbiddenPage',
-  component: ForbiddenPage
-};
+  component: ForbiddenPage,
+  argTypes: {
+    keycloak: {
+      name: 'keycloak',
+      description: 'Keycloak instance passed to forbbiden component',
+      control: { disable: true }
+    }
+  }
+} as Meta;
 
-export const Default = () => {
-  const keycloakConfig = JSON.parse(
-    '{"realm":"Intranet","auth-server-url":"http://localhost:8080/auth/","ssl-required":"external","resource":"Dashboard-Front","public-client":true,"confidential-port":0}'
+interface ForbbidenPageStoryProps {
+  keycloak: Keycloak;
+}
+
+export const ForbiddenPage_: StoryFn<ForbbidenPageStoryProps> = () => {
+  const mockedKeycloakConfig = JSON.parse(
+    '{"realm":"your-realm","auth-server-url":"http://your-keycloak-server:8080/","ssl-required":"external","resource":"your-client","public-client":true,"confidential-port":0}'
   );
 
   const keycloak = new Keycloak({
-    url: keycloakConfig['auth-server-url'],
-    realm: keycloakConfig.realm,
-    clientId: keycloakConfig.resource
+    url: mockedKeycloakConfig['auth-server-url'],
+    realm: mockedKeycloakConfig.realm,
+    clientId: mockedKeycloakConfig.resource
   });
 
   return (

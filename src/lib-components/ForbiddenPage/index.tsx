@@ -12,7 +12,7 @@ import {
   PageContent
 } from './styles';
 
-interface ForbiddenPageProps {
+export interface ForbiddenPageProps {
   keycloak: Keycloak;
 }
 

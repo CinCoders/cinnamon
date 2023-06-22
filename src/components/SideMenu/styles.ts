@@ -1,16 +1,19 @@
 import styled from 'styled-components';
 import { Drawer } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { SideMenuProps } from '.';
 
-export const StyledDrawer = styled(Drawer)`
-  margin-top: 64px;
+export const StyledDrawer = styled(Drawer).attrs(
+  (props: SideMenuProps) => props.top
+)`
+  margin-top: ${(props) => props.top};
   .MuiDrawer-paper {
-    margin-top: 64px;
-    max-height: calc(100vh - 64px);
+    margin-top: ${(props) => props.top};
+    max-height: calc(100vh - ${(props) => props.top});
   }
 
   .MuiBackdrop-root {
-    margin-top: 64px;
+    margin-top: ${(props) => props.top};
   }
 
   .MuiPaper-root {

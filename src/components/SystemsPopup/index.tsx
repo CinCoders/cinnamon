@@ -12,24 +12,20 @@ import {
 
 import { IconRenderer } from '../../lib-components/IconRender';
 
-interface SystemsPopupProps {
+export interface SystemsPopupProps {
   systemsList?: System[];
-  id?: string;
 }
 
-export const SystemsPopup = ({
-  systemsList = [],
-  id = ''
-}: SystemsPopupProps) => {
+export const SystemsPopup = ({ systemsList = [] }: SystemsPopupProps) => {
   return (
     <ScopedCssBaseline>
-      <SystemsPopupContainer id={id}>
+      <SystemsPopupContainer>
         <SystemsPopupContent>
-          {systemsList.map((system, index) => {
+          {systemsList.map((system) => {
             return (
               <SystemItem
                 href={system.href}
-                key={index}
+                key={`system_${system.title}`}
                 className='system-item'
               >
                 <Tooltip title={system.description} arrow>

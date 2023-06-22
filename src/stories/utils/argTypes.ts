@@ -88,6 +88,16 @@ export const footerArgTypes = {
     table: {
       category: 'Footer'
     }
+  },
+  footerLargeFooter: {
+    name: 'large footer',
+    type: { name: 'boolean', required: false },
+    description: 'Boolean which defines if the footer is large or tiny',
+    options: [true, false],
+    control: { type: 'boolean' },
+    table: {
+      category: 'Footer'
+    }
   }
 };
 
@@ -178,7 +188,7 @@ export const navbarArgTypes = {
     type: { name: 'boolean', required: false },
     options: [true, false],
     control: { type: 'boolean' },
-    description: 'Boolean which defines if ttemplatehe navbar has a menu popup',
+    description: 'Boolean which defines if the navbar has a menu popup',
     table: {
       category: 'Navbar'
     }

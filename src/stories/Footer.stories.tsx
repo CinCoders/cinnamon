@@ -1,4 +1,4 @@
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { Footer } from '../lib-components/Footer';
 import './storiesGlobals.css';
 import { footerArgTypes } from './utils/argTypes';
@@ -24,9 +24,10 @@ export interface FooterStoryProps {
   footerCopyrightText: string;
   footerSignatureText: string;
   footerSignatureLink: string;
+  footerLargeFooter: boolean;
 }
 
-const Template: Story<FooterStoryProps> = (args) => {
+const Template: StoryFn<FooterStoryProps> = (args) => {
   return (
     <Footer
       title={`${args.footerTitle}`}
@@ -39,6 +40,7 @@ const Template: Story<FooterStoryProps> = (args) => {
       copyrightText={`${args.footerCopyrightText}`}
       signatureText={args.footerSignatureText}
       signatureLink={`${args.footerSignatureLink}`}
+      largeFooter={args.footerLargeFooter}
     />
   );
 };
@@ -52,5 +54,6 @@ Footer_.args = {
   footerLink: 'https://www.google.com',
   footerTextLink: 'Website',
   footerDescription: "Footer's description with \n line break",
-  footerCopyrightText: 'CIn UFPE |  All rights reserved'
+  footerCopyrightText: 'CIn UFPE |  All rights reserved',
+  footerLargeFooter: true
 };

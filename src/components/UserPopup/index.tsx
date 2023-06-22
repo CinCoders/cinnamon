@@ -1,5 +1,4 @@
 import { User } from '../../interfaces';
-
 import {
   ScopedCssBaseline,
   AccordionSummary,
@@ -25,11 +24,10 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Keycloak from 'keycloak-js';
 
-interface UserPopupProps {
+export interface UserPopupProps {
   user?: User;
   logoutMethod?(): void;
   keycloak?: Keycloak;
-  id?: string;
   accountManagementUrl?: string;
 }
 
@@ -38,7 +36,6 @@ export const UserPopup = (props: UserPopupProps) => {
     user = { name: 'User Display Name', email: 'user@example.com' },
     logoutMethod,
     keycloak,
-    id,
     accountManagementUrl
   } = props;
 
@@ -48,7 +45,7 @@ export const UserPopup = (props: UserPopupProps) => {
 
   return (
     <ScopedCssBaseline>
-      <UserPopUp id={id}>
+      <UserPopUp>
         <UserPopUpContainer>
           <StyledAvatar alt={user.name[0]}>
             {user.name[0].charAt(0)}
@@ -64,11 +61,11 @@ export const UserPopup = (props: UserPopupProps) => {
 
           {user.positions !== undefined && user.positions.length > 0 && (
             <PositionsContainer>
-              {user.positions.map((position, position_index) => (
-                <div key={`position_${position_index}`}>
+              {user.positions.map((position) => (
+                <div key={`position_${position.id}`}>
                   {position.roles !== undefined && position.roles.length > 0 ? (
                     <>
-                      <StyledAccordion key={`position_${position_index}`}>
+                      <StyledAccordion key={`positions_${position.id}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel1a-content'
@@ -103,7 +100,7 @@ export const UserPopup = (props: UserPopupProps) => {
                     <>
                       <StyledAccordion
                         disabled
-                        key={`position_${position_index}`}
+                        key={`positions_${position.id}`}
                       >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}

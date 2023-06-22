@@ -78,6 +78,7 @@ Footer component containing Helpdesk's information.
 | **link**                | String | No       | none          | Set the link that will be redirected after click in text link |
 | **description**         | String | No       | none          | Set the footer description                                    |
 | **copyrightText**       | String | No       | none          | Set the footer copyright text                                 |
+| **largeFooter**         | Bool   | No       | true          | Set the footer size                                           |
 
 ### Interface of props
 
@@ -91,6 +92,7 @@ interface FooterProps {
   link?: string;
   description?: string;
   copyrightText?: string;
+  largeFooter?: boolean;
 }
 ```
 
