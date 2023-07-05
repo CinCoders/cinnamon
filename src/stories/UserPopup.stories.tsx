@@ -56,7 +56,7 @@ const Template: StoryFn<UserPopupStory> = ({ user }) => {
           setVisibility(true);
         }}
         user={user}
-        keycloak={undefined}
+        auth={undefined}
         accountManagementUrl='#'
       />
     </>

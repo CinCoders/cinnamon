@@ -1,8 +1,8 @@
 import { ForbiddenPage } from '../lib-components/ForbiddenPage';
 import Keycloak from 'keycloak-js';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
 import { BrowserRouter } from 'react-router-dom';
 import { Meta, StoryFn } from '@storybook/react';
+import { AuthProvider, AuthProviderProps, useAuth } from 'react-oidc-context';
 
 export default {
   title: 'Components/ForbiddenPage',
@@ -25,17 +25,18 @@ export const ForbiddenPage_: StoryFn<ForbbidenPageStoryProps> = () => {
     '{"realm":"your-realm","auth-server-url":"http://your-keycloak-server:8080/","ssl-required":"external","resource":"your-client","public-client":true,"confidential-port":0}'
   );
 
-  const keycloak = new Keycloak({
-    url: mockedKeycloakConfig['auth-server-url'],
-    realm: mockedKeycloakConfig.realm,
-    clientId: mockedKeycloakConfig.resource
-  });
+  const authProps: AuthProviderProps = {
+    authority: 'https://dev.cin.ufpe.br/auth/realms/dev',
+    client_id: mockedKeycloakConfig.resource,
+    redirect_uri: 'https://localhost:3001/pesquisa/'
+  };
+  const auth = useAuth();
 
   return (
-    <ReactKeycloakProvider authClient={keycloak}>
+    <AuthProvider {...authProps}>
       <BrowserRouter>
-        <ForbiddenPage keycloak={keycloak} />
+        <ForbiddenPage auth={auth} />
       </BrowserRouter>
-    </ReactKeycloakProvider>
+    </AuthProvider>
   );
 };
