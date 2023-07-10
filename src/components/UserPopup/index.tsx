@@ -40,7 +40,6 @@ export const UserPopup = (props: UserPopupProps) => {
   } = props;
 
   function logoutFunction() {
-    console.log();
     logoutMethod
       ? logoutMethod()
       : auth?.signoutRedirect({

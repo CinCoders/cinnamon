@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import wcBackground from '../../assets/predio.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthContextProps } from 'react-oidc-context';
 import { KeycloakPayload, jwtDecode } from '@/utils/authUtils';
 
@@ -17,6 +17,10 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   const { children, auth, permittedRoles, authInitializing } = props;
   const [waiting, setWaiting] = useState(true);
   let haveAccess = false;
+
+  useEffect(() => {
+    if (authInitializing) setWaiting(true);
+  }, [authInitializing]);
 
   if (authInitializing) {
     if (waiting) {
@@ -61,8 +65,8 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   }
 
   let parsedToken: KeycloakPayload | null = null;
-  if (auth.user?.access_token)
-    parsedToken = jwtDecode(auth?.user?.access_token);
+  if (auth.user && auth.user.access_token)
+    parsedToken = jwtDecode(auth.user.access_token);
 
   if (permittedRoles.includes('*')) {
     haveAccess = true;
@@ -78,10 +82,10 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
     }
   }
 
-  if (auth.isAuthenticated && haveAccess) {
+  if (auth.isAuthenticated && haveAccess && !auth.isLoading) {
     return children;
   }
-  if (auth.isAuthenticated) {
+  if (auth.isAuthenticated && !authInitializing) {
     return (
       <Navigate
         to={`${process.env.PUBLIC_URL}/forbidden`}
@@ -90,5 +94,7 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
       />
     );
   }
+
   auth.signinRedirect();
+  return <CircularProgress />;
 };

@@ -81,15 +81,13 @@ export const Navbar = ({
   useEffect(() => {
     async function load() {
       if (auth && auth.user) {
-        setProfile({
-          name: auth.user.profile.given_name!,
-          email: auth.user.profile.email!
-        });
-      } else {
-        setProfile({
-          name: '',
-          email: ''
-        });
+        const { given_name, email } = auth.user.profile;
+        if (given_name && email) {
+          setProfile({
+            name: given_name,
+            email: email
+          });
+        }
       }
     }
     load();
@@ -216,7 +214,7 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               <LeftContainer>
-                {sideMenuLinks.length !== 0 && (
+                {sideMenuLinks.length && (
                   <HamburgerButton
                     isOpen={sideMenuIsOpen}
                     onClick={handleToggleSideMenu}
