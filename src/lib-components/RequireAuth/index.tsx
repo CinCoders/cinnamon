@@ -7,27 +7,33 @@ import { KeycloakPayload, jwtDecode } from '@/utils/authUtils';
 
 interface AuthProps {
   auth: AuthContextProps;
-  authInitializing: boolean;
   permittedRoles: string[];
   children: JSX.Element;
 }
 
 export const RequireAuth = (props: AuthProps): React.ReactElement => {
+  console.log('RequireAuth', { ...props });
   const location = useLocation();
-  const { children, auth, permittedRoles, authInitializing } = props;
+  const { children, auth, permittedRoles } = props;
   const [waiting, setWaiting] = useState(true);
   let haveAccess = false;
 
   useEffect(() => {
-    if (authInitializing) setWaiting(true);
-  }, [authInitializing]);
+    if (auth.isLoading && !waiting) {
+      console.log('RA useEffect auth', auth);
+      setWaiting(true);
+    }
+  }, [auth.isLoading]);
 
-  if (authInitializing) {
+  if (auth.isLoading) {
+    console.log('RA if isLoading');
     if (waiting) {
+      console.log('RA if Waiting');
       setTimeout(() => {
         setWaiting(false);
       }, 6000);
 
+      console.log('RA circularProgress');
       return (
         <Box
           minHeight='100vh'
@@ -82,10 +88,12 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
     }
   }
 
-  if (auth.isAuthenticated && haveAccess && !auth.isLoading) {
+  if (auth.isAuthenticated && haveAccess) {
+    console.log('RA isAuthenticated & haveAccess', auth);
     return children;
   }
-  if (auth.isAuthenticated && !authInitializing) {
+
+  if (auth.isAuthenticated && !auth.isLoading) {
     return (
       <Navigate
         to={`${process.env.PUBLIC_URL}/forbidden`}

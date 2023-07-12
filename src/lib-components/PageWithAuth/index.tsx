@@ -5,7 +5,6 @@ import { AuthContextProps } from 'react-oidc-context';
 interface PageWithAuthProps extends PageProps {
   authProps: {
     auth: AuthContextProps;
-    authInitializing: boolean;
     permittedRoles: string[];
   };
 }
@@ -20,13 +19,9 @@ export function PageWithAuth({
   components,
   children
 }: PageWithAuthProps) {
-  const { auth, authInitializing, permittedRoles } = authProps;
+  const { auth, permittedRoles } = authProps;
   return (
-    <RequireAuth
-      auth={auth}
-      authInitializing={authInitializing}
-      permittedRoles={permittedRoles}
-    >
+    <RequireAuth auth={auth} permittedRoles={permittedRoles}>
       <Page
         navbar={navbar}
         footer={footer}
