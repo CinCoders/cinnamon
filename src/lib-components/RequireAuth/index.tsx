@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import wcBackground from '../../assets/predio.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { AuthContextProps } from 'react-oidc-context';
 import { KeycloakPayload, jwtDecode } from '@/utils/authUtils';
 
@@ -11,8 +11,7 @@ interface AuthProps {
   children: JSX.Element;
 }
 
-export const RequireAuth = (props: AuthProps): React.ReactElement => {
-  console.log('RequireAuth', { ...props });
+export const RequireAuth = memo((props: AuthProps): React.ReactElement => {
   const location = useLocation();
   const { children, auth, permittedRoles } = props;
   const [waiting, setWaiting] = useState(true);
@@ -20,20 +19,16 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
 
   useEffect(() => {
     if (auth.isLoading && !waiting) {
-      console.log('RA useEffect auth', auth);
       setWaiting(true);
     }
   }, [auth.isLoading]);
 
   if (auth.isLoading) {
-    console.log('RA if isLoading');
     if (waiting) {
-      console.log('RA if Waiting');
       setTimeout(() => {
         setWaiting(false);
       }, 6000);
 
-      console.log('RA circularProgress');
       return (
         <Box
           minHeight='100vh'
@@ -89,7 +84,6 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   }
 
   if (auth.isAuthenticated && haveAccess) {
-    console.log('RA isAuthenticated & haveAccess', auth);
     return children;
   }
 
@@ -105,4 +99,4 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
 
   auth.signinRedirect();
   return <CircularProgress />;
-};
+});
