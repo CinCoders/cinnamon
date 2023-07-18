@@ -11,7 +11,7 @@ interface AuthProps {
   children: JSX.Element;
 }
 
-export const RequireAuth = memo((props: AuthProps): React.ReactElement => {
+export const RequireAuth = (props: AuthProps): React.ReactElement => {
   const location = useLocation();
   const { children, auth, permittedRoles } = props;
   const [waiting, setWaiting] = useState(true);
@@ -99,4 +99,4 @@ export const RequireAuth = memo((props: AuthProps): React.ReactElement => {
 
   auth.signinRedirect();
   return <CircularProgress />;
-});
+};
