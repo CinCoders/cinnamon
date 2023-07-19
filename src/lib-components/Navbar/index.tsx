@@ -214,7 +214,7 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               <LeftContainer>
-                {sideMenuLinks.length && (
+                {sideMenuLinks.length !== 0 && (
                   <HamburgerButton
                     isOpen={sideMenuIsOpen}
                     onClick={handleToggleSideMenu}
