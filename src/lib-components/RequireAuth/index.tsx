@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import wcBackground from '../../assets/predio.png';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthContextProps } from 'react-oidc-context';
 import { KeycloakPayload, jwtDecode } from '@/utils/authUtils';
 
@@ -28,7 +28,6 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
       setTimeout(() => {
         setWaiting(false);
       }, 6000);
-
       return (
         <Box
           minHeight='100vh'
@@ -97,6 +96,15 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
     );
   }
 
-  auth.signinRedirect();
-  return <CircularProgress />;
+  setTimeout(() => auth.signinRedirect(), 500);
+  return (
+    <Box
+      minHeight='100vh'
+      display='flex'
+      alignItems='center'
+      justifyContent='center'
+    >
+      <CircularProgress />
+    </Box>
+  );
 };
