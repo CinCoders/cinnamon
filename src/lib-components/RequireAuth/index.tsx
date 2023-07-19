@@ -65,18 +65,13 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   }
 
   let parsedToken: KeycloakPayload | null = null;
-  if (auth.user && auth.user.access_token)
-    parsedToken = jwtDecode(auth.user.access_token);
+  if (auth.user) parsedToken = jwtDecode(auth.user.access_token);
 
   if (permittedRoles.includes('*')) {
     haveAccess = true;
   } else {
-    for (
-      let i = 0;
-      i < permittedRoles.length && !haveAccess && parsedToken;
-      i += 1
-    ) {
-      if (parsedToken.realm_access.roles?.includes(permittedRoles[i])) {
+    for (let i = 0; i < permittedRoles.length && !haveAccess; i += 1) {
+      if (parsedToken?.realm_access.roles?.includes(permittedRoles[i])) {
         haveAccess = true;
       }
     }
@@ -86,7 +81,7 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
     return children;
   }
 
-  if (auth.isAuthenticated && !auth.isLoading) {
+  if (auth.isAuthenticated) {
     return (
       <Navigate
         to={`${process.env.PUBLIC_URL}/forbidden`}

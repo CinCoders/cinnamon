@@ -80,14 +80,11 @@ export const Navbar = ({
   }
   useEffect(() => {
     async function load() {
-      if (auth && auth.user) {
-        const { given_name, email } = auth.user.profile;
-        if (given_name && email) {
-          setProfile({
-            name: given_name,
-            email: email
-          });
-        }
+      if (auth) {
+        setProfile({
+          name: auth.user?.profile?.given_name ?? '',
+          email: auth.user?.profile?.email ?? ''
+        });
       }
     }
     load();
