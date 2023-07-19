@@ -43,7 +43,7 @@ export const UserPopup = (props: UserPopupProps) => {
     logoutMethod
       ? logoutMethod()
       : auth?.signoutRedirect({
-          post_logout_redirect_uri: 'https://localhost:3001/pesquisa/'
+          post_logout_redirect_uri: 'https://localhost:3001/research/'
         });
   }
 
