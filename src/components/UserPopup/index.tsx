@@ -23,7 +23,6 @@ import {
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { AuthContextProps } from 'react-oidc-context';
-import { useEffect, useState } from 'react';
 
 export interface UserPopupProps {
   user?: User;
@@ -33,23 +32,15 @@ export interface UserPopupProps {
 }
 
 export const UserPopup = (props: UserPopupProps) => {
-  const [from, setFrom] = useState<string>('');
   const {
     user = { name: 'User Display Name', email: 'user@example.com' },
     logoutMethod,
     auth,
     accountManagementUrl
   } = props;
-  useEffect(() => {
-    setFrom(process.env.PUBLIC_URL ?? '');
-  }, []);
 
   function logoutFunction() {
-    logoutMethod
-      ? logoutMethod()
-      : auth?.signoutRedirect({
-          post_logout_redirect_uri: `${window.location.origin}/${from}`
-        });
+    logoutMethod ? logoutMethod() : auth?.signoutRedirect();
   }
 
   return (
