@@ -41,7 +41,7 @@ export const UserPopup = (props: UserPopupProps) => {
     accountManagementUrl
   } = props;
   useEffect(() => {
-    setFrom(window.location.pathname);
+    setFrom(process.env.PUBLIC_URL ?? '');
   }, []);
 
   function logoutFunction() {
