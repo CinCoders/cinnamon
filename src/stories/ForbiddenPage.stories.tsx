@@ -26,7 +26,7 @@ export const ForbiddenPage_: StoryFn<ForbbidenPageStoryProps> = () => {
   );
 
   const authProps: AuthProviderProps = {
-    authority: 'https://dev.cin.ufpe.br/auth/realms/dev',
+    authority: mockedKeycloakConfig['auth-server-url'],
     client_id: mockedKeycloakConfig.resource,
     redirect_uri: 'https://localhost:3001/'
   };
