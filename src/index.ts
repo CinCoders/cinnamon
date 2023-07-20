@@ -5,7 +5,7 @@ export { Dialog } from './lib-components/Dialog';
 export { Page } from './lib-components/Page';
 export { RequireAuth } from './lib-components/RequireAuth';
 export { ForbiddenPage } from './lib-components/ForbiddenPage';
-export { KeycloakUtils } from './utils';
+export { AuthUtils } from './utils';
 export { ErrorScreen, httpErrors } from './lib-components/ErrorScreen';
 export { SideMenuLink } from './interfaces';
 export { System } from './interfaces';

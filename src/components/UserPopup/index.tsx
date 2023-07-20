@@ -22,12 +22,12 @@ import {
 } from './styles';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Keycloak from 'keycloak-js';
+import { AuthContextProps } from 'react-oidc-context';
 
 export interface UserPopupProps {
   user?: User;
   logoutMethod?(): void;
-  keycloak?: Keycloak;
+  auth?: AuthContextProps;
   accountManagementUrl?: string;
 }
 
@@ -35,12 +35,12 @@ export const UserPopup = (props: UserPopupProps) => {
   const {
     user = { name: 'User Display Name', email: 'user@example.com' },
     logoutMethod,
-    keycloak,
+    auth,
     accountManagementUrl
   } = props;
 
   function logoutFunction() {
-    logoutMethod ? logoutMethod() : keycloak?.logout();
+    logoutMethod ? logoutMethod() : auth?.signoutRedirect();
   }
 
   return (

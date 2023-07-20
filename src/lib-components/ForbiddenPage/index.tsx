@@ -3,7 +3,7 @@ import forbidden_403 from '../../assets/icons/forbidden_403.svg';
 import { Button, Avatar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation, useNavigate, To } from 'react-router-dom';
-import Keycloak from 'keycloak-js';
+import { AuthContextProps } from 'react-oidc-context';
 import {
   ErrorImg,
   MediumText,
@@ -13,7 +13,7 @@ import {
 } from './styles';
 
 export interface ForbiddenPageProps {
-  keycloak: Keycloak;
+  auth?: AuthContextProps;
 }
 
 interface Location {
@@ -25,25 +25,22 @@ interface Location {
   };
 }
 
-export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
-  const email = keycloak.tokenParsed?.email;
+export const ForbiddenPage = ({ auth }: ForbiddenPageProps) => {
+  const email = auth?.user?.profile.email;
   const [from, setFrom] = useState<string>();
   const navigate = useNavigate();
   const location = useLocation() as Location;
-
   useEffect(() => {
-
     if (location.state?.from !== undefined) {
       setFrom(location.state.from.pathname);
     } else {
       navigate(process.env.PUBLIC_URL as To);
     }
-
   }, []);
 
   const logout = async () => {
-    await keycloak.logout({
-      redirectUri: `${window.location.origin}/${from}`
+    await auth?.signoutRedirect({
+      post_logout_redirect_uri: `${window.location.origin}/${from}`
     });
   };
 

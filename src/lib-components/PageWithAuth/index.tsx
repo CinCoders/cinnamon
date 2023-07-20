@@ -1,17 +1,16 @@
 import { Page, PageProps } from '../Page';
-import Keycloak from 'keycloak-js';
 import { RequireAuth } from '../RequireAuth';
+import { AuthContextProps } from 'react-oidc-context';
 
 interface PageWithAuthProps extends PageProps {
-  auth: {
-    keycloak: Keycloak;
-    initialized: boolean;
+  authProps: {
+    auth: AuthContextProps;
     permittedRoles: string[];
   };
 }
 
 export function PageWithAuth({
-  auth,
+  authProps,
   navbar,
   footer,
   centralized = false,
@@ -20,13 +19,9 @@ export function PageWithAuth({
   components,
   children
 }: PageWithAuthProps) {
-  const { keycloak, initialized, permittedRoles } = auth;
+  const { auth, permittedRoles } = authProps;
   return (
-    <RequireAuth
-      keycloak={keycloak}
-      initialized={initialized}
-      permittedRoles={permittedRoles}
-    >
+    <RequireAuth auth={auth} permittedRoles={permittedRoles}>
       <Page
         navbar={navbar}
         footer={footer}

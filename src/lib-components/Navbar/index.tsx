@@ -22,14 +22,13 @@ import {
   TitleContainer,
   ParentNav
 } from './styles';
-
-import Keycloak from 'keycloak-js';
 import { Avatar, GlobalStyles } from '@mui/material';
 import { NavbarContextValue } from '../Page/useNavbar';
 import { NavbarContext } from '../Page';
+import { AuthContextProps } from 'react-oidc-context';
 
 export interface NavbarProps {
-  keycloakInstance?: Keycloak;
+  auth?: AuthContextProps;
   logoRedirectUrl?: string;
   logoSrc?: string;
   haveSearchBar?: boolean;
@@ -50,6 +49,7 @@ export interface NavbarProps {
 }
 
 export const Navbar = ({
+  auth,
   logoRedirectUrl = '/',
   logoSrc,
   haveSearchBar = false,
@@ -67,7 +67,6 @@ export const Navbar = ({
   currentSystemIconUrl,
   children,
   IconComponent,
-  keycloakInstance,
   accountManagementUrl
 }: NavbarProps) => {
   const [profile, setProfile] = useState<User>(user);
@@ -81,15 +80,15 @@ export const Navbar = ({
   }
   useEffect(() => {
     async function load() {
-      if (keycloakInstance) {
+      if (auth) {
         setProfile({
-          name: keycloakInstance.tokenParsed?.given_name,
-          email: keycloakInstance.tokenParsed?.email
+          name: auth.user?.profile?.given_name ?? '',
+          email: auth.user?.profile?.email ?? ''
         });
       }
     }
     load();
-  }, [keycloakInstance]);
+  }, [auth]);
 
   const [anchorUserEl, setAnchorUserEl] = useState<null | HTMLElement>(null);
   const [anchorSystemsEl, setAnchorSystemsEl] = useState<null | HTMLElement>(
@@ -202,7 +201,7 @@ export const Navbar = ({
                 open={Boolean(anchorUserEl)}
                 onClose={handleUserClose}
               >
-                <UserPopup user={profile} keycloak={keycloakInstance} />
+                <UserPopup user={profile} auth={auth} />
               </StyledUserMenu>
             </StyledToolbar>
           </StyledAppBar>
@@ -321,7 +320,7 @@ export const Navbar = ({
                 >
                   <UserPopup
                     user={profile}
-                    keycloak={keycloakInstance}
+                    auth={auth}
                     accountManagementUrl={accountManagementUrl}
                   />
                 </StyledUserMenu>

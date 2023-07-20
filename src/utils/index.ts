@@ -1,1 +1,1 @@
-export * as KeycloakUtils from 'src/utils/keycloakUtils';
+export * as AuthUtils from 'src/utils/authUtils';
