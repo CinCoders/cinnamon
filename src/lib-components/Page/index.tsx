@@ -10,6 +10,7 @@ export interface PageProps {
   footer?: FooterProps;
   children: JSX.Element | JSX.Element[];
   centralized?: boolean;
+  column?: boolean;
   haveToast?: boolean;
   components?: {
     navbar?: JSX.Element;
@@ -33,6 +34,7 @@ export function Page({
   footer,
   children,
   centralized = false,
+  column = false,
   haveToast = false,
   components,
   createNavbarContext = true
@@ -87,7 +89,8 @@ export function Page({
         style={{
           minHeight: `calc(100vh - ${diff}px)`,
           alignItems: centralized ? 'center' : 'normal',
-          justifyContent: centralized ? 'center' : 'normal'
+          justifyContent: centralized ? 'center' : 'normal',
+          flexDirection: column ? 'column' : 'row'
         }}
       >
         {haveToast &&
