@@ -1,4 +1,4 @@
-# Cinnamon
+# Cinnamon [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/CinCoders/cinnamon/blob/main/LICENSE) [![npm latest package](https://img.shields.io/npm/v/@cincoders/cinnamon/latest.svg)](https://www.npmjs.com/package/@cincoders/cinnamon)
 
 CInnamon is a powerful React package that offers a variety of components designed to simplify the development process and enhance the appearance of systems across multiple projects. With its reusable components, CInnamon allows for standardization of system design, making it the ideal tool for micro front-ends. Whether you're working on a small or large-scale project, CInnamon can streamline the development process and improve the overall user experience. Its versatility and flexibility make it an essential tool for any development team looking to optimize their workflow and produce high-quality applications.
 
