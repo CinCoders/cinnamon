@@ -1,28 +1,33 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import Keycloak from 'keycloak-js';
 import { CircularProgress, Box } from '@mui/material';
 import wcBackground from '../../assets/predio.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AuthContextProps } from 'react-oidc-context';
+import { KeycloakPayload, jwtDecode } from '@/utils/authUtils';
 
 interface AuthProps {
-  keycloak: Keycloak;
-  initialized: boolean;
+  auth: AuthContextProps;
   permittedRoles: string[];
   children: JSX.Element;
 }
 
 export const RequireAuth = (props: AuthProps): React.ReactElement => {
   const location = useLocation();
-  const { children, keycloak, permittedRoles, initialized } = props;
+  const { children, auth, permittedRoles } = props;
   const [waiting, setWaiting] = useState(true);
   let haveAccess = false;
 
-  if (!initialized) {
+  useEffect(() => {
+    if (auth.isLoading && !waiting) {
+      setWaiting(true);
+    }
+  }, [auth.isLoading]);
+
+  if (auth.isLoading) {
     if (waiting) {
       setTimeout(() => {
         setWaiting(false);
       }, 6000);
-
       return (
         <Box
           minHeight='100vh'
@@ -59,20 +64,24 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
     );
   }
 
+  let parsedToken: KeycloakPayload | null = null;
+  if (auth.user) parsedToken = jwtDecode(auth.user.access_token);
+
   if (permittedRoles.includes('*')) {
     haveAccess = true;
   } else {
     for (let i = 0; i < permittedRoles.length && !haveAccess; i += 1) {
-      if (keycloak.realmAccess?.roles.includes(permittedRoles[i])) {
+      if (parsedToken?.realm_access.roles?.includes(permittedRoles[i])) {
         haveAccess = true;
       }
     }
   }
 
-  if (keycloak.authenticated && haveAccess) {
+  if (auth.isAuthenticated && haveAccess) {
     return children;
   }
-  if (keycloak.authenticated) {
+
+  if (auth.isAuthenticated) {
     return (
       <Navigate
         to={`${process.env.PUBLIC_URL}/forbidden`}
@@ -81,6 +90,16 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
       />
     );
   }
-  keycloak.login();
-  return <CircularProgress />;
+
+  setTimeout(() => auth.signinRedirect(), 500);
+  return (
+    <Box
+      minHeight='100vh'
+      display='flex'
+      alignItems='center'
+      justifyContent='center'
+    >
+      <CircularProgress />
+    </Box>
+  );
 };

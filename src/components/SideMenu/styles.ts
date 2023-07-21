@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 import { Drawer } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { SideMenuProps } from '.';
 
-export const StyledDrawer = styled(Drawer).attrs(
-  (props: SideMenuProps) => props.top
-)`
+export const StyledDrawer = styled(Drawer)<{ top: string }>`
   margin-top: ${(props) => props.top};
   .MuiDrawer-paper {
     margin-top: ${(props) => props.top};

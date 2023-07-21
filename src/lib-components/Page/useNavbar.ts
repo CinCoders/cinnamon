@@ -2,10 +2,10 @@ import { SideMenuLink, System, User } from '@/interfaces';
 import { useContext } from 'react';
 import { NavbarContext } from '.';
 import { NavbarProps } from '../Navbar';
-import Keycloak from 'keycloak-js';
+import { AuthContextProps } from 'react-oidc-context';
 
 export class NavbarContextValue implements NavbarProps {
-  keycloakInstance?: Keycloak;
+  auth?: AuthContextProps;
   logoRedirectUrl?: string;
   logoSrc?: string;
   haveSearchBar?: boolean;
@@ -28,7 +28,7 @@ export class NavbarContextValue implements NavbarProps {
     navbarProps: NavbarProps,
     setNavbarProps: React.Dispatch<React.SetStateAction<NavbarProps>>
   ) {
-    this.keycloakInstance = navbarProps.keycloakInstance;
+    this.auth = navbarProps.auth;
     this.logoRedirectUrl = navbarProps.logoRedirectUrl;
     this.logoSrc = navbarProps.logoSrc;
     this.haveSearchBar = navbarProps.haveSearchBar;

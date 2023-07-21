@@ -1,3 +1,5 @@
+# USAGE
+
 ### Navbar
 
 Navbar component. Uses a side menu for navigation that can be toggled with a hamburger menu.
