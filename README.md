@@ -20,7 +20,7 @@ npm install @cincoders/cinnamon
 
 ## Usage
 
-For a extensive list of all components, interfaces and examples on how to use them refer to our [usage guide](/docs/USAGE.MD).
+For a extensive list of all components, interfaces and examples on how to use then refer to our [usage guide](/docs/USAGE.MD).
 
 ## Access Management
 
