@@ -41,12 +41,20 @@ export function Page({
 }: PageProps) {
   const navbarRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const childrenWrapper = useRef<HTMLDivElement>(null);
+  const firstRender = useRef<boolean>(true);
+
+  const [childrenHeight, setChildrenHeight] = useState<number>(0);
   const [dimensions, setDimensions] = useState<Dimensions>({
     navHeight: 0,
     footHeight: 0
   });
 
-  const firstRender = useRef<boolean>(true);
+  useEffect(() => {
+    setChildrenHeight(
+      childrenWrapper.current ? childrenWrapper.current.offsetHeight : 0
+    );
+  }, [childrenWrapper.current?.offsetHeight]);
 
   useEffect(() => {
     setDimensions({
@@ -54,6 +62,7 @@ export function Page({
       footHeight: footerRef.current ? footerRef.current.offsetHeight : 0
     });
   }, [navbarRef.current?.offsetHeight, footerRef.current?.offsetHeight]);
+
   let diff = navbar ? dimensions.navHeight : 0;
   diff += footer ? dimensions.footHeight : 0;
 
@@ -88,7 +97,7 @@ export function Page({
       <MainDiv
         style={{
           minHeight: `calc(100vh - ${diff}px)`,
-          height: `calc(100vh - ${diff}px)`,
+          height: `max(calc(100vh - ${diff}px), ${childrenHeight})`,
           alignItems: centralized ? 'center' : 'normal',
           justifyContent: centralized ? 'center' : 'normal',
           flexDirection: column ? 'column' : 'row'
@@ -105,7 +114,7 @@ export function Page({
               topInitialPosition={dimensions.navHeight}
             />
           ))}
-        {children}
+        <div ref={childrenWrapper}>{children}</div>
       </MainDiv>
       <div ref={footerRef} style={{ display: 'inline' }}>
         {components?.footer ? components.footer : <Footer {...footer} />}
