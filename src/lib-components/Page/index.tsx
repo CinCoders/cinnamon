@@ -88,6 +88,7 @@ export function Page({
       <MainDiv
         style={{
           minHeight: `calc(100vh - ${diff}px)`,
+          height: `calc(100vh - ${diff}px)`,
           alignItems: centralized ? 'center' : 'normal',
           justifyContent: centralized ? 'center' : 'normal',
           flexDirection: column ? 'column' : 'row'
