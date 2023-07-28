@@ -10,7 +10,7 @@ export interface PageProps {
   footer?: FooterProps;
   children: JSX.Element | JSX.Element[];
   centralized?: boolean;
-  column?: boolean;
+  flexDirection?: 'column' | 'column-reverse' | 'row';
   haveToast?: boolean;
   components?: {
     navbar?: JSX.Element;
@@ -34,13 +34,14 @@ export function Page({
   footer,
   children,
   centralized = false,
-  column = false,
+  flexDirection,
   haveToast = false,
   components,
   createNavbarContext = true
 }: PageProps) {
   const navbarRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+
   const [dimensions, setDimensions] = useState<Dimensions>({
     navHeight: 0,
     footHeight: 0
@@ -85,28 +86,30 @@ export function Page({
       <div ref={navbarRef} style={{ display: 'inline' }}>
         {components?.navbar ? components.navbar : <Navbar {...navbar} />}
       </div>
-      <MainDiv
-        style={{
-          minHeight: `calc(100vh - ${diff}px)`,
-          height: `calc(100vh - ${diff}px)`,
-          alignItems: centralized ? 'center' : 'normal',
-          justifyContent: centralized ? 'center' : 'normal',
-          flexDirection: column ? 'column' : 'row'
-        }}
-      >
-        {haveToast &&
-          (components?.toastContainer ? (
-            components.toastContainer
-          ) : (
-            <ToastContainer
-              toastProps={{
-                position: 'top-right'
-              }}
-              topInitialPosition={dimensions.navHeight}
-            />
-          ))}
-        {children}
-      </MainDiv>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <MainDiv
+          style={{
+            minHeight: `calc(100vh - ${diff}px)`,
+            alignItems: centralized ? 'center' : 'normal',
+            justifyContent: centralized ? 'center' : 'normal',
+            flexDirection: flexDirection ?? 'column',
+            flexGrow: 1
+          }}
+        >
+          {haveToast &&
+            (components?.toastContainer ? (
+              components.toastContainer
+            ) : (
+              <ToastContainer
+                toastProps={{
+                  position: 'top-right'
+                }}
+                topInitialPosition={dimensions.navHeight}
+              />
+            ))}
+          {children}
+        </MainDiv>
+      </div>
       <div ref={footerRef} style={{ display: 'inline' }}>
         {components?.footer ? components.footer : <Footer {...footer} />}
       </div>
