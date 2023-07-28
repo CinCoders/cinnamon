@@ -10,7 +10,7 @@ export interface PageProps {
   footer?: FooterProps;
   children: JSX.Element | JSX.Element[];
   centralized?: boolean;
-  flexDirection?: 'column' | 'column-reverse' | 'row' | undefined;
+  flexDirection?: 'column' | 'column-reverse' | 'row';
   haveToast?: boolean;
   components?: {
     navbar?: JSX.Element;
