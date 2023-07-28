@@ -41,12 +41,35 @@ export function Page({
 }: PageProps) {
   const navbarRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const childrenRef = useRef<HTMLDivElement>(null);
+  const [childrenHeight, setChildrenHeight] = useState<number>(0);
+
   const [dimensions, setDimensions] = useState<Dimensions>({
     navHeight: 0,
     footHeight: 0
   });
 
   const firstRender = useRef<boolean>(true);
+
+  const getElementSize = (entries: ResizeObserverEntry[]) => {
+    entries.forEach((entry) => {
+      entry?.borderBoxSize
+        ? setChildrenHeight(entry.borderBoxSize[0].blockSize)
+        : 0;
+    });
+  };
+
+  useEffect(() => {
+    const element = childrenRef?.current;
+    const observer = new ResizeObserver(getElementSize);
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     setDimensions({
@@ -88,7 +111,10 @@ export function Page({
       <MainDiv
         style={{
           minHeight: `calc(100vh - ${diff}px)`,
-          height: `calc(100vh - ${diff}px)`,
+          height:
+            childrenHeight > window.innerHeight - diff
+              ? 'fit-content'
+              : `calc(100vh - ${diff}px)`,
           alignItems: centralized ? 'center' : 'normal',
           justifyContent: centralized ? 'center' : 'normal',
           flexDirection: column ? 'column' : 'row'
@@ -105,7 +131,7 @@ export function Page({
               topInitialPosition={dimensions.navHeight}
             />
           ))}
-        {children}
+        <div ref={childrenRef}>{children}</div>
       </MainDiv>
       <div ref={footerRef} style={{ display: 'inline' }}>
         {components?.footer ? components.footer : <Footer {...footer} />}
