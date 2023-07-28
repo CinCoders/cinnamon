@@ -19,6 +19,7 @@
   "scripts": {
     "start": "rollup -c -w",
     "build-lib": "rollup -c",
+    "build-link": "npm i && npm run build-lib && rm -rf ./node_modules/react ./node_modules/react-dom ./node_modules/react-router-dom/ && yarn unlink && yarn link",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
