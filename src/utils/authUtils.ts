@@ -11,9 +11,11 @@ export function jwtDecode(token: string): KeycloakPayload {
 export function hasAccess(auth: AuthContextProps, roles: Array<string>) {
   if (auth.user) {
     const { realm_access } = jwtDecode(auth.user.access_token);
-    if (realm_access.roles?.includes('*')) return true;
+
     for (const role of roles) {
-      if (realm_access.roles?.includes(role)) return true;
+      if (realm_access.roles?.includes(role) || role === '*') {
+        return true;
+      }
     }
   }
   return false;
