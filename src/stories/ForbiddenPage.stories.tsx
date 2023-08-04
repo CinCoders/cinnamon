@@ -1,8 +1,12 @@
 import { ForbiddenPage } from '../lib-components/ForbiddenPage';
-import Keycloak from 'keycloak-js';
 import { BrowserRouter } from 'react-router-dom';
 import { Meta, StoryFn } from '@storybook/react';
-import { AuthProvider, AuthProviderProps, useAuth } from 'react-oidc-context';
+import {
+  AuthContextProps,
+  AuthProvider,
+  AuthProviderProps,
+  useAuth
+} from 'react-oidc-context';
 
 export default {
   title: 'Components/ForbiddenPage',
@@ -17,7 +21,7 @@ export default {
 } as Meta;
 
 interface ForbbidenPageStoryProps {
-  keycloak: Keycloak;
+  auth?: AuthContextProps;
 }
 
 export const ForbiddenPage_: StoryFn<ForbbidenPageStoryProps> = () => {
