@@ -26,7 +26,7 @@ import { Avatar, GlobalStyles } from '@mui/material';
 import { NavbarContextValue } from '../Page/useNavbar';
 import { NavbarContext } from '../Page';
 import { AuthContextProps } from 'react-oidc-context';
-import { hasAccess } from '@/utils/authUtils';
+import { hasAccess } from '../../utils/authUtils';
 
 export interface NavbarProps {
   auth?: AuthContextProps;
