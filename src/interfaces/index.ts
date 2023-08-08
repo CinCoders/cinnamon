@@ -25,6 +25,7 @@ export interface System {
   IconComponent?: JSXElementConstructor<any>;
   description: string;
   href: string;
+  visibleRole?: string;
 }
 
 export interface Link {
