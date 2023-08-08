@@ -26,6 +26,7 @@ import { Avatar, GlobalStyles } from '@mui/material';
 import { NavbarContextValue } from '../Page/useNavbar';
 import { NavbarContext } from '../Page';
 import { AuthContextProps } from 'react-oidc-context';
+import { hasAccess } from '../../utils/authUtils';
 
 export interface NavbarProps {
   auth?: AuthContextProps;
@@ -121,6 +122,14 @@ export const Navbar = ({
   function handleToggleSideMenu() {
     setSideMenuIsOpen(!sideMenuIsOpen);
   }
+
+  systemsList = auth
+    ? systemsList.filter((system) => {
+        if (system.visibleRole && hasAccess(auth, [system.visibleRole])) {
+          return system;
+        }
+      })
+    : systemsList;
 
   return (
     <>
