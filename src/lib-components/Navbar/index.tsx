@@ -84,7 +84,8 @@ export const Navbar = ({
       if (auth) {
         setProfile({
           name: auth.user?.profile?.given_name ?? '',
-          email: auth.user?.profile?.email ?? ''
+          email: auth.user?.profile?.email ?? '',
+          username: auth.user?.profile?.preferred_username ?? '',
         });
       }
     }
@@ -190,8 +191,8 @@ export const Navbar = ({
                     color='inherit'
                   >
                     <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0]}>
-                      {profile.name[0].charAt(0)}
-                    </Avatar>
+  {profile.name[0]?.charAt(0) ?? profile.username?.charAt(0) ?? ''}
+</Avatar>
                   </IconButton>
                 </>
               )}
