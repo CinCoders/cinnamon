@@ -50,7 +50,8 @@ export const UserPopup = (props: UserPopupProps) => {
           <StyledAvatar alt={user.name[0]}>
             {user.name[0].charAt(0)}
           </StyledAvatar>
-          <UserName>{user.name}</UserName>
+          <UserName>{user.name || user.username || 'User-Name'}</UserName>
+
           <EmailContainer>
             <IconGreen />
             <p>{user.email}</p>
