@@ -46,15 +46,15 @@ export const UserPopup = (props: UserPopupProps) => {
   return (
     <ScopedCssBaseline>
       <UserPopUp>
-        <UserPopUpContainer>
-          <StyledAvatar alt={user.name[0]}>
-            {user.name[0].charAt(0)}
-          </StyledAvatar>
-          <UserName>{user.name}</UserName>
-          <EmailContainer>
-            <IconGreen />
-            <p>{user.email}</p>
-          </EmailContainer>
+    <UserPopUpContainer>
+      <StyledAvatar alt={user.name[0] ?? user.username?.charAt(0)}>
+        {(user.name[0] ?? user.username?.charAt(0)) ?? ''}
+      </StyledAvatar>
+      <UserName>{user.name ?? user.username ?? 'User Display Name'}</UserName>
+      <EmailContainer>
+        <IconGreen />
+        <p>{user.email}</p>
+      </EmailContainer>
           <ManageAccount href={`${accountManagementUrl}`}>
             Gerenciar sua conta
           </ManageAccount>
