@@ -93,7 +93,7 @@
     "@mui/material": "^5.11.14",
     "@rollup/plugin-url": "^6.1.0",
     "buffer": "^6.0.3",
-    "postcss": "^8.3.6",
+    "postcss": "^8.4.31",
     "react-oidc-context": "^2.2.2",
     "react-toastify": "^9.1.1",
     "react-transition-group": "^4.4.2",
