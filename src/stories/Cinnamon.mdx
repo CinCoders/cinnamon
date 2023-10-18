@@ -6,6 +6,7 @@ import KeycloakImg from '../assets/icons/keycloakicon.svg';
 import LicenseImg from '../assets/icons/repo.svg';
 import MUIimg from '../assets/icons/mui.svg';
 import ReactImg from '../assets/icons/react-icon.svg';
+import LogoCinnamon from '../assets/icons/cnmnorounded.svg';
 
 <Meta title='About/Cinnamon' />
 
@@ -95,8 +96,26 @@ import ReactImg from '../assets/icons/react-icon.svg';
       line-height: 20px;
     }
 
+    .divlogo{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+
+    .divlogo img{
+      height: 173px;
+      width: 1045px;
+      margin-right: 15px;
+      margin-bottom: 55px;
+    }
+
   `}
 </style>
+
+<div className='divlogo'>
+  <img src={LogoCinnamon} alt='Cinnamon' />
+</div>
 
 # Welcome to Cinnamon's Storybook
 
