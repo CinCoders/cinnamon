@@ -108,15 +108,13 @@ export const Footer = ({
                 style={{ color: 'white', zIndex: 3, textDecoration: 'none' }}
               >
                 Made with{' '}
-              </a>
-              <span>
                 <img
                   src={cnmHeartIcon}
                   alt='cnm'
                   style={{ width: '15px', height: '15px' }}
-                />{' '}
-                by{' '}
-              </span>
+                />
+              </a>
+              <span> by </span>
               <a
                 href='https://cincoders.cin.ufpe.br/'
                 style={{ color: 'white', zIndex: 3, textDecoration: 'none' }}
