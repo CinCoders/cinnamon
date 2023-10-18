@@ -15,6 +15,7 @@ export interface Position {
 export interface User {
   name: string;
   email: string;
+  username?: string;
   profilePictureUrl?: string;
   positions?: Position[];
 }
