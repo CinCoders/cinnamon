@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2023-10-18
+
+### Added
+
+- [design] Add logos
+- [Storybook-docs] Add Cinnamon logo
+
+### Changed
+
+- [footer] Change heart to Cinnamon logo style
+
+### Fixed
+
+- [dependencies] Fix dependency vulnerabilities
+
 ## [1.1.0] - 2023-08-08
 
 ### Added
@@ -123,7 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Empty SideMenu
 - Issue template
 
-[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v1.1.0...develop
+[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v1.2.0...develop
+[1.2.0]: https://github.com/CinCoders/cinnamon/compare/version/v1.1.0...version/v1.2.0
 [1.1.0]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.3...version/v1.1.0
 [1.0.3]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.2...version/v1.0.3
 [1.0.2]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.1...version/v1.0.2
