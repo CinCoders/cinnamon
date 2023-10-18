@@ -13,7 +13,7 @@ import {
   ParentFooter,
   SignatureText
 } from './styles';
-
+import cnmHeartIcon from '../../assets/icons/cnmheart.svg';
 export interface FooterProps {
   title?: string;
   telephone?: string;
@@ -105,14 +105,21 @@ export const Footer = ({
             <SignatureText>
               <a
                 href='https://www.npmjs.com/package/@cincoders/cinnamon'
-                style={{ color: 'white', zIndex: 3 }}
+                style={{ color: 'white', zIndex: 3, textDecoration: 'none' }}
               >
-                Made with ❤️
+                Made with{' '}
               </a>
-              <span> by </span>
+              <span>
+                <img
+                  src={cnmHeartIcon}
+                  alt='cnm'
+                  style={{ width: '15px', height: '15px' }}
+                />{' '}
+                by{' '}
+              </span>
               <a
                 href='https://cincoders.cin.ufpe.br/'
-                style={{ color: 'white', zIndex: 3 }}
+                style={{ color: 'white', zIndex: 3, textDecoration: 'none' }}
               >
                 CInCoders
               </a>
