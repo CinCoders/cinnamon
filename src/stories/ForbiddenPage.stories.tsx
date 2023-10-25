@@ -32,7 +32,6 @@ const Template: StoryFn<ForbbidenPageStoryProps> = (args) => {
   const mockedAuth = {
     user: { profile: { email: args.title } },
     signoutRedirect() {
-      console.log('teste redirect');
       setDialogLogout(true);
     }
   } as AuthContextProps;
