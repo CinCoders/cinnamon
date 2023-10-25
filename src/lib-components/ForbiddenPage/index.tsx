@@ -53,7 +53,7 @@ export const ForbiddenPage = ({ auth }: ForbiddenPageProps) => {
       <MediumText>You are logged in as:</MediumText>
       <EmailContainer>
         <Avatar src='/broken-image.jpg' />
-        <EmailText>{email}</EmailText>
+        <EmailText>{email ?? ''}</EmailText>
       </EmailContainer>
       <Button
         sx={{
