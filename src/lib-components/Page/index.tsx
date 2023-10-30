@@ -81,10 +81,11 @@ export function Page({
     firstRender.current = true;
   }, [navbarContextClass]);
 
+  let cinnamonNavbar: JSX.Element = navbar ? <Navbar {...navbar} /> : <></>;
   return (
     <NavbarContext.Provider value={navbarContextClass}>
       <div ref={navbarRef} style={{ display: 'inline' }}>
-        {components?.navbar ? components.navbar : <Navbar {...navbar} />}
+        {components?.navbar ? components.navbar : cinnamonNavbar}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <MainDiv
