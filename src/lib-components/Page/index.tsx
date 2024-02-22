@@ -81,10 +81,13 @@ export function Page({
     firstRender.current = true;
   }, [navbarContextClass]);
 
+  let cinnamonNavbar: JSX.Element = navbar ? <Navbar {...navbar} /> : <></>;
+  let cinnamonFooter: JSX.Element = footer ? <Footer {...footer} /> : <></>;
+
   return (
     <NavbarContext.Provider value={navbarContextClass}>
       <div ref={navbarRef} style={{ display: 'inline' }}>
-        {components?.navbar ? components.navbar : <Navbar {...navbar} />}
+        {components?.navbar ? components.navbar : cinnamonNavbar}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <MainDiv
@@ -111,7 +114,7 @@ export function Page({
         </MainDiv>
       </div>
       <div ref={footerRef} style={{ display: 'inline' }}>
-        {components?.footer ? components.footer : <Footer {...footer} />}
+        {components?.footer ? components.footer : cinnamonFooter}
       </div>
     </NavbarContext.Provider>
   );
