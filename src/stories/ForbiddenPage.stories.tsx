@@ -1,46 +1,59 @@
 import { ForbiddenPage } from '../lib-components/ForbiddenPage';
 import { BrowserRouter } from 'react-router-dom';
 import { Meta, StoryFn } from '@storybook/react';
-import {
-  AuthContextProps,
-  AuthProvider,
-  AuthProviderProps,
-  useAuth
-} from 'react-oidc-context';
+import { AuthContextProps, AuthProvider } from 'react-oidc-context';
+import { Dialog } from '../lib-components/Dialog';
+import { useState } from 'react';
 
 export default {
   title: 'Components/ForbiddenPage',
   component: ForbiddenPage,
   argTypes: {
-    keycloak: {
-      name: 'keycloak',
-      description: 'Keycloak instance passed to forbbiden component',
+    auth: {
+      name: 'auth',
+      description: 'Auth instance passed to forbbiden component',
       control: { disable: true }
+    },
+    title: {
+      name: 'title',
+      type: { name: 'string', required: true },
+      description: 'String wich defines email of logged user',
+      control: { type: 'text' }
     }
   }
 } as Meta;
 
 interface ForbbidenPageStoryProps {
-  auth?: AuthContextProps;
+  title?: string;
 }
 
-export const ForbiddenPage_: StoryFn<ForbbidenPageStoryProps> = () => {
-  const mockedKeycloakConfig = JSON.parse(
-    '{"realm":"your-realm","auth-server-url":"http://your-keycloak-server:8080/","ssl-required":"external","resource":"your-client","public-client":true,"confidential-port":0}'
-  );
-
-  const authProps: AuthProviderProps = {
-    authority: mockedKeycloakConfig['auth-server-url'],
-    client_id: mockedKeycloakConfig.resource,
-    redirect_uri: 'https://localhost:3001/'
-  };
-  const auth = useAuth();
+const Template: StoryFn<ForbbidenPageStoryProps> = (args) => {
+  const [dialogLogout, setDialogLogout] = useState(false);
+  const mockedAuth = {
+    user: { profile: { email: args.title } },
+    signoutRedirect() {
+      setDialogLogout(true);
+    }
+  } as AuthContextProps;
 
   return (
-    <AuthProvider {...authProps}>
-      <BrowserRouter>
-        <ForbiddenPage auth={auth} />
-      </BrowserRouter>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ForbiddenPage auth={mockedAuth} />
+        <Dialog
+          type={'alert'}
+          title={'Mocked logout'}
+          setVisibility={setDialogLogout}
+          visibility={dialogLogout}
+        >
+          <h2>Successfully mocked logout!</h2>
+        </Dialog>
+      </AuthProvider>
+    </BrowserRouter>
   );
+};
+
+export const ForbiddenPage_ = Template.bind({});
+ForbiddenPage_.args = {
+  title: 'sample@cin.ufpe.br'
 };
