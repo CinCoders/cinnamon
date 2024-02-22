@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [Stories] Forbidden with mocked logout and dynamic email
 - [Dependencies] React ˆ18.1
+
+### Fixed
+
+- [Stories] cinnamon repo link in Storybook about page
+- [Page] Fix navbar and footer rendering when not defined
 
 ## [1.2.0] - 2023-10-18
 
