@@ -26,9 +26,9 @@ interface Location {
   };
 }
 
-export const ForbiddenPage = ({ auth, publicURL: propPublicURL }: ForbiddenPageProps) => {
+export const ForbiddenPage = ({ auth, publicURL }: ForbiddenPageProps) => {
   const email = auth?.user?.profile.email;
-  const publicURL = propPublicURL || process.env.PUBLIC_URL;
+  const baseURL = publicURL ?? process.env.PUBLIC_URL;
   const [from, setFrom] = useState<string>();
   const navigate = useNavigate();
   const location = useLocation() as Location;
@@ -36,7 +36,7 @@ export const ForbiddenPage = ({ auth, publicURL: propPublicURL }: ForbiddenPageP
     if (location.state?.from !== undefined) {
       setFrom(location.state.from.pathname);
     } else {
-      navigate(publicURL as To);
+      navigate(baseURL as To);
     }
   }, []);
 

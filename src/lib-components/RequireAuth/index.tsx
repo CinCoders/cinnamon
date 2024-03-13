@@ -13,7 +13,7 @@ interface AuthProps {
 }
 
 export const RequireAuth = (props: AuthProps): React.ReactElement => {
-  const publicURL = props.publicURL || process.env.PUBLIC_URL;
+  const publicURL = props.publicURL ?? process.env.PUBLIC_URL;
 
   const location = useLocation();
   const { children, auth, permittedRoles } = props;
