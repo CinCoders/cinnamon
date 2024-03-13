@@ -180,15 +180,15 @@ A base page component with authentication using keycloak.
 | **haveToast**           | Boolean     | No       | none                  | Enable the usage of a custom toast from cinnamon package, inside the page component                   |
 | **createNavbarContext** | Boolean     | Yes      | none                  | Enable the usage of custom hook useNavbar, to change navbar props dinamically                         |
 | **components**          | Object      | No       | none                  | An object that accepts a custom navbar, footer or toastContainer to override these default components |
-| **auth**                | Object      | Yes      | none                  | An object that accepts a keycloak instance, initialized flag and roles to have access                 |
+| **auth**                | Object      | Yes      | none                  | An object that accepts an authContext, publicURL and roles to have access                 |
 
 ### Interface of props
 
 ```typescript
 interface PageWithAuthProps extends PageProps {
-  auth: {
-    keycloak: Keycloak;
-    initialized: boolean;
+  authProps: {
+    auth: AuthContextProps;
+    publicURL?: string;
     permittedRoles: string[];
   };
 }
