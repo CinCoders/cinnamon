@@ -8,10 +8,13 @@ import { KeycloakPayload, jwtDecode } from '@/utils/authUtils';
 interface AuthProps {
   auth: AuthContextProps;
   permittedRoles: string[];
+  publicURL?: string;
   children: JSX.Element;
 }
 
 export const RequireAuth = (props: AuthProps): React.ReactElement => {
+  const publicURL = props.publicURL ?? process.env.PUBLIC_URL;
+
   const location = useLocation();
   const { children, auth, permittedRoles } = props;
   const [waiting, setWaiting] = useState(true);
@@ -84,7 +87,7 @@ export const RequireAuth = (props: AuthProps): React.ReactElement => {
   if (auth.isAuthenticated) {
     return (
       <Navigate
-        to={`${process.env.PUBLIC_URL}/forbidden`}
+        to={`${publicURL}/forbidden`}
         replace
         state={{ from: location }}
       />
