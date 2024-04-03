@@ -190,7 +190,7 @@ export const Navbar = ({
                     onClick={handleUserMenu}
                     color='inherit'
                   >
-                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0]}>
+                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0] ?? '-'}>
   {profile.name[0]?.charAt(0) ?? profile.username?.charAt(0) ?? ''}
 </Avatar>
                   </IconButton>
@@ -307,7 +307,7 @@ export const Navbar = ({
                     onClick={handleUserMenu}
                     color='inherit'
                   >
-                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0]}>
+                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0] ?? '-'}>
                       {profile.name[0].charAt(0)}
                     </Avatar>
                   </IconButton>
