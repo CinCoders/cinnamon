@@ -22,6 +22,8 @@ export default {
 
 export interface NavbarStoryProps {
   isLandingPage: boolean;
+  logoRedirectUrl?: string;
+  logoSrc?: string;
   haveSearchBar: boolean;
   hiddenUser: boolean;
   user: User;
@@ -30,7 +32,9 @@ export interface NavbarStoryProps {
   systemsListPopup: boolean;
   title: string;
   systemsList: System[];
-  iconComponent: JSXElementConstructor<any>;
+  currentSystemIconUrl?: string;
+  children: JSX.Element;
+  IconComponent: JSXElementConstructor<any>;
 }
 
 interface IconComponentProps {
@@ -50,6 +54,9 @@ const Template: StoryFn<NavbarStoryProps> = (args) => {
     <BrowserRouter>
       <Navbar
         isLandingPage={args.isLandingPage}
+        logoRedirectUrl={args.logoRedirectUrl}
+        logoSrc={args.logoSrc}
+        currentSystemIconUrl={args.currentSystemIconUrl}
         haveSearchBar={args.haveSearchBar}
         hiddenUser={args.hiddenUser}
         user={args.hiddenUser ? undefined : args.user}
@@ -67,11 +74,14 @@ export const Navbar_ = Template.bind({});
 Navbar_.args = {
   h1: true,
   isLandingPage: false,
+  logoRedirectUrl: '/',
+  logoSrc: 'https://cincoders.cin.ufpe.br/static/media/cincodersicon.90317b65.svg',
+  currentSystemIconUrl: 'https://cincoders.cin.ufpe.br/static/media/cnmIcon.a94acd66.svg',
   haveSearchBar: false,
   hiddenUser: false,
   user: testUser,
   sideMenuLinks: testLinks,
   systemsListPopup: false,
   systemsList: testSystems,
-  iconComponent: () => <></>
+  IconComponent: () => <></>
 };

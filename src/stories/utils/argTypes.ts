@@ -112,6 +112,24 @@ export const navbarArgTypes = {
       category: 'Navbar'
     }
   },
+  logoRedirectUrl: {
+    name: 'logoRedirectUrl',
+    type: { name: 'string', required: false },
+    description: 'String wich defines the href of the logo',
+    control: { type: 'text' },
+    table: {
+      category: 'Navbar'
+    }
+  },
+  logoSrc: {
+    name: 'logoSrc',
+    type: { name: 'string', required: false },
+    description: 'String wich defines the src of the logo',
+    control: { type: 'text' },
+    table: {
+      category: 'Navbar'
+    }
+  },
   haveSearchBar: {
     name: 'haveSearchBar',
     type: { name: 'boolean', required: false },
@@ -193,8 +211,17 @@ export const navbarArgTypes = {
       category: 'Navbar'
     }
   },
-  iconComponent: {
-    name: 'iconComponent',
+  currentSystemIconUrl: {
+    name: 'currentSystemIconUrl',
+    type: { name: 'string', required: false },
+    description: 'String wich defines the current system icon',
+    control: { type: 'text' },
+    table: {
+      category: 'Navbar'
+    }
+  },
+  IconComponent: {
+    name: 'IconComponent',
     description: 'Icon of system that appears in navbar',
     table: {
       category: 'Navbar'
