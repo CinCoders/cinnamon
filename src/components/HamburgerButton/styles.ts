@@ -32,7 +32,7 @@ export const Hamburger = styled.button<{ isOpen: boolean }>`
   border: none;
   width: 30px;
   height: 16px;
-
+  outline: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
