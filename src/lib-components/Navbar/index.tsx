@@ -22,14 +22,14 @@ import {
   TitleContainer,
   ParentNav
 } from './styles';
-
-import Keycloak from 'keycloak-js';
 import { Avatar, GlobalStyles } from '@mui/material';
 import { NavbarContextValue } from '../Page/useNavbar';
 import { NavbarContext } from '../Page';
+import { AuthContextProps } from 'react-oidc-context';
+import { hasAccess } from '../../utils/authUtils';
 
 export interface NavbarProps {
-  keycloakInstance?: Keycloak;
+  auth?: AuthContextProps;
   logoRedirectUrl?: string;
   logoSrc?: string;
   haveSearchBar?: boolean;
@@ -41,16 +41,16 @@ export interface NavbarProps {
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
-  haveCustomSideMenu?: boolean;
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
   IconComponent?: JSXElementConstructor<any>;
   children?: JSX.Element;
-  accountManagementUrl?: String;
+  accountManagementUrl?: string;
 }
 
 export const Navbar = ({
+  auth,
   logoRedirectUrl = '/',
   logoSrc,
   haveSearchBar = false,
@@ -68,7 +68,6 @@ export const Navbar = ({
   currentSystemIconUrl,
   children,
   IconComponent,
-  keycloakInstance,
   accountManagementUrl
 }: NavbarProps) => {
   const [profile, setProfile] = useState<User>(user);
@@ -82,15 +81,16 @@ export const Navbar = ({
   }
   useEffect(() => {
     async function load() {
-      if (keycloakInstance) {
+      if (auth) {
         setProfile({
-          name: keycloakInstance.tokenParsed?.given_name,
-          email: keycloakInstance.tokenParsed?.email
+          name: auth.user?.profile?.given_name ?? '',
+          email: auth.user?.profile?.email ?? '',
+          username: auth.user?.profile?.preferred_username ?? '',
         });
       }
     }
     load();
-  }, [keycloakInstance]);
+  }, [auth]);
 
   const [anchorUserEl, setAnchorUserEl] = useState<null | HTMLElement>(null);
   const [anchorSystemsEl, setAnchorSystemsEl] = useState<null | HTMLElement>(
@@ -123,6 +123,14 @@ export const Navbar = ({
   function handleToggleSideMenu() {
     setSideMenuIsOpen(!sideMenuIsOpen);
   }
+
+  systemsList = auth
+    ? systemsList.filter((system) => {
+        if (system.visibleRole && hasAccess(auth, [system.visibleRole])) {
+          return system;
+        }
+      })
+    : systemsList;
 
   return (
     <>
@@ -183,8 +191,8 @@ export const Navbar = ({
                     color='inherit'
                   >
                     <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0]}>
-                      {profile.name[0].charAt(0)}
-                    </Avatar>
+  {profile.name[0]?.charAt(0) ?? profile.username?.charAt(0) ?? ''}
+</Avatar>
                   </IconButton>
                 </>
               )}
@@ -203,7 +211,7 @@ export const Navbar = ({
                 open={Boolean(anchorUserEl)}
                 onClose={handleUserClose}
               >
-                <UserPopup user={profile} keycloak={keycloakInstance} />
+                <UserPopup user={profile} auth={auth} />
               </StyledUserMenu>
             </StyledToolbar>
           </StyledAppBar>
@@ -213,10 +221,13 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               <LeftContainer>
-                <HamburgerButton
-                  isOpen={sideMenuIsOpen}
-                  onClick={handleToggleSideMenu}
-                />
+                {sideMenuLinks.length !== 0 && (
+                  <HamburgerButton
+                    isOpen={sideMenuIsOpen}
+                    onClick={handleToggleSideMenu}
+                  />
+                )}
+
                 <IconRenderer
                   iconUrl={currentSystemIconUrl}
                   IconComponent={IconComponent}
@@ -319,7 +330,7 @@ export const Navbar = ({
                 >
                   <UserPopup
                     user={profile}
-                    keycloak={keycloakInstance}
+                    auth={auth}
                     accountManagementUrl={accountManagementUrl}
                   />
                 </StyledUserMenu>
@@ -332,6 +343,7 @@ export const Navbar = ({
           ) : (
             <SideMenu
               visibility={sideMenuIsOpen}
+              top={'64px'}
               setVisibility={handleToggleSideMenu}
               links={sideMenuLinks}
             />

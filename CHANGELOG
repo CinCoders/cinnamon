@@ -4,3 +4,174 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.3.0] - 2024-03-13
+
+### Added
+
+- [RequireAuth] Now PUBLIC_URL is a prop, with fallback to process.env.PUBLIC_URL
+
+## [1.2.1] - 2024-02-22
+
+### Added
+
+- [Stories] Forbidden with mocked logout and dynamic email
+- [Dependencies] React ˆ18.1
+
+### Fixed
+
+- [Stories] cinnamon repo link in Storybook about page
+- [Page] Fix navbar and footer rendering when not defined
+
+## [1.2.0] - 2023-10-18
+
+### Added
+
+- [design] Add logos
+- [Storybook-docs] Add Cinnamon logo
+
+### Changed
+
+- [footer] Change heart to Cinnamon logo style
+
+### Fixed
+
+- [dependencies] Fix dependency vulnerabilities
+
+## [1.1.0] - 2023-08-08
+
+### Added
+
+- [SystemsMenu] New attribute for System interface: visibleRole, the role that is needed to access the system.
+- [SystemsMenu] Only systems with allowed roles will be displayed
+- [docs] Add research-back and research-front as open source projects
+
+## [1.0.3] - 2023-08-04
+
+### Fixed
+
+- [AuthUtils] Fix wildcard role access not working
+- [MainDiv] Padding with min and max px, and preferred %
+- [ForbiddenPageStories] Fix ForbiddenPage props
+- [Dependencies] Removed not used package
+
+## [1.0.2] - 2023-07-31
+
+### Fixed
+
+- [MainDiv] Fit content height
+
+## [1.0.1] - 2023-07-24
+
+### Fixed
+
+- [buffer] Buffer polyfill in webpack 5
+- [MainDiv] Default height
+
+## [1.0.0] - 2023-07-21
+
+### Added
+
+- [Page] Add column property
+- [docs] Add cs-deadlines as an open source project
+
+### Changed
+
+- [react-oidc-context] Migrate from react-keycloak to react-oidc-context
+
+### Fixed
+
+- Typos
+
+## [0.4.0] - 2023-06-22
+
+### Added
+
+- [storybook] Make stories editable
+- [footer] Large footer as an option (default true)
+- [docs] Add react-toastfy as a technology
+- [sidemenu] Add top property
+
+### Changed
+
+- [packages] Upgrade dependencies
+
+### Fixed
+
+- [sidemenu] Group button closing on click
+
+## [0.3.0] - 2023-05-30
+
+### Added
+
+- [PageWithAuth] New component to avoid boilerplate code on required auth pages
+- [docs] Usage guide for new components
+
+### Fixed
+
+- [storybook] Broken link
+
+## [0.2.1] - 2023-05-29
+
+### Fixed
+
+- [dialog] Children max width
+- [storybook] Logo size
+- Code smells
+- Code duplications
+
+## [0.2.0] - 2023-05-26
+
+### Added
+
+- [Page] New property to override default toastContainer
+
+### Changed
+
+- [toast] Toast interface exported directly from react-toastfy
+
+## [0.1.6] - 2023-05-23
+
+### Fixed
+
+- [dialog] Default visibility false
+- [footer] Default footer links order
+
+## [0.1.5] - 2023-05-19
+
+### Fixed
+
+- [Storybook] Button to popup dialogs
+- [Storybook] Translate to english
+
+### Added
+
+- [footer] Signature text
+- [Storybook] Homepage and docs
+
+## [0.1.4] - 2023-05-08
+
+### Fixed
+
+- Empty SideMenu
+- Issue template
+
+[unreleased]: https://github.com/CinCoders/cinnamon/compare/version/v1.3.0...develop
+[1.3.0]: https://github.com/CinCoders/cinnamon/compare/version/v1.2.1...version/v1.3.0
+[1.2.1]: https://github.com/CinCoders/cinnamon/compare/version/v1.2.0...version/v1.2.1
+[1.2.0]: https://github.com/CinCoders/cinnamon/compare/version/v1.1.0...version/v1.2.0
+[1.1.0]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.3...version/v1.1.0
+[1.0.3]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.2...version/v1.0.3
+[1.0.2]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.1...version/v1.0.2
+[1.0.1]: https://github.com/CinCoders/cinnamon/compare/version/v1.0.0...version/v1.0.1
+[1.0.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.4.0...version/v1.0.0
+[0.4.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.3.0...version/v0.4.0
+[0.3.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.1...version/v0.3.0
+[0.2.1]: https://github.com/CinCoders/cinnamon/compare/version/v0.2.0...version/v0.2.1
+[0.2.0]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.6...version/v0.2.0
+[0.1.6]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.5...version/v0.1.6
+[0.1.5]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.4...version/v0.1.5
+[0.1.4]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.3...version/v0.1.4
+[0.1.3]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.2...version/v0.1.3
+[0.1.2]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.1...version/v0.1.2
+[0.1.1]: https://github.com/CinCoders/cinnamon/compare/version/v0.1.0...version/v0.1.1

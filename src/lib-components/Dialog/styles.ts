@@ -7,6 +7,9 @@ export const StyledDialog = styled(DialogMui)`
   .MuiDialogTitle-root {
     padding: 0;
   }
+  .MuiPaper-root {
+    max-width: 100vw;
+  }
 `;
 
 export const HeaderBar = styled.div`

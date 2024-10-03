@@ -1,5 +1,4 @@
 import { User } from '../../interfaces';
-
 import {
   ScopedCssBaseline,
   AccordionSummary,
@@ -23,52 +22,50 @@ import {
 } from './styles';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Keycloak from 'keycloak-js';
+import { AuthContextProps } from 'react-oidc-context';
 
-interface UserPopupProps {
+export interface UserPopupProps {
   user?: User;
   logoutMethod?(): void;
-  keycloak?: Keycloak | undefined;
-  id?: string;
-  accountManagementUrl?: String;
+  auth?: AuthContextProps;
+  accountManagementUrl?: string;
 }
 
 export const UserPopup = (props: UserPopupProps) => {
   const {
     user = { name: 'User Display Name', email: 'user@example.com' },
     logoutMethod,
-    keycloak,
-    id,
+    auth,
     accountManagementUrl
   } = props;
 
   function logoutFunction() {
-    logoutMethod ? logoutMethod() : keycloak!.logout();
+    logoutMethod ? logoutMethod() : auth?.signoutRedirect();
   }
 
   return (
     <ScopedCssBaseline>
-      <UserPopUp id={id}>
-        <UserPopUpContainer>
-          <StyledAvatar alt={user.name[0]}>
-            {user.name[0].charAt(0)}
-          </StyledAvatar>
-          <UserName>{user.name}</UserName>
-          <EmailContainer>
-            <IconGreen />
-            <p>{user.email}</p>
-          </EmailContainer>
+      <UserPopUp>
+    <UserPopUpContainer>
+      <StyledAvatar alt={user.name[0] ?? user.username?.charAt(0)}>
+        {(user.name[0] ?? user.username?.charAt(0)) ?? ''}
+      </StyledAvatar>
+      <UserName>{user.name ?? user.username ?? 'User Display Name'}</UserName>
+      <EmailContainer>
+        <IconGreen />
+        <p>{user.email}</p>
+      </EmailContainer>
           <ManageAccount href={`${accountManagementUrl}`}>
             Gerenciar sua conta
           </ManageAccount>
 
           {user.positions !== undefined && user.positions.length > 0 && (
             <PositionsContainer>
-              {user.positions.map((position, position_index) => (
-                <div key={position_index}>
+              {user.positions.map((position) => (
+                <div key={`position_${position.id}`}>
                   {position.roles !== undefined && position.roles.length > 0 ? (
                     <>
-                      <StyledAccordion key={position_index}>
+                      <StyledAccordion key={`positions_${position.id}`}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel1a-content'
@@ -101,7 +98,10 @@ export const UserPopup = (props: UserPopupProps) => {
                     </>
                   ) : (
                     <>
-                      <StyledAccordion disabled key={position_index}>
+                      <StyledAccordion
+                        disabled
+                        key={`positions_${position.id}`}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls='panel3a-content'

@@ -1,19 +1,11 @@
 name: Bug Report
 description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
+title: '[Bug]: '
+labels: ['bug', 'triage']
 body:
   - type: markdown
     attributes:
       value: Thanks for taking the time to fill out this bug report!
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Current Behavior
@@ -38,9 +30,7 @@ body:
     id: browsers
     attributes:
       label: What browsers are you seeing the problem on?
-
   - type: textarea
     attributes:
       label: Anything else?
       description: Links? References? Images? Anything that will give us more context about the bug you are encountering!
-

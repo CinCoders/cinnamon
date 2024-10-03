@@ -1,19 +1,11 @@
 name: Feature Request
 description: Request a feature to our developers
-title: "[feature]: "
-labels: ["feature"]
+title: '[feature]: '
+labels: ['feature']
 body:
   - type: markdown
     attributes:
       value: Thanks for taking the time to fill out this feature request!
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Feature description
@@ -24,4 +16,3 @@ body:
     attributes:
       label: Anything else?
       description: Links? References? Images? Anything that will give us more context about how the feature is supposed to be!
-

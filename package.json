@@ -1,7 +1,13 @@
 {
   "name": "@cincoders/cinnamon",
-  "version": "0.1.0",
-  "description": "Reusable React components",
+  "version": "1.3.0",
+  "description": "A collection components for standardized system appearance and functionality, easing development in web applications.",
+  "license": "MIT",
+  "author": "CInCoders <cincoders@cin.ufpe.br> (https://cincoders.cin.ufpe.br)",
+  "homepage": "https://cincoders.cin.ufpe.br/",
+  "bugs": {
+    "url": "https://github.com/CinCoders/cinnamon/issues"
+  },
   "main": "dist/cinnamon.ssr.js",
   "browser": "dist/cinnamon.esm.js",
   "module": "dist/cinnamon.esm.js",
@@ -13,8 +19,9 @@
   "scripts": {
     "start": "rollup -c -w",
     "build-lib": "rollup -c",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-link": "npm i && npm run build-lib && rm -rf ./node_modules/react ./node_modules/react-dom ./node_modules/react-router-dom/ && yarn unlink && yarn link",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "repository": {
     "type": "git",
@@ -22,20 +29,32 @@
   },
   "publishConfig": {
     "access": "public"
-  },  
-  "author": "",
-  "license": "MIT",
+  },
+  "keywords": [
+    "react",
+    "mui",
+    "styled-components",
+    "keycloak",
+    "storybook",
+    "typescript",
+    "design-system",
+    "web-components",
+    "components"
+  ],
   "devDependencies": {
     "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.5",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
-    "@storybook/addon-actions": "^6.5.9",
-    "@storybook/addon-essentials": "^6.5.9",
-    "@storybook/addon-links": "^6.5.9",
-    "@storybook/builder-webpack5": "^6.5.13",
-    "@storybook/manager-webpack5": "^6.5.13",
-    "@storybook/react": "^6.5.9",
-    "@types/jquery": "^3.5.5",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.1",
+    "@storybook/addon-actions": "^7.0.18",
+    "@storybook/addon-essentials": "^7.0.18",
+    "@storybook/addon-links": "^7.0.18",
+    "@storybook/react": "^7.0.18",
+    "@storybook/react-webpack5": "^7.0.18",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.4",
     "@types/react-router-dom": "^5.1.7",
@@ -51,34 +70,31 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "postcss-scss": "^3.0.5",
     "prettier": "^2.3.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-router-dom": "^6.3.0",
+    "react": "^18.2",
+    "react-dom": "^18.2",
+    "react-router-dom": "^6.9.0",
     "rollup": "^2.51.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "storybook": "^7.0.18",
     "typescript": "^4.3.2"
   },
   "peerDependencies": {
-    "react": "18.1",
-    "react-dom": "18.1",
-    "react-router-dom": "^6.3.0",
+    "react": "^18.2",
+    "react-dom": "^18.2",
+    "react-router-dom": "^6.9.0",
     "react-transition-group": "^4.4.2"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.8.6",
-    "@react-keycloak/web": "^3.4.0",
+    "@mui/material": "^5.11.14",
     "@rollup/plugin-url": "^6.1.0",
-    "jquery": "^3.6.0",
-    "keycloak-js": "^18.0.0",
-    "postcss": "^8.3.6",
+    "buffer": "^6.0.3",
+    "postcss": "^8.4.31",
+    "react-oidc-context": "^2.2.2",
     "react-toastify": "^9.1.1",
     "react-transition-group": "^4.4.2",
     "styled-components": "^5.3.0"
@@ -87,6 +103,8 @@
     "chokidar": "3.5.3",
     "glob-parent": "6.0.2",
     "trim": "1.0.1",
-    "trim-newlines": "5.0.0"
+    "trim-newlines": "5.0.0",
+    "svgo": "3.0.0",
+    "semver": "^7.5.3"
   }
 }

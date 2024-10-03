@@ -2,10 +2,10 @@ import { SideMenuLink, System, User } from '@/interfaces';
 import { useContext } from 'react';
 import { NavbarContext } from '.';
 import { NavbarProps } from '../Navbar';
-import Keycloak from 'keycloak-js';
+import { AuthContextProps } from 'react-oidc-context';
 
 export class NavbarContextValue implements NavbarProps {
-  keycloakInstance?: Keycloak;
+  auth?: AuthContextProps;
   logoRedirectUrl?: string;
   logoSrc?: string;
   haveSearchBar?: boolean;
@@ -17,19 +17,18 @@ export class NavbarContextValue implements NavbarProps {
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
-  haveCustomSideMenu?: boolean;
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
   children?: JSX.Element;
-  accountManagementUrl?: String;
+  accountManagementUrl?: string;
   setNavbarProps: React.Dispatch<React.SetStateAction<NavbarProps>>;
 
   constructor(
     navbarProps: NavbarProps,
     setNavbarProps: React.Dispatch<React.SetStateAction<NavbarProps>>
   ) {
-    this.keycloakInstance = navbarProps.keycloakInstance;
+    this.auth = navbarProps.auth;
     this.logoRedirectUrl = navbarProps.logoRedirectUrl;
     this.logoSrc = navbarProps.logoSrc;
     this.haveSearchBar = navbarProps.haveSearchBar;
@@ -41,7 +40,6 @@ export class NavbarContextValue implements NavbarProps {
     this.logoutFunction = navbarProps.logoutFunction;
     this.user = navbarProps.user;
     this.sideMenuLinks = navbarProps.sideMenuLinks;
-    this.haveCustomSideMenu = navbarProps.haveCustomSideMenu;
     this.isLandingPage = navbarProps.isLandingPage;
     this.systemsList = navbarProps.systemsList;
     this.currentSystemIconUrl = navbarProps.currentSystemIconUrl;

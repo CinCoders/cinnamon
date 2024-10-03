@@ -1,3 +1,5 @@
+# USAGE
+
 ### Navbar
 
 Navbar component. Uses a side menu for navigation that can be toggled with a hamburger menu.
@@ -78,6 +80,7 @@ Footer component containing Helpdesk's information.
 | **link**                | String | No       | none          | Set the link that will be redirected after click in text link |
 | **description**         | String | No       | none          | Set the footer description                                    |
 | **copyrightText**       | String | No       | none          | Set the footer copyright text                                 |
+| **largeFooter**         | Bool   | No       | true          | Set the footer size                                           |
 
 ### Interface of props
 
@@ -91,6 +94,7 @@ interface FooterProps {
   link?: string;
   description?: string;
   copyrightText?: string;
+  largeFooter?: boolean;
 }
 ```
 
@@ -100,15 +104,15 @@ A base page component containing the Navbar and Footer.
 
 #### Props List
 
-| Name                    | Type        | Required | Default Value         | Description                                                                          |
-| ----------------------- | ----------- | -------- | --------------------- | ------------------------------------------------------------------------------------ |
-| **navbar**              | NavbarProps | No       | Navbar default props  | Props that will be passed to the Navbar component                                    |
-| **footer**              | FooterProps | No       | Footer default values | Props that will be passed to the Footer component                                    |
-| **children**            | JSX.Element | Yes      | none                  | Contains the content that will be exhibited inside Page's main div                   |
-| **centralized**         | Boolean     | No       | false                 | Centralizes the content inside the page vertically and horizontally                  |
-| **haveToast**           | Boolean     | No       | none                  | Enable the usage of a custom toast from cinnamon package, inside the page component  |
-| **createNavbarContext** | Boolean     | Yes      | none                  | Enable the usage of custom hook useNavbar, to change navbar props dinamically        |
-| **components**          | Object      | No       | none                  | A object that accepts a custom navbar or footer to override these default components |
+| Name                    | Type        | Required | Default Value         | Description                                                                                           |
+| ----------------------- | ----------- | -------- | --------------------- | ----------------------------------------------------------------------------------------------------- |
+| **navbar**              | NavbarProps | No       | Navbar default props  | Props that will be passed to the Navbar component                                                     |
+| **footer**              | FooterProps | No       | Footer default values | Props that will be passed to the Footer component                                                     |
+| **children**            | JSX.Element | Yes      | none                  | Contains the content that will be exhibited inside Page's main div                                    |
+| **centralized**         | Boolean     | No       | false                 | Centralizes the content inside the page vertically and horizontally                                   |
+| **haveToast**           | Boolean     | No       | none                  | Enable the usage of a custom toast from cinnamon package, inside the page component                   |
+| **createNavbarContext** | Boolean     | Yes      | none                  | Enable the usage of custom hook useNavbar, to change navbar props dinamically                         |
+| **components**          | Object      | No       | none                  | An object that accepts a custom navbar, footer or toastContainer to override these default components |
 
 ### Interface of props
 
@@ -122,6 +126,7 @@ interface PageProps {
   components?: {
     navbar?: JSX.Element;
     footer?: JSX.Element;
+    toastContainer?: JSX.Element;
   };
   createNavbarContext: boolean;
 }
@@ -158,11 +163,40 @@ Observations:
 
 - You can only use the hook if your createNavbarContext prop in Page is true. Otherwise, you will receive a log error in your console that indicates that your navbar context wasn't created.
 - You cannot use the hook if you're out of Page component scope, because you need to be below the Page component to receive the context from the provider.
-- We recommend that if you don't pass a default value for your prop in Page component declaration, set a default prop using the useNavbar inside a useEffect hook without dependency array, to avoid unnecessary re-renders.
+- We recommend that if you don't pass a default value for your prop in Page the component declaration, set a default prop using the useNavbar inside an useEffect hook without dependency array, to avoid unnecessary re-renders.
+
+### PageWithAuth
+
+A base page component with authentication using keycloak.
+
+#### Props List
+
+| Name                    | Type        | Required | Default Value         | Description                                                                                           |
+| ----------------------- | ----------- | -------- | --------------------- | ----------------------------------------------------------------------------------------------------- |
+| **navbar**              | NavbarProps | No       | Navbar default props  | Props that will be passed to the Navbar component                                                     |
+| **footer**              | FooterProps | No       | Footer default values | Props that will be passed to the Footer component                                                     |
+| **children**            | JSX.Element | Yes      | none                  | Contains the content that will be exhibited inside Page's main div                                    |
+| **centralized**         | Boolean     | No       | false                 | Centralizes the content inside the page vertically and horizontally                                   |
+| **haveToast**           | Boolean     | No       | none                  | Enable the usage of a custom toast from cinnamon package, inside the page component                   |
+| **createNavbarContext** | Boolean     | Yes      | none                  | Enable the usage of custom hook useNavbar, to change navbar props dinamically                         |
+| **components**          | Object      | No       | none                  | An object that accepts a custom navbar, footer or toastContainer to override these default components |
+| **auth**                | Object      | Yes      | none                  | An object that accepts an authContext, publicURL and roles to have access                 |
+
+### Interface of props
+
+```typescript
+interface PageWithAuthProps extends PageProps {
+  authProps: {
+    auth: AuthContextProps;
+    publicURL?: string;
+    permittedRoles: string[];
+  };
+}
+```
 
 ### ImageInput
 
-Image input component. User can select a image from their computer and the input auto updates itself with the selected image.
+Image input component. User can select an image from their computer and the input auto updates itself with the selected image.
 
 #### Props List
 

@@ -1,88 +1,16 @@
-import { Story } from '@storybook/react';
-import { Footer, FooterProps } from '../lib-components/Footer';
+import { StoryFn } from '@storybook/react';
+import { Footer } from '../lib-components/Footer';
 import './storiesGlobals.css';
+import { footerArgTypes } from './utils/argTypes';
 
 export default {
-  title: 'Footer',
+  title: 'Components/Footer',
   parameters: {
     docs: {
       page: null
     }
   },
-  argTypes: {
-    footerTitle: {
-      name: 'title',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's title",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerTelephone: {
-      name: 'telephone',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's telephone",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerTelephoneComplement: {
-      name: 'telephone complement',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's telephone complement",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerEmail: {
-      name: 'email',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's email",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerLink: {
-      name: 'link',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's link",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerTextLink: {
-      name: 'text link',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's text link",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerDescription: {
-      name: 'description',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's description",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    },
-    footerCopyrightText: {
-      name: 'copyright text',
-      type: { name: 'string', required: false },
-      description: "String wich defines footer's copyright text",
-      control: { type: 'text' },
-      table: {
-        category: 'Footer'
-      }
-    }
-  }
+  argTypes: { ...footerArgTypes }
 };
 
 export interface FooterStoryProps {
@@ -94,9 +22,12 @@ export interface FooterStoryProps {
   footerTextLink: string;
   footerDescription: string;
   footerCopyrightText: string;
+  footerSignatureText: string;
+  footerSignatureLink: string;
+  footerLargeFooter: boolean;
 }
 
-const Template: Story<FooterStoryProps> = (args) => {
+const Template: StoryFn<FooterStoryProps> = (args) => {
   return (
     <Footer
       title={`${args.footerTitle}`}
@@ -107,18 +38,22 @@ const Template: Story<FooterStoryProps> = (args) => {
       textLink={`${args.footerLink}`}
       description={`${args.footerDescription}`}
       copyrightText={`${args.footerCopyrightText}`}
+      signatureText={args.footerSignatureText}
+      signatureLink={`${args.footerSignatureLink}`}
+      largeFooter={args.footerLargeFooter}
     />
   );
 };
 
 export const Footer_ = Template.bind({});
 Footer_.args = {
-  footerTitle: 'TITULO DO FOOTER',
+  footerTitle: 'FOOTER TITLE',
   footerTelephone: '(xx) xxxx-xxxx',
-  footerTelephoneComplement: 'Ramal: xxxx / xxxx',
+  footerTelephoneComplement: 'Internal number: xxxx / xxxx',
   footerEmail: 'sample@email.com',
   footerLink: 'https://www.google.com',
-  footerTextLink: 'Site',
-  footerDescription: 'Descrição do footer com \n quebra de linha',
-  footerCopyrightText: 'CIn UFPE | Todos os direitos reservados'
+  footerTextLink: 'Website',
+  footerDescription: "Footer's description with \n line break",
+  footerCopyrightText: 'CIn UFPE |  All rights reserved',
+  footerLargeFooter: true
 };

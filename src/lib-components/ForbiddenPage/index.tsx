@@ -3,7 +3,7 @@ import forbidden_403 from '../../assets/icons/forbidden_403.svg';
 import { Button, Avatar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation, useNavigate, To } from 'react-router-dom';
-import Keycloak from 'keycloak-js';
+import { AuthContextProps } from 'react-oidc-context';
 import {
   ErrorImg,
   MediumText,
@@ -12,8 +12,9 @@ import {
   PageContent
 } from './styles';
 
-interface ForbiddenPageProps {
-  keycloak: Keycloak;
+export interface ForbiddenPageProps {
+  auth?: AuthContextProps;
+  publicURL?: string;
 }
 
 interface Location {
@@ -25,27 +26,23 @@ interface Location {
   };
 }
 
-export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
-  const [email, setEmail] = useState<string>();
+export const ForbiddenPage = ({ auth, publicURL }: ForbiddenPageProps) => {
+  const email = auth?.user?.profile.email;
+  const baseURL = publicURL ?? process.env.PUBLIC_URL;
   const [from, setFrom] = useState<string>();
   const navigate = useNavigate();
   const location = useLocation() as Location;
-
   useEffect(() => {
-    async function getEmail() {
-      setEmail(keycloak.tokenParsed?.email);
-    }
-    getEmail();
     if (location.state?.from !== undefined) {
       setFrom(location.state.from.pathname);
     } else {
-      navigate(process.env.PUBLIC_URL as To);
+      navigate(baseURL as To);
     }
   }, []);
 
   const logout = async () => {
-    await keycloak.logout({
-      redirectUri: `${window.location.origin}/${from}`
+    await auth?.signoutRedirect({
+      post_logout_redirect_uri: `${window.location.origin}/${from}`
     });
   };
 
@@ -55,10 +52,10 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
         src={forbidden_403}
         alt='Imagem indicando erro 403 - Acesso negado'
       />
-      <MediumText>Você está logado como:</MediumText>
+      <MediumText>You are logged in as:</MediumText>
       <EmailContainer>
         <Avatar src='/broken-image.jpg' />
-        <EmailText>{email}</EmailText>
+        <EmailText>{email ?? ''}</EmailText>
       </EmailContainer>
       <Button
         sx={{
@@ -76,7 +73,7 @@ export const ForbiddenPage = ({ keycloak }: ForbiddenPageProps) => {
         variant='outlined'
         startIcon={<LogoutIcon />}
       >
-        Deslogar
+        Log out
       </Button>
     </PageContent>
   );

@@ -9,6 +9,7 @@ export const HamburgerButton = ({
   isOpen = false,
   onClick = () => {}
 }: HamburgerButtonProps) => {
+
   return (
     <Hamburger type='button' onClick={onClick} isOpen={isOpen}>
       <HambTop />
