@@ -90,7 +90,7 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.11.14",
+    "@mui/material": "^7.0.0",
     "@rollup/plugin-url": "^6.1.0",
     "buffer": "^6.0.3",
     "postcss": "^8.4.31",
