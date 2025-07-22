@@ -25,6 +25,7 @@ export interface FooterStoryProps {
   footerSignatureText: string;
   footerSignatureLink: string;
   footerLargeFooter: boolean;
+  footerAppVersion: string;
 }
 
 const Template: StoryFn<FooterStoryProps> = (args) => {
@@ -41,6 +42,7 @@ const Template: StoryFn<FooterStoryProps> = (args) => {
       signatureText={args.footerSignatureText}
       signatureLink={`${args.footerSignatureLink}`}
       largeFooter={args.footerLargeFooter}
+      appVersion={args.footerAppVersion}
     />
   );
 };
@@ -55,5 +57,6 @@ Footer_.args = {
   footerTextLink: 'Website',
   footerDescription: "Footer's description with \n line break",
   footerCopyrightText: 'CIn UFPE |  All rights reserved',
-  footerLargeFooter: true
+  footerLargeFooter: true,
+  footerAppVersion: '2.2.2'
 };

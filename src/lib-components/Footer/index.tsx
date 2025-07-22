@@ -11,7 +11,8 @@ import {
   CopyrightText,
   StyledFooter,
   ParentFooter,
-  SignatureText
+  SignatureText,
+  VersionSpan
 } from './styles';
 import cnmHeartIcon from '../../assets/icons/cnmheart.svg';
 export interface FooterProps {
@@ -26,6 +27,7 @@ export interface FooterProps {
   signatureText?: string;
   signatureLink?: string;
   largeFooter?: boolean;
+  appVersion?: string
 }
 
 export const Footer = ({
@@ -39,7 +41,8 @@ export const Footer = ({
   copyrightText,
   signatureText,
   signatureLink,
-  largeFooter = true
+  largeFooter = true,
+  appVersion
 }: FooterProps) => {
   return (
     <ParentFooter>
@@ -103,6 +106,7 @@ export const Footer = ({
             </SignatureText>
           ) : (
             <SignatureText>
+              <VersionSpan>version: {appVersion}</VersionSpan>
               <a
                 href='https://www.npmjs.com/package/@cincoders/cinnamon'
                 style={{ color: 'white', zIndex: 3, textDecoration: 'none' }}
