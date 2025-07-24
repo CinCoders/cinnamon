@@ -106,7 +106,8 @@ export const Footer = ({
             </SignatureText>
           ) : (
             <SignatureText>
-              <VersionSpan>version: {appVersion}</VersionSpan>
+              { appVersion && <VersionSpan>version: {appVersion}</VersionSpan> }
+              
               <a
                 href='https://www.npmjs.com/package/@cincoders/cinnamon'
                 style={{ color: 'white', zIndex: 3, textDecoration: 'none' }}
