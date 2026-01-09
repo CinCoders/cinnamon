@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,6 +27,10 @@ const config: StorybookConfig = {
     viteConfig.resolve.alias = Array.isArray(currentAlias) 
       ? [...currentAlias, { find: "@", replacement }]
       : { ...(currentAlias ?? {}), "@": replacement };
+
+    // --- Tailwind v4 plugin ---
+    viteConfig.plugins ??= [];
+    viteConfig.plugins.push(tailwindcss());
 
     return viteConfig;
   },
