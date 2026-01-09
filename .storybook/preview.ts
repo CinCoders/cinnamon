@@ -3,21 +3,37 @@ import '../src/styles/globals.css'
 import type { Preview } from '@storybook/react-vite'
 
 const preview: Preview = {
-  parameters: {
-    controls: {
-      matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
+  tags: ["autodocs"],
+
+  globalTypes: {
+    theme: {
+      description: "Global theme for components",
+      defaultValue: "light",
+      toolbar: {
+        title: "Theme",
+        icon: "circlehollow",
+        items: [
+          { value: "light", title: "Light" },
+          { value: "dark", title: "Dark" },
+        ],
+        dynamicTitle: true,
       },
     },
-
-    a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: 'todo'
-    }
   },
+
+  decorators: [
+    (Story, context) => {
+      const isDark = context.globals.theme === "dark";
+      
+      document.documentElement.classList.toggle("darl", isDark);
+      document.body.classList.toggle("dark", isDark);
+      
+      // const root = document.documentElement;
+      // root.classList.toggle("dark", isDark);
+
+      return Story();
+    },
+  ],
 };
 
 export default preview;

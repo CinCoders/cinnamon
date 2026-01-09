@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 
+src/stories/TailwindSanity.stories.tsx
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
