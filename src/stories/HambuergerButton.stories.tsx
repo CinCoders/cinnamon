@@ -3,7 +3,7 @@ import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { useState } from "react";
 
 const meta: Meta<typeof HamburgerButton> = {
-  title: "Lib Components/HamburgerButton",
+  title: "Components/HamburgerButton",
   component: HamburgerButton,
   args: { isOpen: false },
 };
