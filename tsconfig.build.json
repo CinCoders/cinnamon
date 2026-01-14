@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/index.ts",
+    "src/lib-components/**/*",
+    "src/components/**/*",
+    "src/lib/**/*",
+    "src/utils/**/*",
+    "src/interfaces/**/*"
+  ],
+  "exclude": [
+    "src/stories/**/*",
+    "src/main.tsx",
+    "src/App.tsx",
+    "src/index.css"
+  ]
+}

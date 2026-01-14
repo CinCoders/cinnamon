@@ -3,13 +3,24 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/cinnamon.ssr.js",
+  "module": "dist/cinnamon.esm.js",
+  "browser": "dist/cinnamon.esm.js",
+  "unpkg": "dist/cinnamon.min.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build:lib:js": "vite build -c vite.lib.config.ts",
+    "build:lib:types": "tsc -p tsconfig.build.json",
+    "build:lib": "npm run build:lib:js && npm run build:lib:types"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
