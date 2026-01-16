@@ -5,6 +5,34 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+function createRipple(
+  e: React.PointerEvent<HTMLElement>,
+  color: string
+) {
+  const target = e.currentTarget as HTMLElement;
+
+  // garante que o ripple apareça “dentro” do botão
+  const rect = target.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+
+  const x = e.clientX - rect.left - size / 2;
+  const y = e.clientY - rect.top - size / 2;
+
+  const ripple = document.createElement("span");
+  ripple.className = "ripple-effect";
+  ripple.style.width = `${size}px`;
+  ripple.style.height = `${size}px`;
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+  ripple.style.backgroundColor = color;
+
+  target.appendChild(ripple);
+
+  ripple.addEventListener("animationend", () => {
+    ripple.remove();
+  });
+}
+
 export interface DialogProps {
   type: "information" | "alert" | "decision" | "confirmation" | "error";
   title: string;
@@ -25,6 +53,14 @@ const typeToHeaderBg: Record<DialogProps["type"], string> = {
   error: "bg-red-600",
 };
 
+const typeToColorHex: Record<DialogProps["type"], string> = {
+  information: "#0f172a",   // ajuste se quiser (ou use o primary real)
+  alert: "#f59e0b",
+  decision: "#0284c7",
+  confirmation: "#059669",
+  error: "#dc2626",
+};
+
 export function Dialog({
   type,
   title,
@@ -38,6 +74,7 @@ export function Dialog({
 }: DialogProps) {
   const isSimple = type === "information" || type === "alert";
   const headerBg = typeToHeaderBg[type];
+  const accent = typeToColorHex[type];
 
   function onHide() {
     setVisibility(false);
@@ -58,7 +95,7 @@ export function Dialog({
         />
 
         <DialogPrimitive.Content
-        onEscapeKeyDown={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
           onPointerDownOutside={(e) => e.preventDefault()}
           className={cn(
             "fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
@@ -73,10 +110,6 @@ export function Dialog({
             <DialogPrimitive.Title className="text-sm font-semibold text-white">
                 {title}
             </DialogPrimitive.Title>
-
-            <DialogPrimitive.Close className="rounded-sm p-1 text-white/80 hover:bg-white/20 focus:outline-none">
-                ✕
-            </DialogPrimitive.Close>
           </div>
 
           {/* body */}
@@ -96,13 +129,18 @@ export function Dialog({
                   type="button"
                   variant="ghost"
                   onClick={rejectFunction ?? onHide}
+                  className="relative overflow-hidden"
+                  style={{ color: accent }}
+                  onPointerDown={(e) => createRipple(e, `${accent}55`)} // 55 ~ alpha
                 >
                   {rejectLabel}
                 </Button>
                 <Button
                   type="button"
                   onClick={acceptFunction ?? onHide}
-                  className={cn("text-white", headerBg)}
+                  className="relative overflow-hidden text-white"
+                  style={{ backgroundColor: accent }}
+                  onPointerDown={(e) => createRipple(e, "rgba(255,255,255,.35)")}
                 >
                   {acceptLabel}
                 </Button>

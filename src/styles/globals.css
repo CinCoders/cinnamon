@@ -53,3 +53,16 @@
   --color-border: hsl(var(--border));
   --color-ring: hsl(var(--ring));
 }
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: .35; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 9999px;
+  transform: scale(0);
+  animation: ripple 550ms ease-out;
+  pointer-events: none;
+}
