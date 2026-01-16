@@ -21,12 +21,10 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    
     "build:lib:js": "vite build -c vite.lib.config.ts",
     "build:lib:types": "tsc -p tsconfig.build.json",
     "build:lib:css": "postcss src/styles/cinnamon.css -o dist/cinnamon.css",
     "build:lib": "npm run build:lib:js && npm run build:lib:types && npm run build:lib:css",
-    
     "build-link": "npm i && npm run build:lib && rm -rf ./node_modules/react ./node_modules/react-dom ./node_modules/react-router-dom/ && yarn unlink && yarn link"
   },
   "repository": {
@@ -50,6 +48,7 @@
   ],
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
