@@ -1,6 +1,7 @@
 import '../src/styles/globals.css'
 
 import type { Preview } from '@storybook/react-vite'
+import { AppToaster } from "../src/components/ui/toaster"
 
 const preview: Preview = {
   tags: ["autodocs"],
@@ -25,13 +26,18 @@ const preview: Preview = {
     (Story, context) => {
       const isDark = context.globals.theme === "dark";
       
-      document.documentElement.classList.toggle("darl", isDark);
-      document.body.classList.toggle("dark", isDark);
+      document.documentElement.classList.toggle("dark", isDark);
+      //document.body.classList.toggle("dark", isDark);
       
       // const root = document.documentElement;
       // root.classList.toggle("dark", isDark);
 
-      return Story();
+      return (
+        <div className="min-h-screen bg-background text-foreground">
+          <AppToaster />
+          <Story />
+        </div>
+      );
     },
   ],
 };
