@@ -1,0 +1,48 @@
+import type { ComponentType } from "react";
+
+export interface Role {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface Position {
+  id: number;
+  name: string;
+  roles?: Role[];
+}
+
+export interface User {
+  name: string;
+  email: string;
+  username?: string;
+  profilePictureUrl?: string;
+  positions?: Position[];
+}
+
+export interface System {
+  title: string;
+  iconUrl?: string;
+  IconComponent?: ComponentType<any>;
+  description: string;
+  href: string;
+  visibleRole?: string;
+}
+
+export interface Link {
+  id: number;
+  iconUrl?: string;
+  IconComponent?: ComponentType<any>;
+  title: string;
+  href?: string;
+  external?: boolean;
+}
+
+export interface SideMenuLink extends Link {
+  children?: Link[];
+}
+
+export interface Option {
+  value: string;
+  text: string;
+}
