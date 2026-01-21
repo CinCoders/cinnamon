@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, SVGProps } from "react";
 
 export interface Role {
   id: number;
@@ -23,7 +23,7 @@ export interface User {
 export interface System {
   title: string;
   iconUrl?: string;
-  IconComponent?: ComponentType<any>;
+  IconComponent?: ComponentType<SVGProps<SVGSVGElement>>;
   description: string;
   href: string;
   visibleRole?: string;

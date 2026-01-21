@@ -24,7 +24,7 @@ export function SystemsPopup({ systemsList = [] }: SystemsPopupProps) {
             <a
               href={system.href}
               key={`system_${system.title}`}
-              className="flex h-24 flex-col items-center justify-center gap-2 rounded-md p-2 no-underline transition hover:bg-accent"
+              className="group flex h-24 flex-col items-center justify-center gap-2 rounded-md p-2 no-underline transition hover:bg-[#E6E6E6]"
             >
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -33,7 +33,7 @@ export function SystemsPopup({ systemsList = [] }: SystemsPopupProps) {
                         iconUrl={system.iconUrl}
                         alt={system.title}
                         IconComponent={system.IconComponent}
-                        className="h-10 w-10"
+                        className="h-10 w-10 text-[#DB1E2F] transition-transform group-hover:scale-105"
                     />
                   </div>
                 </TooltipTrigger>

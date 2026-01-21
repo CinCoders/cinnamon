@@ -20,17 +20,19 @@ export function IconRenderer({
 }: IconRendererProps) {
   const size = `${sizeRem}rem`;
 
-  return (
-    <div className={cn("inline-flex items-center justify-center", className)}>
-      {iconUrl ? (
-        <img
-          src={iconUrl}
-          alt={alt ? `${alt} icon` : "icon"}
-          style={{ width: size, height: size }}
-        />
-      ) : IconComponent ? (
-        <IconComponent />
-      ) : null}
-    </div>
-  );
+  if (iconUrl) {
+    return (
+      <img
+        src={iconUrl}
+        alt={alt ? `${alt} icon` : "icon"}
+        style={{ width: size, height: size }}
+      />
+    );
+  }
+
+  if (IconComponent) {
+    return <IconComponent className={cn(className)} />;
+  }
+
+  return null;
 }
