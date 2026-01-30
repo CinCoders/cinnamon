@@ -18,6 +18,7 @@
   },
   "include": [
     "src/index.ts",
+    "src/entry-server.ts",
     "src/lib-components/**/*",
     "src/components/**/*",
     "src/lib/**/*",

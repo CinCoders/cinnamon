@@ -23,12 +23,14 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react-router-dom"],
+      external: ["react", "react-dom", "react-router-dom", "react/jsx-runtime", "react/jsx-dev-runtime",],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
           "react-router-dom": "ReactRouterDOM",
+          "react/jsx-runtime": "jsxRuntime",
+          "react/jsx-dev-runtime": "jsxDevRuntime",
         },
       },
     },

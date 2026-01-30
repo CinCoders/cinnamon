@@ -18,10 +18,24 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/cinnamon.esm.js",
+      "default": "./dist/cinnamon.esm.js"
+    },
+    "./server": {
+      "types": "./dist/entry-server.d.ts",
+      "import": "./dist/cinnamon.server.js",
+      "default": "./dist/cinnamon.server.js"
+    },
+    "./dist/cinnamon.css": "./dist/cinnamon.css"
+  },
+
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build:lib:js": "vite build -c vite.lib.config.ts",
+    "build:lib:js": "vite build -c vite.lib.config.ts && vite build -c vite.server.config.ts",
     "build:lib:types": "tsc -p tsconfig.build.json",
     "build:lib:css": "postcss src/styles/cinnamon.css -o dist/cinnamon.css",
     "build:lib": "npm run build:lib:js && npm run build:lib:types && npm run build:lib:css",
@@ -55,6 +69,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
+    "react-oidc-context": "^3.3.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18"
