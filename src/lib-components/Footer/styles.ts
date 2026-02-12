@@ -155,3 +155,7 @@ export const SignatureText = styled.div`
     display: none;
   }
 `;
+
+export const VersionSpan = styled.span`
+  margin-right: 100px
+`
