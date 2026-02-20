@@ -1,18 +1,10 @@
-// src/components/SideMenu/SideMenu.tsx
+// cinnamon-v2/src/components/SideMenu/SideMenu.tsx
 "use client";
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import type { Link as CinnamonLink, SideMenuLink } from "@/interfaces";
 import { ChevronDown, ChevronUp } from "lucide-react";
-
-/**
- * SideMenu (cinnamon-v2)
- * - Tailwind only (sem shadcn Collapsible)
- * - Suporta links internos/externos via `external`
- * - Suporta `children` com animação tipo fade/slide (legado)
- * - Drawer simples (overlay + panel) com `top` (offset do header)
- */
 
 export interface SideMenuProps {
   links: SideMenuLink[];
@@ -25,6 +17,11 @@ function isExternal(link?: { external?: boolean; href?: string }) {
   return Boolean(link?.external);
 }
 
+/**
+ * Força o ícone a ficar branco:
+ * - img ok
+ * - svg: força text/stroke/fill (cobre lucide, mui icons, svgs diversos)
+ */
 function ItemIcon({
   iconUrl,
   title,
@@ -40,6 +37,8 @@ function ItemIcon({
     <span
       className={cn(
         "flex w-10 items-center justify-center text-white",
+        // força qualquer svg dentro a ser branco
+        "[&_svg]:h-5 [&_svg]:w-5 [&_svg]:text-white [&_svg]:stroke-white [&_svg]:fill-white",
         className
       )}
     >
@@ -67,8 +66,6 @@ function SameTabLink({
   children: React.ReactNode;
   className?: string;
 }) {
-  // Mantém igual ao legado: SameTabLink era react-router Link.
-  // Como cinnamon-v2 é lib, a gente usa <a>. Quem consome decide integrar com router.
   return (
     <a
       href={href ?? "#"}
@@ -116,13 +113,11 @@ export function SideMenu({
   visibility = false,
   setVisibility,
 }: SideMenuProps) {
-  // Estado de expand/collapse dos grupos
   const [openGroups, setOpenGroups] = React.useState<Record<number, boolean>>(
     {}
   );
 
   React.useEffect(() => {
-    // reseta/initializa quando lista muda
     const next: Record<number, boolean> = {};
     for (const l of links ?? []) next[l.id] = false;
     setOpenGroups(next);
@@ -135,11 +130,9 @@ export function SideMenu({
   }
 
   function onNavigate() {
-    // no legado: clicar fecha o drawer
     close();
   }
 
-  // Top pode ser "64px". Converte pra número pra usar calc.
   const topValue = top ?? "0px";
   const topNum = Number.parseFloat(topValue) || 0;
 
@@ -148,7 +141,7 @@ export function SideMenu({
       {/* Overlay */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity",
+          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-200",
           visibility ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         style={{ top: topValue }}
@@ -188,8 +181,7 @@ export function SideMenu({
               const isOpen = Boolean(openGroups[link.id]);
               const external = isExternal(link);
 
-              const Row =
-                external || !link.href ? NewTabLink : SameTabLink;
+              const Row = external || !link.href ? NewTabLink : SameTabLink;
 
               return (
                 <li key={link.id} className="w-full">
@@ -201,8 +193,10 @@ export function SideMenu({
                       className={cn(
                         "flex w-full items-center justify-between px-2",
                         "min-h-[54px]",
-                        "hover:bg-white/10 transition-colors",
-                        "border-b border-white/10"
+                        "border-b border-white/10",
+                        "transition-colors duration-150",
+                        "hover:bg-white/10 active:bg-white/15",
+                        "active:scale-[0.99]"
                       )}
                     >
                       <div className="flex items-center gap-2">
@@ -216,9 +210,9 @@ export function SideMenu({
 
                       <span className="pr-2 text-white">
                         {isOpen ? (
-                          <ChevronUp className="h-4 w-4" />
+                          <ChevronUp className="h-4 w-4 text-white" />
                         ) : (
-                          <ChevronDown className="h-4 w-4" />
+                          <ChevronDown className="h-4 w-4 text-white" />
                         )}
                       </span>
                     </button>
@@ -227,8 +221,10 @@ export function SideMenu({
                       href={link.href}
                       onClick={onNavigate}
                       className={cn(
-                        "hover:bg-white/10 transition-colors",
-                        "border-b border-white/10"
+                        "border-b border-white/10",
+                        "transition-colors duration-150",
+                        "hover:bg-white/10 active:bg-white/15",
+                        "active:scale-[0.99]"
                       )}
                     >
                       <div className="flex items-center gap-2">
@@ -240,47 +236,57 @@ export function SideMenu({
                         <span className="text-sm">{link.title}</span>
                       </div>
 
-                      {/* Espaçador pra alinhar com linhas que tem chevron */}
                       <span className="w-8" />
                     </Row>
                   )}
 
-                  {/* Children (fade/slide “tipo legado”) */}
-                  {hasChildren && isOpen && (
-                    <ul
+                  {/* Children (animação estilo legado) */}
+                  {hasChildren && (
+                    <div
                       className={cn(
                         "border-b border-white/10",
-                        "animate-in fade-in slide-in-from-top-1"
+                        // animação sem plugin: height + opacity + translate
+                        "overflow-hidden transition-all duration-200 ease-out",
+                        isOpen ? "max-h-96" : "max-h-0"
                       )}
                     >
-                      {link.children!.map((child: CinnamonLink) => {
-                        const childExternal = isExternal(child);
-                        const ChildRow = childExternal ? NewTabLink : SameTabLink;
+                      <ul
+                        className={cn(
+                          "transition-all duration-200 ease-out",
+                          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+                        )}
+                      >
+                        {link.children!.map((child: CinnamonLink) => {
+                          const childExternal = isExternal(child);
+                          const ChildRow = childExternal ? NewTabLink : SameTabLink;
 
-                        return (
-                          <li key={child.id} className="w-full">
-                            <ChildRow
-                              href={child.href}
-                              onClick={onNavigate}
-                              className={cn(
-                                "min-h-[35px] px-2",
-                                "hover:bg-white/10 transition-colors"
-                              )}
-                            >
-                              <div className="flex items-center gap-2">
-                                <span className="flex w-10 items-center justify-center text-white/70">
-                                  •
-                                </span>
-                                <span className="text-sm text-white/90">
-                                  {child.title}
-                                </span>
-                              </div>
-                              <span className="w-8" />
-                            </ChildRow>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                          return (
+                            <li key={child.id} className="w-full">
+                              <ChildRow
+                                href={child.href}
+                                onClick={onNavigate}
+                                className={cn(
+                                  "min-h-[35px] px-2",
+                                  "transition-colors duration-150",
+                                  "hover:bg-white/10 active:bg-white/15",
+                                  "active:scale-[0.99]"
+                                )}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <span className="flex w-10 items-center justify-center text-white/70">
+                                    •
+                                  </span>
+                                  <span className="text-sm text-white/90">
+                                    {child.title}
+                                  </span>
+                                </div>
+                                <span className="w-8" />
+                              </ChildRow>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
                   )}
                 </li>
               );
