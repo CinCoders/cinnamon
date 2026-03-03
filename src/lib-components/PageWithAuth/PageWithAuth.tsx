@@ -2,8 +2,8 @@
 
 import type { AuthContextProps } from "react-oidc-context";
 
-import { Page, type PageProps } from "../Page";
-import { RequireAuthClient } from "../RequireAuth";
+import { Page, type PageProps } from "../Page/Page";
+import { RequireAuth } from "../RequireAuth";
 
 interface PageWithAuthProps extends PageProps {
   authProps: {
@@ -26,7 +26,7 @@ export function PageWithAuth({
   const { auth, permittedRoles } = authProps;
 
   return (
-    <RequireAuthClient auth={auth} permittedRoles={permittedRoles}>
+    <RequireAuth auth={auth} permittedRoles={permittedRoles}>
       <Page
         navbar={navbar}
         footer={footer}
@@ -37,6 +37,6 @@ export function PageWithAuth({
       >
         {children}
       </Page>
-    </RequireAuthClient>
+    </RequireAuth>
   );
 }

@@ -4,20 +4,21 @@ import * as React from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { User } from "@/interfaces";
 
 export type AuthLike = {
   signoutRedirect?: () => void;
 };
 
-type Role = { id: string; name: string; description?: string };
-type Position = { id: string; name: string; roles?: Role[] };
+// permite passar User completo OU parcial, e mantém compatibilidade de tipo
+export type UserLike = Partial<User>;
 
-export type UserLike = {
-  name?: string;
-  username?: string;
-  email?: string;
-  positions?: Position[];
-};
+// export type UserLike = {
+//   name?: string;
+//   username?: string;
+//   email?: string;
+//   positions?: Position[];
+// };
 
 export interface UserPopupProps {
   user?: UserLike;
@@ -25,7 +26,6 @@ export interface UserPopupProps {
   auth?: AuthLike;
   accountManagementUrl?: string;
 }
-
 
 export function UserPopup(props: UserPopupProps) {
   const {

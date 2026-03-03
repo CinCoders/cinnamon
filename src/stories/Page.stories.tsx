@@ -56,10 +56,7 @@ const meta: Meta<PageStoryArgs> = {
     // Footer
     footerTitle: { control: "text", table: { category: "Footer" } },
     footerTelephone: { control: "text", table: { category: "Footer" } },
-    footerTelephoneComplement: {
-      control: "text",
-      table: { category: "Footer" },
-    },
+    footerTelephoneComplement: { control: "text", table: { category: "Footer" } },
     footerEmail: { control: "text", table: { category: "Footer" } },
     footerLink: { control: "text", table: { category: "Footer" } },
     footerTextLink: { control: "text", table: { category: "Footer" } },

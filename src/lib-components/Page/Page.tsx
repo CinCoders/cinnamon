@@ -143,9 +143,9 @@ export interface PageProps {
   flexDirection?: "column" | "column-reverse" | "row";
   haveToast?: boolean;
   components?: {
-    navbar?: JSX.Element;
-    footer?: JSX.Element;
-    toastContainer?: JSX.Element;
+    navbar?: React.ReactNode;
+    footer?: React.ReactNode;
+    toastContainer?: React.ReactNode;
   };
   createNavbarContext?: boolean;
 }

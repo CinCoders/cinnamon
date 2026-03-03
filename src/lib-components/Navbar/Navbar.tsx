@@ -7,9 +7,9 @@ import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
 import type { User, SideMenuLink, System } from "@/interfaces";
 import { SideMenu } from "@/components/SideMenu/SideMenu";
-import { HamburgerButton } from "@/components/HamburgerButton";
-import { UserPopup } from "@/components/UserPopup";
-import { SystemsPopup } from "@/components/SystemsPopup";
+import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
+import { UserPopup } from "@/components/UserPopup/UserPopup";
+import { SystemsPopup } from "@/components/SystemsPopup/SystemsPopup";
 import { IconRenderer } from "@/lib-components/IconRender";
 
 import { cn } from "@/lib/utils";
@@ -31,8 +31,8 @@ export interface NavbarProps {
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
-  IconComponent?: JSXElementConstructor<any>;
-  children?: JSX.Element;
+  IconComponent?: React.ComponentType<any>; // ou React.ElementType, mas aí teria que ser <IconComponent /> no JSX
+  children?: React.ReactNode;
   accountManagementUrl?: string;
 }
 
