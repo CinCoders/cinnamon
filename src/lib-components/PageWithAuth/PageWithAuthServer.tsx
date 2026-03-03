@@ -1,6 +1,8 @@
-import { Page, type PageProps } from "../Page/Page";
-import { RequireAuthServer } from "../RequireAuth";
+import type { ReactNode } from "react";
 import type { CinnamonSession } from "@/auth/types";
+
+import { Page, type PageProps } from "../Page";
+import { RequireAuthServer } from "../RequireAuth";
 
 type Props = PageProps & {
   authProps: {
@@ -8,36 +10,22 @@ type Props = PageProps & {
     permittedRoles: string[];
     onUnauthenticated: () => never;
   };
+  children: ReactNode;
 };
 
 export function PageWithAuthServer({
-  // authProps,
-  // navbar,
-  // footer,
-  // centralized = false,
-  // haveToast = false,
-  // createNavbarContext = true,
-  // components,
-  // children,
+  authProps,
+  children,
+  ...pageProps
 }: Props) {
   return (
-    <>
-    </>
-    // <RequireAuthServer
-    //   session={authProps.session}
-    //   permittedRoles={authProps.permittedRoles}
-    //   onUnauthenticated={authProps.onUnauthenticated}
-    // >
-    //   <Page
-    //     navbar={navbar}
-    //     footer={footer}
-    //     centralized={centralized}
-    //     haveToast={haveToast}
-    //     components={components}
-    //     createNavbarContext={createNavbarContext}
-    //   >
-    //     {children}
-    //   </Page>
-    // </RequireAuthServer>
+    <RequireAuthServer
+      session={authProps.session}
+      permittedRoles={authProps.permittedRoles}
+      onUnauthenticated={authProps.onUnauthenticated}
+    >
+      {/* Page é client. Se você quiser Page “server-safe”, eu já te explico abaixo */}
+      <Page {...pageProps}>{children as any}</Page>
+    </RequireAuthServer>
   );
 }
