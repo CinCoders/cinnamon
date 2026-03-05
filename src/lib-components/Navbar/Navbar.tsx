@@ -89,7 +89,7 @@ export function Navbar(props: NavbarProps) {
   return (
     <div className="w-full">
       {/* Header sticky */}
-      <header className="sticky top-0 z-50 w-full bg-white">
+      <header className="sticky top-0 z-50 w-full bg-white shadow-md">
         <div className="flex h-16 items-center justify-between px-3">
           {/* Left */}
           <div className="ml-3 flex items-center gap-2">
