@@ -1,0 +1,99 @@
+// import { redirect } from "next/navigation";
+// import { PageWithAuthServer } from "@cincoders/cinnamon"; // ajuste import conforme teu pacote
+
+// export default async function AppProtectedPage() {
+//   // MOCK 1: logado admin
+//   const session = {
+//     isAuthenticated: true,
+//     roles: ["admin"],
+//   };
+
+//   // MOCK 2: deslogado (descomenta pra ver redirect)
+//   // const session = { isAuthenticated: false, roles: [] };
+
+//   // MOCK 3: logado sem role (forbidden)
+//   // const session = { isAuthenticated: true, roles: ["user"] };
+
+//   return (
+//     <PageWithAuthServer
+//       authProps={{
+//         session,
+//         permittedRoles: ["admin"], // muda aqui pra testar
+//         onUnauthenticated: () => redirect("http://localhost:8080/"), // placeholder
+//       }}
+//       createNavbarContext
+//       haveToast={false}
+//     >
+//       <div>OK: renderizou conteúdo protegido no SERVER COMPONENT 🎯</div>
+//     </PageWithAuthServer>
+//   );
+// }
+
+// import { redirect } from "next/navigation";
+// import { RequireAuthServer } from "@cincoders/cinnamon/server";
+
+// export default async function ProtectedAppPage() {
+//   // MOCK: troque entre os cenários
+//   const session = {
+//      isAuthenticated: true,
+//      roles: ["admin"],
+//   };
+
+//   // Deslogado → redirect
+//   //const session = { isAuthenticated: false, roles: [] };
+
+//   // Sem role → forbidden
+//   //const session = { isAuthenticated: true, roles: ["user"] };
+
+//   return (
+//     <RequireAuthServer
+//       session={session}
+//       permittedRoles={["admin"]}
+//       onUnauthenticated={() => redirect("http://localhost:8080/")}
+//     >
+//       <div>Conteúdo protegido renderizando no SERVER ✅</div>
+//     </RequireAuthServer>
+//   );
+// }
+
+// import { redirect } from "next/navigation";
+// import { PageWithAuthServer } from "@cincoders/cinnamon/server";
+
+// export default async function ProtectedAppPage() {
+//   const session = { isAuthenticated: true, roles: ["admin"] };
+
+//   return (
+//     <PageWithAuthServer
+//       authProps={{
+//         session,
+//         permittedRoles: ["admin"],
+//         onUnauthenticated: () => redirect("http://localhost:8080/"),
+//       }}
+//       createNavbarContext={true}
+//       haveToast={false}
+//     >
+//       <div>Conteúdo protegido renderizando no SERVER ✅</div>
+//     </PageWithAuthServer>
+//   );
+// }
+
+import { redirect } from "next/navigation";
+import { PageWithAuthServer } from "@cincoders/cinnamon/server";
+
+export default async function ProtectedAppPage() {
+  const session = { isAuthenticated: true, roles: ["admin"] };
+
+  return (
+    <PageWithAuthServer
+      authProps={{
+        session,
+        permittedRoles: ["admin"],
+        onUnauthenticated: () => redirect("http://localhost:8080/"),
+      }}
+      centralized={false}
+      flexDirection="column"
+    >
+      <div>Conteúdo protegido renderizando no SERVER ✅</div>
+    </PageWithAuthServer>
+  );
+}
