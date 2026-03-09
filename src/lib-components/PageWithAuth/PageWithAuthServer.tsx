@@ -4,7 +4,7 @@ import type { CinnamonSession } from "@/auth/types";
 import { Page, type PageProps } from "../Page";
 import { RequireAuthServer } from "../RequireAuth";
 
-type Props = PageProps & {
+type PageWithAuthServerProps = PageProps & {
   authProps: {
     session: CinnamonSession | null;
     permittedRoles: string[];
@@ -17,7 +17,7 @@ export function PageWithAuthServer({
   authProps,
   children,
   ...pageProps
-}: Props) {
+}: PageWithAuthServerProps) {
   return (
     <RequireAuthServer
       session={authProps.session}

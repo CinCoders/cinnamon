@@ -23,7 +23,10 @@
     "src/components/**/*",
     "src/lib/**/*",
     "src/utils/**/*",
-    "src/interfaces/**/*"
+    "src/interfaces/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts"
   ],
   "exclude": [
     "src/stories/**/*",
