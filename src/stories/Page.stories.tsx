@@ -75,7 +75,7 @@ const meta: Meta<PageStoryArgs> = {
     isLandingPage: false,
     haveSearchBar: true,
     hiddenUser: false,
-    systemsListPopup: false,
+    systemsListPopup: true,
 
     footerTitle: "FOOTER TITLE",
     footerTelephone: "(xx) xxxx-xxxx",
@@ -103,7 +103,8 @@ export const Default: Story = {
         title: args.title,
         sideMenuLinks: testLinks,
         systemsList: args.systemsListPopup ? testSystems : [],
-        IconComponent: () => <Wrench className="h-6 w-6 text-[#db1e2f]" />,
+        //IconComponent: () => <Wrench className="h-6 w-6 text-[#db1e2f]" />,
+        IconComponent: undefined,
       }}
       footer={{
         title: args.footerTitle,

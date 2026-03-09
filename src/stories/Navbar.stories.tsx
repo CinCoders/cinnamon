@@ -32,7 +32,7 @@ const meta: Meta<NavbarStoryArgs> = {
     ),
 
     // 👇 propriedade exclusiva da story
-    systemsListPopup: false,
+    systemsListPopup: true,
   },
 
   argTypes: {

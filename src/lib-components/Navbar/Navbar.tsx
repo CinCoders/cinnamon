@@ -89,35 +89,32 @@ export function Navbar(props: NavbarProps) {
   return (
     <div className="w-full">
       {/* Header sticky */}
-      <header className="sticky top-0 z-50 w-full bg-white shadow-md">
-        <div className="flex h-16 items-center justify-between px-3">
-          {/* Left */}
-          <div className="ml-3 flex items-center gap-2">
+      <header className="sticky top-0 z-50 w-full bg-white shadow-md relative">
+        <div className="flex h-16 items-center px-3">
+          {/* LEFT */}
+          <div className="flex items-center gap-2">
             {!isLandingPage && sideMenuLinks.length !== 0 && (
               <HamburgerButton
                 isOpen={sideMenuOpen}
                 onClick={() => setSideMenuOpen((v) => !v)}
               />
             )}
-            {!isLandingPage && (
-              <IconRenderer
-                iconUrl={currentSystemIconUrl}
-                IconComponent={IconComponent}
-              />
+
+            {!isLandingPage && currentSystemIconUrl && (
+              <IconRenderer iconUrl={currentSystemIconUrl} />
             )}
+
+            <div className="ml-2 text-[#2c2c2c] whitespace-nowrap">
+              {h1 ? (
+                <span className="text-2xl font-semibold">{title}</span>
+              ) : (
+                <span className="text-xl">{title}</span>
+              )}
+            </div>
           </div>
 
-          {/* Title */}
-          <div className="mx-8 text-[#2c2c2c] min-w-0">
-            {h1 ? (
-              <span className="text-2xl font-semibold">{title}</span>
-            ) : (
-              <span className="text-xl">{title}</span>
-            )}
-          </div>
-
-          {/* Search */}
-          <div className="mx-8 flex justify-center">
+          {/* SEARCH (flex-1 empurra o right) */}
+          <div className="flex-1 px-4 flex justify-end">
             {haveSearchBar && (
               <input
                 className="h-[2.7rem] w-[25vw] max-w-[30rem] rounded-[10px] bg-[#f2f2f2] pl-8 pr-8 outline-none"
@@ -128,13 +125,16 @@ export function Navbar(props: NavbarProps) {
             )}
           </div>
 
-          {/* Right */}
-          <div className="mr-3 flex items-center gap-2">
+          {/* RIGHT */}
+          <div className="flex items-center gap-2">
+            {/* Systems (grid) */}
             {!isLandingPage && systemsList.length > 0 && (
               <div className="relative">
                 <button
                   type="button"
                   className="h-10 w-10"
+                  aria-haspopup="menu"
+                  aria-expanded={systemsOpen}
                   onClick={() => setSystemsOpen((v) => !v)}
                 >
                   <img
@@ -149,7 +149,7 @@ export function Navbar(props: NavbarProps) {
                 </button>
 
                 {systemsOpen && (
-                  <div className="absolute right-0 top-12 z-50">
+                  <div className="absolute right-0 top-12 z-[9999]">
                     <SystemsPopup systemsList={systemsList} />
                   </div>
                 )}
@@ -184,7 +184,7 @@ export function Navbar(props: NavbarProps) {
                 </button>
 
                 {userOpen && (
-                  <div className="absolute right-0 top-12 z-50">
+                  <div className="absolute right-0 top-12 z-[9999]">
                     <UserPopup
                       user={profile}
                       auth={merged.auth}
@@ -196,7 +196,7 @@ export function Navbar(props: NavbarProps) {
             )}
           </div>
         </div>
-      </header>
+      </header> 
 
       {/* SideMenu default igual legado */}
       {!isLandingPage &&
