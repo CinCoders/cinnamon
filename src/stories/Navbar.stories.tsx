@@ -14,7 +14,7 @@ type NavbarStoryArgs = NavbarProps & {
 };
 
 const meta: Meta<NavbarStoryArgs> = {
-  title: "Components/Navbar",
+  title: "Lib Components/Navbar",
   component: Navbar,
   parameters: { docs: { page: null } },
 
@@ -27,9 +27,7 @@ const meta: Meta<NavbarStoryArgs> = {
     sideMenuLinks: testLinks,
     title: "Cinnamon",
     systemsList: [],
-    IconComponent: () => (
-      <Wrench className="h-6 w-6 text-[#db1e2f]" />
-    ),
+    IconComponent: () => <Wrench className="h-6 w-6 text-[#db1e2f]" />,
 
     // 👇 propriedade exclusiva da story
     systemsListPopup: true,
@@ -38,8 +36,7 @@ const meta: Meta<NavbarStoryArgs> = {
   argTypes: {
     systemsListPopup: {
       control: "boolean",
-      description:
-        "Mostra/oculta o popup de sistemas (injeta systemsList).",
+      description: "Mostra/oculta o popup de sistemas (injeta systemsList).",
       table: { category: "Story" },
     },
 

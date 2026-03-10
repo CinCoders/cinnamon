@@ -2,7 +2,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Page } from "../lib-components/Page/Page";
 import { testLinks, testSystems, testUser } from "./sampleData/SampleData";
-import { Wrench } from "lucide-react";
 
 type PageStoryArgs = {
   // Children
@@ -33,7 +32,7 @@ type PageStoryArgs = {
 };
 
 const meta: Meta<PageStoryArgs> = {
-  title: "Components/Page",
+  title: "Lib Components/Page",
   component: Page as unknown as React.ComponentType<any>, // cast simples p/ Page aceitar story-args
   parameters: { docs: { page: null } },
 
@@ -56,7 +55,10 @@ const meta: Meta<PageStoryArgs> = {
     // Footer
     footerTitle: { control: "text", table: { category: "Footer" } },
     footerTelephone: { control: "text", table: { category: "Footer" } },
-    footerTelephoneComplement: { control: "text", table: { category: "Footer" } },
+    footerTelephoneComplement: {
+      control: "text",
+      table: { category: "Footer" },
+    },
     footerEmail: { control: "text", table: { category: "Footer" } },
     footerLink: { control: "text", table: { category: "Footer" } },
     footerTextLink: { control: "text", table: { category: "Footer" } },
