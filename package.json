@@ -1,6 +1,5 @@
 {
   "name": "@cincoders/cinnamon",
-  "private": false,
   "version": "2.0.0",
   "description": "A collection components for standardized system appearance and functionality, easing development in web applications.",
   "license": "MIT",
@@ -110,5 +109,6 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vitest": "^4.0.16"
-  }
+  },
+  "packageManager": "yarn@4.13.0"
 }

@@ -4,6 +4,7 @@ export interface PageServerProps {
   children: ReactNode;
   centralized?: boolean;
   flexDirection?: "column" | "column-reverse" | "row";
+  haveToast?: boolean;
   components?: {
     navbar?: ReactNode;
     footer?: ReactNode;
@@ -15,6 +16,7 @@ export function PageServer({
   children,
   centralized = false,
   flexDirection = "column",
+  haveToast = false,
   components,
 }: PageServerProps) {
   return (
@@ -32,7 +34,7 @@ export function PageServer({
           flexGrow: 1,
         }}
       >
-        {components?.toastContainer ?? null}
+        {haveToast ? (components?.toastContainer ?? null) : null}
         {children}
       </main>
 
