@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
+import type { NavbarProps } from "@/lib-components/Navbar/Navbar";
+import type { FooterProps } from "@/lib-components/Footer/Footer";
+
+import { Navbar } from "@/lib-components/Navbar/Navbar";
+import { Footer } from "@/lib-components/Footer/Footer";
 
 export interface PageServerProps {
+  navbar?: NavbarProps;
+  footer?: FooterProps;
   children: ReactNode;
   centralized?: boolean;
   flexDirection?: "column" | "column-reverse" | "row";
@@ -13,15 +20,20 @@ export interface PageServerProps {
 }
 
 export function PageServer({
+  navbar,
+  footer,
   children,
   centralized = false,
   flexDirection = "column",
   haveToast = false,
   components,
 }: PageServerProps) {
+  const cinnamonNavbar = navbar ? <Navbar {...navbar} /> : null;
+  const cinnamonFooter = footer ? <Footer {...footer} /> : null;
+
   return (
     <>
-      {components?.navbar ?? null}
+      {components?.navbar ?? cinnamonNavbar}
 
       <main
         className="flex w-full bg-white"
@@ -38,7 +50,7 @@ export function PageServer({
         {children}
       </main>
 
-      {components?.footer ?? null}
+      {components?.footer ?? cinnamonFooter}
     </>
   );
 }

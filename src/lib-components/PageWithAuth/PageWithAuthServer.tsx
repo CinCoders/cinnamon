@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { CinnamonSession } from "@/auth/types";
 
-import { PageServer, type PageServerProps } from "../Page/PageServer";
+import { PageServer, type PageServerProps } from "../Page";
 import { RequireAuthServer } from "../RequireAuth";
 
 type PageWithAuthServerProps = PageServerProps & {
@@ -24,8 +24,7 @@ export function PageWithAuthServer({
       permittedRoles={authProps.permittedRoles}
       onUnauthenticated={authProps.onUnauthenticated}
     >
-      {/* Page é client. Se você quiser Page “server-safe”, eu já te explico abaixo */}
-      <PageServer {...pageProps}>{children as any}</PageServer>
+      <PageServer {...pageProps}>{children}</PageServer>
     </RequireAuthServer>
   );
 }

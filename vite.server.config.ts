@@ -1,13 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+import preserveDirectives from "rollup-preserve-directives";
 
 const external = [
   "react",
   "react-dom",
-  "react-router-dom",
   "react/jsx-runtime",
   "react/jsx-dev-runtime",
+  "react-router-dom",
 ];
 
 export default defineConfig({
@@ -18,18 +19,23 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
-    emptyOutDir: false, // não apaga o dist do build principal
-    lib: {
-      entry: path.resolve(__dirname, "src/entry-server.ts"),
-      formats: ["es"],
-      fileName: () => "cinnamon.server.js",
-    },
+    outDir: "dist/server",
+    emptyOutDir: false,
+    copyPublicDir: false,
+    sourcemap: false,
     rollupOptions: {
+      input: path.resolve(__dirname, "src/entry-server.ts"),
       external,
+      preserveEntrySignatures: "exports-only",
+      plugins: [preserveDirectives()],
       output: {
+        dir: "dist/server",
         format: "es",
-        entryFileNames: "cinnamon.server.js",
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        chunkFileNames: "chunks/[name]-[hash].js",
+        exports: "named",
       },
     },
   },
