@@ -19,6 +19,11 @@ export interface PageServerProps {
   };
 }
 
+/* 
+TO DO
+- Tornar PageServer padrão, com isso os componentes Navbar e Footer, que são clients, devem ser renderizados apenas quando chegar no front
+*/
+
 export function PageServer({
   navbar,
   footer,

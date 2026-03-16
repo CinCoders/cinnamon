@@ -13,3 +13,6 @@ export {
 export { Navbar } from "./lib-components/Navbar/Navbar";
 export { Footer } from "./lib-components/Footer/Footer";
 export * from "./lib/utils";
+export { ForbiddenPage } from "./lib-components/ForbiddenPage/ForbiddenPage";
+export * from "./auth";
+export * as AuthUtils from "./auth";
