@@ -37,25 +37,23 @@ export function PageServer({
   const cinnamonFooter = footer ? <Footer {...footer} /> : null;
 
   return (
-    <>
-      {components?.navbar ?? cinnamonNavbar}
+    <div className="flex min-h-screen w-full flex-col bg-white">
+      <div>{components?.navbar ?? cinnamonNavbar}</div>
 
       <main
-        className="flex w-full bg-white"
+        className="flex w-full flex-1 bg-white"
         style={{
-          minHeight: "100vh",
           padding: "20px clamp(10px, 2%, 40px)",
           alignItems: centralized ? "center" : "normal",
           justifyContent: centralized ? "center" : "normal",
           flexDirection,
-          flexGrow: 1,
         }}
       >
         {haveToast ? (components?.toastContainer ?? null) : null}
         {children}
       </main>
 
-      {components?.footer ?? cinnamonFooter}
-    </>
+      <div>{components?.footer ?? cinnamonFooter}</div>
+    </div>
   );
 }
