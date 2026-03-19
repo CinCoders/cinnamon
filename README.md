@@ -1,1 +1,228 @@
-# Developing
+# Cinnamon
+
+`@cincoders/cinnamon` is a React component library focused on standardized application layout, navigation, and authentication-aware page composition.
+
+The current `v2` direction replaces the legacy MUI + `styled-components` stack with:
+
+- TailwindCSS
+- Radix / Shadcn-based primitives
+- Vite in library mode
+- clearer client/server boundaries
+- support for both React SPA and Next.js scenarios
+
+## Current Scope
+
+Cinnamon is centered around reusable application-shell components such as:
+
+- `Page`
+- `PageServer`
+- `PageWithAuth`
+- `PageWithAuthServer`
+- `RequireAuth`
+- `RequireAuthServer`
+- `Navbar`
+- `Footer`
+- auth helpers and utilities
+
+The goal is not only to provide isolated UI pieces, but to offer a reusable structure for authenticated web applications.
+
+## Installation
+
+```bash
+npm install @cincoders/cinnamon
+```
+
+Peer dependencies expected by the library:
+
+- `react`
+- `react-dom`
+- `react-router-dom`
+
+## Importing CSS
+
+Cinnamon ships its styles as a separate CSS artifact.
+
+You must import the library CSS in the consumer project:
+
+```ts
+import "@cincoders/cinnamon/dist/cinnamon.css";
+```
+
+Without this import, components may render structurally but will not have the intended visual appearance.
+
+## Basic Usage in React
+
+```tsx
+import "@cincoders/cinnamon/dist/cinnamon.css";
+
+import { Page } from "@cincoders/cinnamon";
+
+export function HomePage() {
+  return (
+    <Page
+      navbar={{ title: "My App" }}
+      footer={{ copyrightText: "My Organization" }}
+    >
+      <div>Page content</div>
+    </Page>
+  );
+}
+```
+
+## Auth Model
+
+The `v2-auth` branch moves authorization toward a more decoupled model.
+
+The core authorization idea is:
+
+- represent the current user through a session-like object
+- evaluate access through roles
+- avoid coupling the whole library to a specific auth provider
+
+Current session shape:
+
+```ts
+type CinnamonSession = {
+  isAuthenticated: boolean;
+  roles: string[];
+  user?: {
+    id?: string;
+    email?: string;
+    name?: string;
+    username?: string;
+  };
+  raw?: unknown;
+};
+```
+
+## Client Auth Usage
+
+For client-side React apps, `RequireAuth` and `PageWithAuth` currently accept an auth object compatible with `react-oidc-context`.
+
+```tsx
+import "@cincoders/cinnamon/dist/cinnamon.css";
+
+import { PageWithAuth } from "@cincoders/cinnamon";
+
+export function ProtectedPage({ auth }: { auth: any }) {
+  return (
+    <PageWithAuth
+      authProps={{
+        auth,
+        permittedRoles: ["admin"],
+      }}
+      navbar={{ title: "Dashboard" }}
+      footer={{ copyrightText: "My Organization" }}
+    >
+      <div>Protected content</div>
+    </PageWithAuth>
+  );
+}
+```
+
+## Next.js and Server Usage
+
+For server-oriented scenarios, Cinnamon exposes a separate server entry:
+
+```ts
+import {
+  PageServer,
+  PageWithAuthServer,
+  RequireAuthServer,
+} from "@cincoders/cinnamon/server";
+```
+
+Example:
+
+```tsx
+import "@cincoders/cinnamon/dist/cinnamon.css";
+
+import { PageWithAuthServer } from "@cincoders/cinnamon/server";
+
+export default function ProtectedRoute() {
+  const session = {
+    isAuthenticated: true,
+    roles: ["admin"],
+    user: { name: "Ada" },
+  };
+
+  return (
+    <PageWithAuthServer
+      authProps={{
+        session,
+        permittedRoles: ["admin"],
+        onUnauthenticated: () => {
+          throw new Error("Redirect not implemented in this example.");
+        },
+      }}
+      navbar={{ title: "Admin" }}
+      footer={{ copyrightText: "My Organization" }}
+    >
+      <div>Protected content</div>
+    </PageWithAuthServer>
+  );
+}
+```
+
+In a real Next.js app, `onUnauthenticated` should usually trigger a framework redirect.
+
+## Public Exports
+
+Main entry:
+
+- `Page`
+- `PageServer`
+- `PageWithAuth`
+- `PageWithAuthServer`
+- `RequireAuth`
+- `RequireAuthServer`
+- `Navbar`
+- `Footer`
+- `ForbiddenPage`
+- auth helpers
+- utility helpers
+
+Server entry:
+
+- `RequireAuthServer`
+- `PageWithAuthServer`
+- `PageServer`
+
+## Development
+
+Useful scripts:
+
+```bash
+npm run storybook
+npm run build-storybook
+npm run build:lib
+```
+
+Library build details:
+
+- JavaScript bundles are built with Vite
+- type declarations are generated with TypeScript
+- standalone CSS is generated separately
+
+## Repository Notes
+
+- `main` contains the legacy implementation
+- `v2` is the Tailwind/Shadcn migration
+- `v2-auth` focuses on auth decoupling and React/Next compatibility
+
+Additional internal project notes are available in:
+
+- `PROJECT_CONTEXT.md`
+- `NEXT_COMPATIBILITY_CONSIDERATIONS.md`
+- `LEGACY_TO_V2_MIGRATION_SUMMARY.md`
+
+## Current Status
+
+The library is already functional as a reusable package, but the migration is still being consolidated.
+
+Current focus areas:
+
+- finalizing the auth contract
+- ensuring consistent consumption in Next.js
+- preserving important legacy behavior while modernizing the implementation
+- documenting integration expectations clearly for consumer projects

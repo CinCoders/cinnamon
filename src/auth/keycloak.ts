@@ -1,3 +1,5 @@
+import type { CinnamonSession, OidcAuthLike } from "./types";
+
 export type KeycloakPayload = {
   realm_access?: { roles?: string[] };
   resource_access?: Record<string, { roles?: string[] }>;
@@ -46,4 +48,30 @@ export function decodeJwtPayload<T = unknown>(token: string): T | null {
 export function rolesFromKeycloakAccessToken(accessToken: string): string[] {
   const payload = decodeJwtPayload<KeycloakPayload>(accessToken);
   return payload?.realm_access?.roles ?? [];
+}
+
+// Novo helper da v2: transforma o provider client em CinnamonSession.
+// Isso permite que o restante da autorização trabalhe com um contrato
+// estável, independentemente do provider usado no consumer.
+export function sessionFromOidcAuth(auth: OidcAuthLike): CinnamonSession {
+  if (!auth.user) {
+    return {
+      isAuthenticated: false,
+      roles: [],
+    };
+  }
+
+  const profile = auth.user.profile;
+
+  return {
+    isAuthenticated: auth.isAuthenticated,
+    roles: rolesFromKeycloakAccessToken(auth.user.access_token),
+    user: {
+      id: profile?.sub,
+      email: profile?.email,
+      name: profile?.name,
+      username: profile?.preferred_username,
+    },
+    raw: auth.user,
+  };
 }

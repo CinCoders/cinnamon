@@ -1,13 +1,14 @@
 "use client";
 
-import type { AuthContextProps } from "react-oidc-context";
-
+import type { OidcAuthLike } from "@/auth";
 import { Page, type PageProps } from "../Page/Page";
 import { RequireAuth } from "../RequireAuth";
 
 interface PageWithAuthProps extends PageProps {
   authProps: {
-    auth: AuthContextProps;
+    // Alterado na v2: PageWithAuth continua aceitando o fluxo client,
+    // mas o tipo agora deixa explícito que isso é uma camada de adaptação.
+    auth: OidcAuthLike;
     publicURL?: string; // mantido por compat, pode ser ignorado no v2
     permittedRoles: string[];
   };

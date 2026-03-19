@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Auth } from "@/auth";
+import { hasAccess } from "@/auth";
 import type { CinnamonSession } from "@/auth/types";
 import { ForbiddenPage } from "../ForbiddenPage/ForbiddenPage";
 
@@ -31,7 +31,8 @@ export function RequireAuthServer({
     return onUnauthenticated();
   }
 
-  if (!Auth.hasAccess(session, permittedRoles)) {
+  // Server já opera diretamente no contrato oficial CinnamonSession.
+  if (!hasAccess(session, permittedRoles)) {
     return <ForbiddenPage />;
   }
 

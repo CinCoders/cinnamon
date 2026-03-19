@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import type { AuthContextProps } from "react-oidc-context";
 
 import { ForbiddenPage } from "../ForbiddenPage/ForbiddenPage";
-import { Auth } from "@/auth";
+import { hasAccess, sessionFromOidcAuth, type OidcAuthLike } from "@/auth";
 
 type Props = {
-  auth: AuthContextProps;
+  // Alterado na v2: o client ainda pode receber OIDC, mas apenas como adaptação
+  // para o contrato central CinnamonSession.
+  auth: OidcAuthLike;
   permittedRoles: string[];
   children: ReactNode;
 };
@@ -56,20 +57,12 @@ export function RequireAuth({ auth, permittedRoles, children }: Props) {
   }
 
   // === SESSION ===
-  const session = auth.user
-    ? {
-        isAuthenticated: auth.isAuthenticated,
-        roles: Auth.rolesFromKeycloakAccessToken(auth.user.access_token),
-        user: {
-          email: auth.user.profile?.email,
-          name: auth.user.profile?.name,
-          username: auth.user.profile?.preferred_username,
-        },
-      }
-    : { isAuthenticated: false, roles: [] };
+  // Alterado na v2: a autorização client agora passa explicitamente
+  // pela transformação provider -> CinnamonSession.
+  const session = sessionFromOidcAuth(auth);
 
   // === ACCESS ===
-  if (Auth.hasAccess(session, permittedRoles)) {
+  if (hasAccess(session, permittedRoles)) {
     return children;
   }
 
