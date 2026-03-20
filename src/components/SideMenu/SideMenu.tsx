@@ -5,6 +5,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import type { Link as CinnamonLink, SideMenuLink } from "@/interfaces";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { IconRenderer } from "@/lib-components/IconRender";
 
 export interface SideMenuProps {
   links: SideMenuLink[];
@@ -26,11 +27,13 @@ function ItemIcon({
   iconUrl,
   title,
   IconComponent,
+  iconId,
   className,
 }: {
   iconUrl?: string;
   title?: string;
   IconComponent?: React.JSXElementConstructor<any>;
+  iconId?: SideMenuLink["iconId"];
   className?: string;
 }) {
   return (
@@ -50,6 +53,8 @@ function ItemIcon({
         />
       ) : IconComponent ? (
         <IconComponent />
+      ) : iconId ? (
+        <IconRenderer iconId={iconId} className="h-5 w-5" />
       ) : null}
     </span>
   );
@@ -158,6 +163,7 @@ export function SideMenu({
         style={{
           top: topValue,
           height: `calc(100vh - ${topNum}px)`,
+          transform: visibility ? "translateX(0)" : "translateX(-100%)",
         }}
         role="dialog"
         aria-modal="true"
@@ -204,6 +210,7 @@ export function SideMenu({
                           iconUrl={link.iconUrl}
                           title={link.title}
                           IconComponent={link.IconComponent}
+                          iconId={link.iconId}
                         />
                         <span className="text-sm">{link.title}</span>
                       </div>
@@ -232,6 +239,7 @@ export function SideMenu({
                           iconUrl={link.iconUrl}
                           title={link.title}
                           IconComponent={link.IconComponent}
+                          iconId={link.iconId}
                         />
                         <span className="text-sm">{link.title}</span>
                       </div>

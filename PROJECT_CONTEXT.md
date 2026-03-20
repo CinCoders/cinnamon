@@ -62,6 +62,8 @@ dist/
 ## 🔑 Regras importantes
 
 - `src/index.ts` define o contrato público
+- Tipos consumidos externamente (`User`, `SideMenuLink`, `System`, etc.) são exportados do pacote para evitar duplicação em apps Next
+- Ícones usados pela Navbar/SideMenu/SystemsPopup são resolvidos via registro (`iconId`) para manter consistência entre client e server
 - CSS é separado → precisa importar manualmente
 - React é peerDependency
 - não remover React da lib em dev

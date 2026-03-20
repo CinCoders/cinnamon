@@ -23,6 +23,8 @@ Cinnamon is centered around reusable application-shell components such as:
 - `Navbar`
 - `Footer`
 - auth helpers and utilities
+- shared type exports (`User`, `System`, `SideMenuLink`, etc.)
+- design assets such as the Cinnamon icon registry (`iconId`)
 
 The goal is not only to provide isolated UI pieces, but to offer a reusable structure for authenticated web applications.
 
@@ -49,6 +51,17 @@ import "@cincoders/cinnamon/dist/cinnamon.css";
 ```
 
 Without this import, components may render structurally but will not have the intended visual appearance.
+
+### Tailwind Preflight / Global Resets
+
+Many consumer projects use TailwindCSS (or another design system) with a global “preflight” reset. If that reset runs *after* you import Cinnamon’s CSS it will override the library’s utility classes (e.g., forcing every `button`/`input` to be transparent and removing `transform` definitions). When that happens the shell stops behaving correctly: the hamburger menu stays open, the systems popup never closes, the user avatar disappears, etc.
+
+When integrating Cinnamon make sure your reset does **not** clobber the library styles. Recommended approaches:
+
+- prefer disabling Tailwind’s preflight for the app that consumes Cinnamon (`corePlugins: { preflight: false }` in `tailwind.config.*`), or
+- keep your custom reset scoped to your own selectors and always import `@cincoders/cinnamon/dist/cinnamon.css` after any other base styles.
+
+This small precaution ensures the Storybook layout matches what you get in React/Next consumers.
 
 ## Basic Usage in React
 
@@ -166,6 +179,12 @@ export default function ProtectedRoute() {
 
 In a real Next.js app, `onUnauthenticated` should usually trigger a framework redirect.
 
+### Shared Icons and Types
+
+To keep the visual language consistent between Client and Server components, the library exposes a small icon registry. Any component that accepts an `iconId` (e.g. `Navbar` → `SideMenuLink`, `SystemsPopup`) renders the exact same SVG whether it is hydrated on the client or serialized via `PageServer`. Consumers may still pass `iconUrl` or `IconComponent`, but using `iconId` is the recommended zero-config path.
+
+All public interfaces (`User`, `System`, `SideMenuLink`, `Role`, etc.) are exported from `@cincoders/cinnamon`. Server-first apps (Next.js) should import those types instead of redefining them locally so that future library updates stay in sync.
+
 ## Public Exports
 
 Main entry:
@@ -181,6 +200,8 @@ Main entry:
 - `ForbiddenPage`
 - auth helpers
 - utility helpers
+- icon registry helpers (`CinnamonIconId`, `resolveCinnamonIcon`)
+- shared data interfaces (`User`, `System`, `SideMenuLink`, etc.)
 
 Server entry:
 

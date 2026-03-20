@@ -130,6 +130,15 @@ Em projetos Next, isso precisa ser feito no lugar correto, normalmente no layout
 
 Portanto, “compatibilidade com Next” não depende apenas de componentes server-safe. Também depende de uma estratégia clara e documentada de carregamento de CSS.
 
+### 8.1 Consistência dos ícones e tipos compartilhados
+
+Para evitar divergências visuais entre consumers (client vs. server), a biblioteca passou a expor:
+
+- um registro oficial de ícones referenciados por `iconId`, utilizado pelo `SideMenu`, `SystemsPopup` e demais componentes através do `IconRenderer`;
+- as interfaces `User`, `System`, `SideMenuLink`, etc., diretamente no pacote.
+
+Com isso, `PageServer` consegue receber apenas dados serializáveis (ids e strings) e ainda assim renderizar o mesmo conjunto de ícones disponível no Storybook/client, eliminando workarounds locais em projetos Next.
+
 ### 9. O objetivo real não é apenas renderizar, e sim renderizar igual
 
 Para esta migração, não basta dizer que a Cinnamon “funciona no Next”.

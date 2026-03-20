@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import type { System } from "@/interfaces"; // ajuste se o path for outro
 import { IconRenderer } from "@/lib-components/IconRender";
 
@@ -30,10 +29,11 @@ export function SystemsPopup({ systemsList = [] }: SystemsPopupProps) {
                 <TooltipTrigger asChild>
                   <div className="flex items-center justify-center">
                     <IconRenderer
-                        iconUrl={system.iconUrl}
-                        alt={system.title}
-                        IconComponent={system.IconComponent}
-                        className="h-10 w-10 text-[#DB1E2F] transition-transform group-hover:scale-105"
+                      iconUrl={system.iconUrl}
+                      alt={system.title}
+                      IconComponent={system.IconComponent}
+                      iconId={system.iconId}
+                      className="h-10 w-10 text-[#DB1E2F] transition-transform group-hover:scale-105"
                     />
                   </div>
                 </TooltipTrigger>

@@ -1,4 +1,5 @@
 import type { ComponentType, SVGProps } from "react";
+import type { CinnamonIconId } from "@/icons";
 
 export interface Role {
   id: number;
@@ -24,6 +25,7 @@ export interface System {
   title: string;
   iconUrl?: string;
   IconComponent?: ComponentType<SVGProps<SVGSVGElement>>;
+  iconId?: CinnamonIconId;
   description: string;
   href: string;
   visibleRole?: string;
@@ -33,6 +35,7 @@ export interface Link {
   id: number;
   iconUrl?: string;
   IconComponent?: ComponentType<any>;
+  iconId?: CinnamonIconId;
   title: string;
   href?: string;
   external?: boolean;

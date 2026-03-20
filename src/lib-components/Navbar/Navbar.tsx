@@ -11,6 +11,7 @@ import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
 import { SystemsPopup } from "@/components/SystemsPopup/SystemsPopup";
 import { IconRenderer } from "@/lib-components/IconRender";
+import { hasAccess, sessionFromOidcAuth, type CinnamonSession } from "@/auth";
 
 import { cn } from "@/lib/utils";
 import { useNavbarContext } from "@/lib-components/Page/useNavbar";
@@ -57,6 +58,37 @@ export function Navbar(props: NavbarProps) {
     IconComponent,
     accountManagementUrl,
   } = merged;
+
+  const sessionFromUser = React.useMemo<CinnamonSession | null>(() => {
+    const roleNames =
+      user?.positions
+        ?.flatMap((position) =>
+          position.roles?.map((role) => role.name).filter(Boolean) ?? [],
+        )
+        .filter((role): role is string => !!role) ?? [];
+
+    if (!roleNames.length) return null;
+    return {
+      isAuthenticated: true,
+      roles: Array.from(new Set(roleNames)),
+      user,
+    };
+  }, [user]);
+
+  const session = React.useMemo<CinnamonSession | null>(() => {
+    if (merged.auth) return sessionFromOidcAuth(merged.auth);
+    return sessionFromUser;
+  }, [merged.auth, sessionFromUser]);
+
+  const filteredSystemsList = React.useMemo(() => {
+    if (!systemsList.length) return [];
+    if (!session) return systemsList;
+
+    return systemsList.filter((system) => {
+      if (!system.visibleRole) return true;
+      return hasAccess(session, [system.visibleRole]);
+    });
+  }, [session, systemsList]);
 
   const [profile, setProfile] = React.useState<User>(user);
 
@@ -128,7 +160,7 @@ export function Navbar(props: NavbarProps) {
           {/* RIGHT */}
           <div className="flex items-center gap-2">
             {/* Systems (grid) */}
-            {!isLandingPage && systemsList.length > 0 && (
+            {!isLandingPage && filteredSystemsList.length > 0 && (
               <div className="relative">
                 <button
                   type="button"
@@ -150,7 +182,7 @@ export function Navbar(props: NavbarProps) {
 
                 {systemsOpen && (
                   <div className="absolute right-0 top-12 z-[9999]">
-                    <SystemsPopup systemsList={systemsList} />
+                    <SystemsPopup systemsList={filteredSystemsList} />
                   </div>
                 )}
               </div>

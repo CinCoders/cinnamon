@@ -19,3 +19,13 @@ export * from "./auth";
 // deixa de ser auto-referencial para evitar ambiguidade no contrato.
 export * as Auth from "./auth";
 export * as AuthUtils from "./auth";
+export type {
+  User,
+  SideMenuLink,
+  System,
+  Link,
+  Position,
+  Role,
+  Option,
+} from "./interfaces";
+export type { CinnamonIconId } from "./icons";

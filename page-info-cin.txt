@@ -102,3 +102,344 @@ export default async function ProtectedAppPage() {
 
 import "@cincoders/cinnamon/dist/cinnamon.css";
 import '@/styles/globals.css';
+
+===========================================================================================
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+===========================================================================================
+
+page-server.tsx:
+
+import { PageServer } from "@cincoders/cinnamon/server";
+import type { SideMenuLink, System, User } from "@cincoders/cinnamon";
+
+// PageServer precisa receber apenas dados serializáveis; usamos iconId exportado pela lib
+// para garantir o mesmo conjunto de ícones entre client e server.
+
+const sideMenuLinks: SideMenuLink[] = [
+  {
+    id: 1,
+    title: "Início",
+    href: "/",
+    iconId: "home",
+  },
+  {
+    id: 2,
+    title: "Serviços",
+    href: "/servicos",
+    iconId: "grid",
+    children: [
+      { id: 3, title: "Agendamentos", href: "/servicos/agendamentos" },
+      { id: 4, title: "Documentos", href: "/servicos/documentos" },
+    ],
+  },
+  {
+    id: 5,
+    title: "Equipe",
+    href: "/staff",
+    iconId: "users",
+  },
+];
+
+const systemsList: System[] = [
+  {
+    title: "Dashboard",
+    description: "Indicadores gerais",
+    href: "#",
+    iconId: "layout",
+    visibleRole: "admin",
+  },
+  {
+    title: "Gestão Acadêmica",
+    description: "Turmas e alocações",
+    href: "#",
+    iconId: "calendar",
+    visibleRole: "coordenador",
+  },
+  {
+    title: "Atendimento",
+    description: "Fila de chamados",
+    href: "#",
+    iconId: "userCheck",
+    visibleRole: "colaborador",
+  },
+  {
+    title: "Pesquisa",
+    description: "Projetos ativos",
+    href: "#",
+    iconId: "book",
+    visibleRole: "pesquisa",
+  },
+  {
+    title: "Checklist",
+    description: "Fluxos operacionais",
+    href: "#",
+    iconId: "clipboard",
+  },
+];
+
+const fullAccessUser: User = {
+  name: "Ada Lovelace",
+  email: "ada@cin.ufpe.br",
+  positions: [
+    {
+      id: 1,
+      name: "Administração",
+      roles: [
+        { id: 1, name: "admin", description: "Acesso total" },
+        { id: 2, name: "coordenador", description: "Planejamento acadêmico" },
+        { id: 3, name: "colaborador", description: "Operações" },
+      ],
+    },
+  ],
+};
+
+const limitedAccessUser: User = {
+  name: "Ada Lovelace",
+  email: "ada@cin.ufpe.br",
+  positions: [
+    {
+      id: 1,
+      name: "Operações",
+      roles: [
+        { id: 4, name: "colaborador", description: "Acesso padrão" },
+        { id: 5, name: "pesquisa", description: "Projetos de P&D" },
+      ],
+    },
+  ],
+};
+
+// Troque entre os mocks para testar permissões do PageServer.
+const user = limitedAccessUser;
+
+export default function InfoCinPublicPage() {
+  return (
+    <PageServer
+      navbar={{
+        title: "Info CIn Public",
+        h1: true,
+        haveSearchBar: true,
+        hiddenUser: false,
+        sideMenuLinks,
+        systemsList,
+        user,
+      }}
+      footer={{
+        title: "Centro de Informática - UFPE",
+        telephone: "(81) 2126-8430",
+        telephoneComplement: "Ramais internos",
+        email: "contato@cin.ufpe.br",
+        link: "https://www.cin.ufpe.br",
+        textLink: "cin.ufpe.br",
+        description:
+          "Av. Jornalista Aníbal Fernandes, s/n - Cidade Universitária\nRecife - PE, 50740-560",
+        copyrightText: "CIn UFPE",
+        appVersion: "0.1.0",
+      }}
+      centralized={false}
+      flexDirection="column"
+      haveToast={false}
+    >
+      <section className="space-y-4 text-base text-foreground">
+        <p>
+          Esta rota usa <strong>PageServer</strong> direto do pacote
+          <code>@cincoders/cinnamon</code>, validando o consumo via Next.js Server Components.
+        </p>
+        <p>
+          O mock inclui menu lateral, systems popup com <code>visibleRole</code> e dois perfis de usuário (<code>fullAccessUser</code> e <code>limitedAccessUser</code>) para exercitar o filtro de sistemas.
+        </p>
+        <p>
+          Ajuste os arrays em <code>src/app/page.tsx</code> para conectar com os dados reais do Info CIn.
+        </p>
+      </section>
+    </PageServer>
+  );
+}
+
+
+==========================
+
+++++++++++++
+
+==========================
+
+
+page-client.tsx:
+
+"use client";
+
+import { Page } from "@cincoders/cinnamon";
+import {
+  Home,
+  FileText,
+  Calendar,
+  Users,
+  LayoutDashboard,
+  UserCog,
+  UserSearch,
+  GraduationCap,
+  ClipboardCheck,
+  UserCheck,
+  Printer,
+  Landmark,
+} from "lucide-react";
+
+const sideMenuLinks = [
+  {
+    id: 1,
+    title: "Início",
+    href: "/",
+    IconComponent: () => <Home className="h-5 w-5 text-white" />,
+  },
+  {
+    id: 2,
+    title: "Serviços",
+    href: "/servicos",
+    IconComponent: () => <FileText className="h-5 w-5 text-white" />,
+    children: [
+      { id: 3, title: "Agendamentos", href: "/servicos/agendamentos" },
+      { id: 4, title: "Documentos", href: "/servicos/documentos" },
+    ],
+  },
+];
+
+const systemsList = [
+  {
+    title: "Dashboard",
+    description: "Painel geral dos sistemas do CIn",
+    href: "#",
+    IconComponent: () => <LayoutDashboard className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "admin",
+  },
+  {
+    title: "Gestão de Pessoas",
+    description: "Cadastro e perfis de usuários",
+    href: "#",
+    IconComponent: () => <Users className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "admin",
+  },
+  {
+    title: "Alocações",
+    description: "Planejamento de turmas e espaços",
+    href: "#",
+    IconComponent: () => <Calendar className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "coordenador",
+  },
+  {
+    title: "Administração",
+    description: "Configurações de acesso",
+    href: "#",
+    IconComponent: () => <UserCog className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "admin",
+  },
+  {
+    title: "Seleção",
+    description: "Processos seletivos e inscrições",
+    href: "#",
+    IconComponent: () => <UserCheck className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "colaborador",
+  },
+  {
+    title: "Pesquisa",
+    description: "Indicadores e análises",
+    href: "#",
+    IconComponent: () => <Landmark className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "colaborador",
+  },
+  {
+    title: "Impressões",
+    description: "Saldos e filas de impressão",
+    href: "#",
+    IconComponent: () => <Printer className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "suporte",
+  },
+  {
+    title: "SGA",
+    description: "Demandas acadêmicas",
+    href: "#",
+    IconComponent: () => <GraduationCap className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "colaborador",
+  },
+  {
+    title: "Credenciamento",
+    description: "Análise de crachás",
+    href: "#",
+    IconComponent: () => <UserSearch className="h-10 w-10 text-[#db1e2f]" />,
+    visibleRole: "admin",
+  },
+  {
+    title: "Checklist",
+    description: "Checklist institucional",
+    href: "#",
+    IconComponent: () => <ClipboardCheck className="h-10 w-10 text-[#db1e2f]" />,
+  },
+];
+
+const fullAccessUser = {
+  name: "Ada Lovelace",
+  email: "ada@cin.ufpe.br",
+  positions: [
+    {
+      id: 1,
+      name: "Administração",
+      roles: [
+        { id: 1, name: "admin", description: "Acesso total" },
+        { id: 2, name: "coordenador", description: "Gestão acadêmica" },
+        { id: 3, name: "colaborador", description: "Acesso padrão" },
+      ],
+    },
+  ],
+};
+
+const limitedAccessUser = {
+  name: "Ada Lovelace",
+  email: "ada@cin.ufpe.br",
+  positions: [
+    {
+      id: 1,
+      name: "Operações",
+      roles: [
+        { id: 1, name: "colaborador", description: "Acesso padrão" },
+        { id: 2, name: "suporte", description: "Atendimento interno" },
+      ],
+    },
+  ],
+};
+
+// Troque para `fullAccessUser` para testar o cenário com todas as permissões.
+const user = fullAccessUser;
+
+export default function PageClientDemo() {
+  return (
+    <Page
+      navbar={{
+        title: "Info CIn Client",
+        h1: true,
+        hiddenUser: false,
+        haveSearchBar: true,
+        sideMenuLinks,
+        systemsList,
+        user,
+      }}
+      footer={{
+        title: "Centro de Informática - UFPE",
+        telephone: "(81) 2126-8430",
+        telephoneComplement: "Ramais internos",
+        email: "contato@cin.ufpe.br",
+        link: "https://www.cin.ufpe.br",
+        textLink: "cin.ufpe.br",
+        description: "Av. Jornalista Aníbal Fernandes, s/n - Cidade Universitária\nRecife - PE, 50740-560",
+        copyrightText: "CIn UFPE",
+        appVersion: "0.1.0",
+      }}
+      centralized={false}
+      flexDirection="column"
+      haveToast={false}
+    >
+      <div className="text-lg font-medium">
+        Conteúdo renderizado com `Page` (client component).
+      </div>
+    </Page>
+  );
+}
