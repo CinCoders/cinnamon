@@ -41,60 +41,62 @@ export function Footer({
     <footer className="sticky bottom-0 w-full">
       {largeFooter && (
         <div className="w-full bg-[#424242] text-white">
-          <div
-            className="mx-auto flex h-[110px] max-w-6xl items-center justify-around px-4
-                          max-[801px]:h-[15vh] max-[501px]:h-[30vh]
-                          max-[801px]:flex-wrap max-[501px]:flex-col"
-          >
-            <div className="w-[35.5%] max-[801px]:w-full">
-              <div
-                className="flex justify-end whitespace-pre-line text-base font-bold
-                              max-[1001px]:justify-center max-[801px]:justify-center"
-              >
-                {title ?? ""}
-              </div>
-            </div>
-
+          <div className="cinnamon-footer-shell mx-auto w-full max-w-6xl px-6">
             <div
-              className="w-[29%] text-center text-sm whitespace-pre-line
-                            max-[801px]:w-full max-[801px]:pl-[10%] max-[801px]:basis-1/2 max-[801px]:flex-[0_0_50%]
-                            max-[501px]:pl-0"
+              className="cinnamon-footer-top flex h-[110px] items-center justify-around
+                            max-[801px]:h-[15vh] max-[501px]:h-[30vh]
+                            max-[801px]:flex-wrap max-[501px]:flex-col"
             >
-              {telephone && (
-                <a className="text-white" href={`tel:${phoneToTel(telephone)}`}>
-                  {telephone}{" "}
-                </a>
-              )}
-              {telephoneComplement ?? ""}
-              <br />
-              {email && (
-                <a className="text-white" href={`mailto:${email}`}>
-                  {email}
-                </a>
-              )}
-              <br />
-              {link && (
-                <a className="text-white" href={link}>
-                  {textLink ?? link}
-                </a>
-              )}
-            </div>
-
-            {description && (
-              <div className="w-[35.5%] whitespace-pre-line max-[801px]:w-full max-[801px]:pr-[10%] max-[801px]:basis-1/2 max-[801px]:flex-[0_0_50%] max-[501px]:pr-0">
+              <div className="w-[35.5%] max-[801px]:w-full">
                 <div
-                  className="flex justify-start text-center text-sm
+                  className="flex justify-end whitespace-pre-line text-base font-bold
                                 max-[1001px]:justify-center max-[801px]:justify-center"
                 >
-                  {description}
+                  {title ?? ""}
                 </div>
               </div>
-            )}
+
+              <div
+                className="w-[29%] text-center text-sm whitespace-pre-line
+                            max-[801px]:w-full max-[801px]:pl-[10%] max-[801px]:basis-1/2 max-[801px]:flex-[0_0_50%]
+                            max-[501px]:pl-0"
+              >
+                {telephone && (
+                  <a className="text-white" href={`tel:${phoneToTel(telephone)}`}>
+                    {telephone}{" "}
+                  </a>
+                )}
+                {telephoneComplement ?? ""}
+                <br />
+                {email && (
+                  <a className="text-white" href={`mailto:${email}`}>
+                    {email}
+                  </a>
+                )}
+                <br />
+                {link && (
+                  <a className="text-white" href={link}>
+                    {textLink ?? link}
+                  </a>
+                )}
+              </div>
+
+              {description && (
+                <div className="w-[35.5%] whitespace-pre-line max-[801px]:w-full max-[801px]:pr-[10%] max-[801px]:basis-1/2 max-[801px]:flex-[0_0_50%] max-[501px]:pr-0">
+                  <div
+                    className="flex justify-start text-center text-sm
+                                max-[1001px]:justify-center max-[801px]:justify-center"
+                  >
+                    {description}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
 
-      <div className="flex h-10 w-full items-center justify-between bg-[#616161] px-[30px] text-[11px] leading-10 text-white">
+      <div className="cinnamon-footer-shell flex h-10 w-full items-center justify-between bg-[#616161] text-[11px] leading-10 text-white">
         <div className="text-left">
           {copyrightText ? (
             <>

@@ -41,7 +41,7 @@ export function PageServer({
       <div>{components?.navbar ?? cinnamonNavbar}</div>
 
       <main
-        className="flex w-full flex-1 bg-white"
+        className="cinnamon-page-main flex w-full flex-1 bg-white"
         style={{
           padding: "20px clamp(10px, 2%, 40px)",
           alignItems: centralized ? "center" : "normal",

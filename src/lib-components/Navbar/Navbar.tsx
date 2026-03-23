@@ -121,7 +121,7 @@ export function Navbar(props: NavbarProps) {
   return (
     <div className="w-full">
       {/* Header sticky */}
-      <header className="sticky top-0 z-50 w-full bg-white shadow-md relative">
+      <header className="cinnamon-navbar-inner sticky top-0 z-50 w-full bg-white shadow-md relative">
         <div className="flex h-16 items-center px-3">
           {/* LEFT */}
           <div className="flex items-center gap-2">

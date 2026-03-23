@@ -200,7 +200,7 @@ export function Page({
       <div ref={navbarRef}>{components?.navbar ?? cinnamonNavbar}</div>
 
       <main
-        className="flex w-full bg-white"
+        className="cinnamon-page-main flex w-full bg-white"
         style={{
           minHeight: `calc(100vh - ${diff}px)`,
           padding: "20px clamp(10px, 2%, 40px)",

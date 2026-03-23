@@ -63,6 +63,25 @@ When integrating Cinnamon make sure your reset does **not** clobber the library 
 
 This small precaution ensures the Storybook layout matches what you get in React/Next consumers.
 
+### Variáveis de layout do shell
+
+Para padronizar o espaçamento independentemente do reset aplicado pelo consumidor, o arquivo `cinnamon.css` expõe variáveis CSS globais:
+
+- `--cinnamon-shell-inline`: padding horizontal usado pelo `Navbar` e pelo bloco superior do `Footer`.
+- `--cinnamon-shell-max-width`: limite máximo aplicado às shells (`.cinnamon-navbar-shell` e `.cinnamon-footer-shell`) antes que um reset externo remova o `margin: auto`.
+- `--cinnamon-main-padding`: preenchimento padrão aplicado ao conteúdo principal gerenciado por `Page`.
+
+Caso um produto precise alterar esses valores, basta sobrescrevê-los no escopo global antes ou depois de importar a folha de estilos:
+
+```css
+:root {
+  --cinnamon-shell-max-width: 80rem;
+  --cinnamon-shell-inline: clamp(20px, 3vw, 48px);
+}
+```
+
+Essa abordagem mantém o alinhamento horizontal dos blocos mesmo quando o consumidor zera `margin`/`padding` em todos os elementos.
+
 ## Basic Usage in React
 
 ```tsx
