@@ -1,0 +1,90 @@
+Páginas de teste do InfoCIn (consumo da Cinnamon)
+===============================================
+
+1. page-client
+   - Descrição: cenário client-side (SPA) usando `Page` / `PageWithAuth`.
+   - Localização: `info-cin-front/src/app/page-client.tsx`.
+   - Código (snapshot em 26/03/2026):
+```
+<PageWithAuth
+  authProps={{
+    auth,
+    permittedRoles: ["admin"],
+  }}
+  navbar={{
+    title: "Info CIn Client",
+    h1: true,
+    hiddenUser: false,
+    haveSearchBar: true,
+    sideMenuLinks,
+    systemsList,
+    user,
+  }}
+  footer={{
+    title: "Centro de Informática - UFPE",
+    telephone: "(81) 2126-8430",
+    telephoneComplement: "Ramais internos",
+    email: "contato@cin.ufpe.br",
+    link: "https://www.cin.ufpe.br",
+    textLink: "cin.ufpe.br",
+    description:
+      "Av. Jornalista Aníbal Fernandes, s/n - Cidade Universitária\nRecife - PE, 50740-560",
+    copyrightText: "CIn UFPE",
+    appVersion: "0.1.0",
+  }}
+  centralized={false}
+  flexDirection="column"
+  haveToast={false}
+>
+  <div className="text-lg font-medium">
+    Conteúdo renderizado com `PageWithAuth` (client component).
+  </div>
+</PageWithAuth>
+```
+
+2. page-server
+   - Descrição: cenário server-first (Next) usando `PageServer` / `PageWithAuthServer`.
+   - Localização: `info-cin-front/src/app/page-server.tsx`.
+   - Código (snapshot em 26/03/2026):
+```
+<PageWithAuthServer
+  authProps={{
+    session,
+    permittedRoles: ["admin"],
+    onUnauthenticated: () => redirect("/"),
+  }}
+  navbar={{
+    title: "Info CIn Public",
+    h1: true,
+    haveSearchBar: true,
+    hiddenUser: false,
+    sideMenuLinks,
+    systemsList,
+    user,
+  }}
+  footer={{
+    title: "Centro de Informática - UFPE",
+    telephone: "(81) 2126-8430",
+    telephoneComplement: "Ramais internos",
+    email: "contato@cin.ufpe.br",
+    link: "https://www.cin.ufpe.br",
+    textLink: "cin.ufpe.br",
+    description:
+      "Av. Jornalista Aníbal Fernandes, s/n - Cidade Universitária\nRecife - PE, 50740-560",
+    copyrightText: "CIn UFPE",
+    appVersion: "0.1.0",
+  }}
+  centralized={false}
+  flexDirection="column"
+  haveToast={false}
+>
+  <section className="space-y-4 text-base text-foreground">
+    <p>Esta rota usa <strong>PageWithAuthServer</strong> ...</p>
+    <!-- ver arquivo original para texto completo -->
+  </section>
+</PageWithAuthServer>
+```
+
+Observações:
+- Use os arquivos do InfoCIn como referência viva; este TXT guarda apenas o snapshot das props principais.
+- Atualize este documento quando o layout ou as props mudarem de forma relevante.
