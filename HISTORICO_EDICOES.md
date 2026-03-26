@@ -12,3 +12,6 @@
 ## 2026-03-24 (experimentos revertidos)
 - Testamos migrar o footer para CSS totalmente próprio (fora de Tailwind) e ajustar `AuthUtils.hasAccess`/`Navbar` para suportar botões condicionais e logotipo à esquerda sem exigir adaptações dos consumidores, mas a mudança foi revertida para reavaliar o impacto em todos os projetos.
 - Os pontos seguem registrados aqui como pendências a estudar: garantir alinhamento do footer mesmo diante de resets extremos, expor uma prop consistente para posicionar o logo na Navbar e assegurar que `hasAccess` aceite tanto `CinnamonSession` quanto o objeto cru do `react-oidc-context`.
+
+## 2026-03-26
+- Atualizado `hasAccess` para aceitar tanto `CinnamonSession` quanto o objeto OIDC legado (via normalização interna com `sessionFromOidcAuth`), preservando compatibilidade com consumidores como o `prorank-front` enquanto mantemos o contrato interno orientado a sessão.

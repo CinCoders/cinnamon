@@ -52,6 +52,11 @@ import "@cincoders/cinnamon/dist/cinnamon.css";
 
 Without this import, components may render structurally but will not have the intended visual appearance.
 
+> Exemplos rápidos:
+>
+> - React/Vite/CRA: importe no entry (`src/main.tsx` / `src/index.tsx` / `_app.tsx`).
+> - Next 13+: adicione em `app/layout.tsx` ou `pages/_app.tsx` (dependendo da versão).
+
 ### Tailwind Preflight / Global Resets
 
 Many consumer projects use TailwindCSS (or another design system) with a global “preflight” reset. If that reset runs *after* you import Cinnamon’s CSS it will override the library’s utility classes (e.g., forcing every `button`/`input` to be transparent and removing `transform` definitions). When that happens the shell stops behaving correctly: the hamburger menu stays open, the systems popup never closes, the user avatar disappears, etc.
@@ -62,6 +67,14 @@ When integrating Cinnamon make sure your reset does **not** clobber the library 
 - keep your custom reset scoped to your own selectors and always import `@cincoders/cinnamon/dist/cinnamon.css` after any other base styles.
 
 This small precaution ensures the Storybook layout matches what you get in React/Next consumers.
+
+### Por que manter o `dist/cinnamon.css`?
+
+- **Previsibilidade entre apps**: Next, CRA, Vite e outros conseguem importar um único arquivo global sem depender de runtime de CSS-in-JS ou de plugins do bundler.
+- **Separação de responsabilidades**: os componentes React continuam puros; todo o reset, variáveis e utilitários gerados pelo Tailwind compilado vivem em um só artefato.
+- **Compatibilidade com SSR**: projetos server-first apenas importam o CSS no layout global; não existe injeção dinâmica de `<style>` que dependa do browser.
+
+> Se o shell parecer desalinhado no seu app, verifique se algum reset do consumidor está vindo depois do `cinnamon.css`. Ajuste a ordem dos imports ou desabilite o preflight global — no Storybook a folha é aplicada por último, e é por isso que o layout fica correto lá.
 
 ### Variáveis de layout do shell
 
@@ -151,6 +164,8 @@ export function ProtectedPage({ auth }: { auth: any }) {
   );
 }
 ```
+
+Legacy consumers que ainda chamam `AuthUtils.hasAccess(auth, roles)` podem continuar passando o objeto do `react-oidc-context`: a função agora normaliza internamente para `CinnamonSession`, mantendo compatibilidade enquanto recomendamos migrar gradualmente para sessões explícitas.
 
 ## Next.js and Server Usage
 
