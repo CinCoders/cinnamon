@@ -198,9 +198,15 @@ A biblioteca fornece um conjunto de componentes de aplicação shell:
    - Risk: consumidor pode ficar confuso sobre o que é server-safe
 
 3. **Layout pode divergir**
-   - `Page` (client): altura dinâmica da navbar/footer medida no client
-   - `PageServer`: usa `minHeight: 100vh` estático
-   - Diferenças visuais esperadas entre React SPA e Next
+- `Page` (client):
+  - Mede a altura real da navbar e do footer usando `ResizeObserver` + refs.
+  - Atualiza o `min-height` do `<main>` para `calc(100vh - diff)` e posiciona o `ToastContainer` a partir da altura medida.
+- `PageServer` depois de 26/03/2026:
+  - Continua sendo um Server Component puro, mas delega Navbar/Footer/Toast para wrappers `use client`.
+  - Os wrappers vivem em `src/lib-components/Page/PageClientBridges.tsx` porque precisam ser Client Components. Eles encapsulam Navbar/Footer/Toast e expõem apenas uma API serializável para o `PageServer`.
+  - `NavbarClientShell` e `FooterClientShell` aplicam `ResizeObserver`, salvam os valores em variáveis CSS globais (`--cinnamon-shell-nav-height`, `--cinnamon-shell-footer-height`) e calculam `--cinnamon-shell-offset` (soma das duas alturas). Esse valor é usado pelo `<main>` server-first para replicar o `min-height: calc(100vh - diff)` do Page client.
+  - `ToastClientShell` lê `--cinnamon-shell-nav-height` e posiciona os toasts exatamente como no SPA.
+  - Fluxo oficial documentado no README: **resolver sessão no server → autorizar → renderizar `PageServer` ou `PageWithAuthServer` com props serializáveis → deixar os wrappers client da Cinnamon hidratarem Navbar/Footer/Toast**, garantindo que o shell em Next tenha o mesmo espaçamento, centralização e comportamento visual do SPA sem o consumidor precisar escrever JS adicional.
 
 4. **CSS é ponto crítico**
    - Distribuído como artefato separado (`./dist/cinnamon.css`)

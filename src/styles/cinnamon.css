@@ -4,6 +4,9 @@
   --cinnamon-shell-inline: clamp(16px, 2vw, 40px);
   --cinnamon-main-padding: 20px clamp(10px, 2%, 40px);
   --cinnamon-shell-max-width: 72rem;
+  --cinnamon-shell-nav-height: 0px;
+  --cinnamon-shell-footer-height: 0px;
+  --cinnamon-shell-offset: 0px;
 }
 
 .cinnamon-navbar-shell,

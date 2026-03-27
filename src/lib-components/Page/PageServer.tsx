@@ -2,8 +2,7 @@ import type { ReactNode } from "react";
 import type { NavbarProps } from "@/lib-components/Navbar/Navbar";
 import type { FooterProps } from "@/lib-components/Footer/Footer";
 
-import { Navbar } from "@/lib-components/Navbar/Navbar";
-import { Footer } from "@/lib-components/Footer/Footer";
+import { ToastClientShell, NavbarClientShell, FooterClientShell } from "./PageClientBridges";
 
 export interface PageServerProps {
   navbar?: NavbarProps;
@@ -19,11 +18,6 @@ export interface PageServerProps {
   };
 }
 
-/* 
-TO DO
-- Tornar PageServer padrão, com isso os componentes Navbar e Footer, que são clients, devem ser renderizados apenas quando chegar no front
-*/
-
 export function PageServer({
   navbar,
   footer,
@@ -33,27 +27,36 @@ export function PageServer({
   haveToast = false,
   components,
 }: PageServerProps) {
-  const cinnamonNavbar = navbar ? <Navbar {...navbar} /> : null;
-  const cinnamonFooter = footer ? <Footer {...footer} /> : null;
+  const renderedNavbar =
+    components?.navbar ?? (navbar ? <NavbarClientShell {...navbar} /> : null);
+  const renderedFooter =
+    components?.footer ?? (footer ? <FooterClientShell {...footer} /> : null);
+  const renderedToast =
+    haveToast && !components?.toastContainer ? (
+      <ToastClientShell />
+    ) : (
+      components?.toastContainer ?? null
+    );
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-white">
-      <div>{components?.navbar ?? cinnamonNavbar}</div>
+      {renderedNavbar}
 
       <main
         className="cinnamon-page-main flex w-full flex-1 bg-white"
         style={{
+          minHeight: "calc(100vh - var(--cinnamon-shell-offset, 0px))",
           padding: "20px clamp(10px, 2%, 40px)",
           alignItems: centralized ? "center" : "normal",
           justifyContent: centralized ? "center" : "normal",
           flexDirection,
         }}
       >
-        {haveToast ? (components?.toastContainer ?? null) : null}
+        {renderedToast}
         {children}
       </main>
 
-      <div>{components?.footer ?? cinnamonFooter}</div>
+      {renderedFooter}
     </div>
   );
 }

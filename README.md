@@ -213,6 +213,15 @@ export default function ProtectedRoute() {
 
 In a real Next.js app, `onUnauthenticated` should usually trigger a framework redirect.
 
+### Official server-first flow
+
+1. **Resolver sessão no server** – converta o token recebido (Keycloak/OIDC) para `CinnamonSession` antes de chegar ao componente. `PageWithAuthServer`/`RequireAuthServer` esperam um objeto serializável, e o redirecionamento (`onUnauthenticated`) deve ser tratado com as APIs do Next.
+2. **Montar o shell com dados serializáveis** – passe apenas objetos simples para `navbar`/`footer` (use `iconId` para reusar os ícones oficiais). Os wrappers client internos (`NavbarClientShell`, `FooterClientShell`, `ToastClientShell`) cuidam da hidratação.
+3. **CSS** – o `<main>` server-first usa `min-height: calc(100vh - var(--cinnamon-shell-offset))`. Quando o browser hidrata, os wrappers medem navbar/footer, atualizam as variáveis CSS (`--cinnamon-shell-nav-height`, `--cinnamon-shell-footer-height`, `--cinnamon-shell-offset`) e o layout fica idêntico ao `Page` client. Não é necessário nenhum código extra no consumidor.
+4. **Toast e props de layout** – `centralized`, `flexDirection` e `haveToast` funcionam da mesma forma que no client. Caso um consumer forneça `components.toastContainer`, ele continua sendo responsável por hidratar o toast manualmente.
+
+> Resumo: em Next, o fluxo oficial é resolver/autorizar no servidor, renderizar `PageWithAuthServer` (ou `PageServer`) com props serializáveis e deixar os wrappers client da Cinnamon hidratarem Navbar/Footer/Toast automaticamente.
+
 ### Shared Icons and Types
 
 To keep the visual language consistent between Client and Server components, the library exposes a small icon registry. Any component that accepts an `iconId` (e.g. `Navbar` → `SideMenuLink`, `SystemsPopup`) renders the exact same SVG whether it is hydrated on the client or serialized via `PageServer`. Consumers may still pass `iconUrl` or `IconComponent`, but using `iconId` is the recommended zero-config path.

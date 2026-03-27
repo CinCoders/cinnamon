@@ -15,3 +15,4 @@
 
 ## 2026-03-26
 - Atualizado `hasAccess` para aceitar tanto `CinnamonSession` quanto o objeto OIDC legado (via normalização interna com `sessionFromOidcAuth`), preservando compatibilidade com consumidores como o `prorank-front` enquanto mantemos o contrato interno orientado a sessão.
+- `PageServer` passou a usar wrappers client (`NavbarClientShell`, `FooterClientShell`, `ToastClientShell`) que medem as alturas reais e atualizam variáveis CSS (`--cinnamon-shell-offset`). Com isso o shell server-first replica o layout do `Page` e mantém o fluxo oficial server-first para Next.
