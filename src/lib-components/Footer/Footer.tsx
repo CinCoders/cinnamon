@@ -125,7 +125,7 @@ export function Footer({
               >
                 Made with
                 <img
-                  //src={cnmHeartIcon}
+                  src={'./src/assets/icons/cnmheart.svg'}
                   alt="cnm"
                   className="h-[15px] w-[15px]"
                 />
