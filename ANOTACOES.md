@@ -258,6 +258,66 @@ A compatibilidade com Next deve ser considerada **concluída** quando:
 import { PageWithAuthServer } from "@cincoders/cinnamon/server";
 import testUser, testLinks, testSystems from "@cincoders/cinnamon/dist/stories/sampleData";
 
+---
+
+## 9. **Checkpoint de Validação no `info-cin-front`**
+
+Para evitar contaminar as rotas reais do produto, foi criado um laboratório isolado em:
+
+- `src/app/cinnamon-lab`
+
+Esse laboratório passou a servir como campo controlado de validação da `v2-auth` em Next.
+
+### O que foi validado
+
+- leitura de sessão via cookie no server;
+- redirect server-side para login;
+- uso de `PageWithAuthServer` com shell completo;
+- cenários `admin`, `viewer`, `forbidden` e `guest`;
+- popup de sistemas reagindo às roles da sessão;
+- composição mista:
+  - server -> client
+  - client recebendo children renderizados no server
+- hidratação de componente client dentro do shell server-first.
+
+### O que os testes confirmaram
+
+- o fluxo server-first da Cinnamon está funcional em um consumer Next;
+- o shell consegue renderizar com dados serializáveis sem exigir lógica extra no app;
+- o modelo baseado em cookie reforça que a Cinnamon não depende de provider client para funcionar em Next.
+
+### Achados relevantes
+
+- o avatar/usuário da navbar não apareceu no cenário em que o `user` foi passado e `hiddenUser` estava `false`, então esse ponto precisa ser revisado na lib;
+- o ícone do trecho `Made with [icone] by CInCoders` continua ausente no footer, confirmando a pendência visual já conhecida.
+
+---
+
+## 10. **Checkpoint de Validação no `prorank-front`**
+
+O `prorank-front` foi usado como consumidor real da `v2-auth` no fluxo client legado com Keycloak/OIDC.
+
+### O que foi validado
+
+- login com OIDC em uso real;
+- `PageWithAuth` em SPA;
+- `RequireAuth` em SPA;
+- `AuthUtils.hasAccess(auth, roles)` com o objeto legado do `react-oidc-context`;
+- navegacao protegida por role;
+- `ForbiddenPage` no fluxo client;
+- shell visual da Cinnamon no app.
+
+### Ajustes na lib que foram necessarios
+
+- `OidcAuthLike` passou a aceitar `user: null`, acompanhando o formato real do `AuthContextProps`;
+- `ForbiddenPage` voltou a aceitar `auth` e `publicURL` como props de compatibilidade;
+- `RequireAuth` passou a repassar `auth` e `publicURL` para a `ForbiddenPage` no acesso negado client-side;
+- o asset do coracao no footer foi corrigido.
+
+### Conclusao desta frente
+
+Do ponto de vista da Cinnamon, o `prorank-front` validou a camada compat do fluxo client legado. Os erros remanescentes observados no navegador estavam ligados ao backend/API do projeto e nao caracterizaram regressao da biblioteca.
+
 export default function ProtectedPage() {
   return (
     <PageWithAuthServer

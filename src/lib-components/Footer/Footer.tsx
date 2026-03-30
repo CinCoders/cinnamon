@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-//import cnmHeartIcon from "@/assets/icons/cnmheart.svg";
+import cnmHeartIcon from "@/assets/icons/cnmheart.svg";
 
 export interface FooterProps {
   title?: string;
@@ -125,7 +125,7 @@ export function Footer({
               >
                 Made with
                 <img
-                  src={'./src/assets/icons/cnmheart.svg'}
+                  src={cnmHeartIcon}
                   alt="cnm"
                   className="h-[15px] w-[15px]"
                 />

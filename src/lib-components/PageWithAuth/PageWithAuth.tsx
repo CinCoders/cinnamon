@@ -24,10 +24,10 @@ export function PageWithAuth({
   components,
   children,
 }: PageWithAuthProps) {
-  const { auth, permittedRoles } = authProps;
+  const { auth, publicURL, permittedRoles } = authProps;
 
   return (
-    <RequireAuth auth={auth} permittedRoles={permittedRoles}>
+    <RequireAuth auth={auth} publicURL={publicURL} permittedRoles={permittedRoles}>
       <Page
         navbar={navbar}
         footer={footer}

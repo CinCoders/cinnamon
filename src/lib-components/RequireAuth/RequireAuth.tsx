@@ -9,6 +9,7 @@ type Props = {
   // Alterado na v2: o client ainda pode receber OIDC, mas apenas como adaptação
   // para o contrato central CinnamonSession.
   auth: OidcAuthLike;
+  publicURL?: string;
   permittedRoles: string[];
   children: ReactNode;
 };
@@ -28,7 +29,7 @@ function FullPageLoading() {
   );
 }
 
-export function RequireAuth({ auth, permittedRoles, children }: Props) {
+export function RequireAuth({ auth, publicURL, permittedRoles, children }: Props) {
   const [waiting, setWaiting] = useState(true);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export function RequireAuth({ auth, permittedRoles, children }: Props) {
 
   // === FORBIDDEN ===
   if (auth.isAuthenticated) {
-    return <ForbiddenPage />;
+    return <ForbiddenPage auth={auth} publicURL={publicURL} />;
   }
 
   // === NOT AUTHENTICATED ===

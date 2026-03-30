@@ -16,3 +16,14 @@
 ## 2026-03-26
 - Atualizado `hasAccess` para aceitar tanto `CinnamonSession` quanto o objeto OIDC legado (via normalização interna com `sessionFromOidcAuth`), preservando compatibilidade com consumidores como o `prorank-front` enquanto mantemos o contrato interno orientado a sessão.
 - `PageServer` passou a usar wrappers client (`NavbarClientShell`, `FooterClientShell`, `ToastClientShell`) que medem as alturas reais e atualizam variáveis CSS (`--cinnamon-shell-offset`). Com isso o shell server-first replica o layout do `Page` e mantém o fluxo oficial server-first para Next.
+
+## 2026-03-29
+- Criado um laboratório isolado no `info-cin-front` (`src/app/cinnamon-lab`) para validar a Cinnamon em Next sem interferir nas rotas reais do produto. O laboratório cobre sessão via cookie, redirect server-side, cenários `admin` / `viewer` / `forbidden` / `guest`, shell com `PageWithAuthServer` e composições mistas client/server.
+- A rodada inicial de validação no navegador confirmou o fluxo server-first e o filtro de `systemsList` por role. Como achados, o avatar/usuário da navbar não apareceu mesmo com `hiddenUser: false`, e o ícone do trecho `Made with [icone] by CInCoders` continua ausente no footer.
+
+## 2026-03-30
+- O `prorank-front` foi confirmado como consumidor real da Cinnamon local (`../cinnamon`), mesmo ainda declarando `^1.3.0` no `package.json`.
+- Para preservar compatibilidade com o fluxo client legado, a `ForbiddenPage` voltou a aceitar `auth` e `publicURL` como props opcionais, e o tipo `OidcAuthLike` passou a aceitar `user: null`, refletindo o formato real do `react-oidc-context`.
+- Após regenerar os artefatos da biblioteca, o `build` do `prorank-front` voltou a passar contra a `v2-auth`, deixando a validação em navegador como próxima etapa desta frente.
+- A `ForbiddenPage` da `v2-auth` deixou de ser apenas um placeholder e ganhou uma versão Tailwind compatível com o legado: ilustração 403, e-mail do usuário e botão de logout quando `auth` estiver disponível. A implementação evita dependência interna de `react-router-dom`, permitindo uso tanto no fluxo SPA quanto nos cenários server-first em que só queremos renderizar o estado proibido.
+- A rodada de validação em navegador no `prorank-front` confirmou login, permissões por role, `PageWithAuth`, `RequireAuth`, `AuthUtils.hasAccess(auth, roles)`, `ForbiddenPage` e footer funcionando do ponto de vista da Cinnamon. Os erros restantes observados estavam ligados ao backend/API do próprio projeto e não foram tratados como regressão da lib.

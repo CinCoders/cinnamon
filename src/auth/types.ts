@@ -24,14 +24,16 @@ export type CinnamonSession = {
 export type OidcAuthLike = {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user?: {
-    access_token: string;
-    profile?: {
-      sub?: string;
-      email?: string;
-      name?: string;
-      preferred_username?: string;
-    };
-  };
+  user?:
+    | {
+      access_token: string;
+      profile?: {
+        sub?: string;
+        email?: string;
+        name?: string;
+        preferred_username?: string;
+      };
+    }
+    | null;
   signinRedirect: () => Promise<unknown> | unknown;
 };
