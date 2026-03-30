@@ -240,6 +240,9 @@ Main entry:
 - `RequireAuthServer`
 - `Navbar`
 - `Footer`
+- `useNavbar`, `useNavbarContext`
+- `ToastContainer`, `toast`
+- `IconRenderer`
 - `ForbiddenPage`
 - auth helpers
 - utility helpers
@@ -251,6 +254,13 @@ Server entry:
 - `RequireAuthServer`
 - `PageWithAuthServer`
 - `PageServer`
+
+### Estável vs. compatibilidade
+
+- **Camada estável (v2)**: `Page`, `PageServer`, `PageWithAuth`, `PageWithAuthServer`, `RequireAuth`, `RequireAuthServer`, `Navbar`, `Footer`, tipos públicos, helpers principais (`hasAccess`, `useNavbar`, `ToastContainer`, `IconRenderer`, registro de ícones, etc.).
+- **Camada compat (legado)**: namespaces `Auth`/`AuthUtils`, contratos baseados em OIDC cru, props herdadas que ainda existem para não quebrar consumidores. Eles continuam exportados, mas podem ser aposentados em uma versão futura.
+
+Sempre que possível, prefira a camada estável. A camada compat existe apenas para manter projetos legados funcionando durante a migração.
 
 ## Development
 

@@ -12,6 +12,12 @@ export {
 } from "./lib-components/PageWithAuth";
 export { Navbar } from "./lib-components/Navbar/Navbar";
 export { Footer } from "./lib-components/Footer/Footer";
+export { IconRenderer } from "./lib-components/IconRender";
+export {
+  NavbarContext,
+  useNavbar,
+  useNavbarContext,
+} from "./lib-components/Page";
 export * from "./lib/utils";
 export { ForbiddenPage } from "./lib-components/ForbiddenPage/ForbiddenPage";
 export * from "./auth";
@@ -19,6 +25,7 @@ export * from "./auth";
 // deixa de ser auto-referencial para evitar ambiguidade no contrato.
 export * as Auth from "./auth";
 export * as AuthUtils from "./auth";
+export { ToastContainer, toast } from "./components/Toast/Toast";
 export type {
   User,
   SideMenuLink,

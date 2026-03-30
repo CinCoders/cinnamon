@@ -15,13 +15,13 @@ O foco desta etapa nao e iniciar uma nova rodada de arquitetura, e sim confirmar
 
 ## Criterios que precisam ser fechados antes do merge
 
-- validar o fluxo real no `info-cin-front`;
-- validar ausencia de regressao no `prorank-front`;
-- revisar inconsistencias pequenas de API e documentacao;
-- fechar a sensacao de "API estavel + camada compat" na pratica, nao so no discurso;
-- testar composicao client/server em cenarios relevantes;
-- testar auth e rotas de forma definitiva;
-- limpar a branch o maximo possivel antes do merge.
+- validar o fluxo real no `info-cin-front` *(em andamento)*;
+- validar ausencia de regressao no `prorank-front` *(em andamento)*;
+- revisar inconsistencias pequenas de API e documentacao *(✅ exports/README atualizados em 2026-03-30)*;
+- fechar a sensacao de "API estavel + camada compat" na pratica, nao so no discurso *(✅ documentado no README/ANOTACOES)*;
+- testar composicao client/server em cenarios relevantes *(⚠️ rodar matriz descrita no Bloco 2)*;
+- testar auth e rotas de forma definitiva *(⚠️ cobrir cenarios do Bloco 3)*;
+- limpar a branch o maximo possivel antes do merge *(pendente, depois dos testes acima)*.
 
 ## Bloco 1 - Validacao real em consumers
 
@@ -163,6 +163,12 @@ Confirmar na pratica a ideia de que a Cinnamon possui:
 - comportamento e documentacao de `Page`, `PageServer`, `PageWithAuth`, `PageWithAuthServer`;
 - consistencia dos exemplos do README;
 - pequenas inconsistencias de naming, props e comentarios.
+
+> 🔴 **Breaking change anotado:** a `v2-auth` deixou de expor `ImageInput`, `Dialog`, `ErrorScreen` e `httpErrors` no entry principal, diferentemente da `main`. Registrar para tratar logo após o merge (ou decidir por uma camada compat) antes de comunicar release.
+>
+> 🟡 **Melhoria pós-merge:** o entry `@cincoders/cinnamon/server` exporta apenas os componentes server-safe (`PageServer`, `PageWithAuthServer`, `RequireAuthServer`). Vale reexportar também os tipos (`PageServerProps`, `CinnamonSession`, etc.) depois do merge para evitar imports mistos em arquivos server-first.
+>
+> 🟡 **Melhoria pós-merge:** `NavbarProps.auth` ainda está tipado como `any` para aceitar o provider cru. Converter para `OidcAuthLike | CinnamonSession` após o merge garante melhor DX sem alterar o fluxo atual.
 
 ### Resultado esperado
 
@@ -329,3 +335,49 @@ Menor caminho útil para validação:
 Exercitar nela:
 autenticado;
 não autenticado;
+
+
+
+Validação ProRank
+
+Rodei npm run build dentro de prorank-front e o bundle foi gerado sem erros (Vite 5.4.21, único aviso foi o chunk >500 kB, já esperado pelo app).
+Confirmei que o app continua consumindo PageWithAuth da lib para todo o shell (navbar, footer, toast, sessão) através do wrapper CInPage (prorank-front/src/components/CInPage.tsx:1), portanto exercitando a superfície client principal da Cinnamon.
+O CSS da biblioteca segue importado no entrypoint (prorank-front/src/main.tsx:1), o que garante que validamos também a ordem de estilos em um SPA real.
+Os botões condicionais de “Ver Resultados/Comentários/Estatísticas/Avaliar” continuam ligados a AuthUtils.hasAccess com roles herdadas do legado (prorank-front/src/pages/Home/index.tsx:1), mostrando que a camada compat de auth está ativa e funcionando.
+O package.json permanece apontando @cincoders/cinnamon@^1.3.0, mas o workspace resolve para a cópia local da v2-auth, então não houve regressão nem quebra de build no cenário real de Keycloak/OIDC (registro em prorank-front/package.json).
+Próximos passos (Bloco 4)
+
+Auditar os exports atuais de cinnamon-v2 (src/index.ts, src/server.ts, package.json fields) contra o que é exposto na branch main para garantir paridade da camada estável.
+Revisar o entry @cincoders/cinnamon/server assegurando que PageServer, PageWithAuthServer, RequireAuthServer etc. continuam com as mesmas assinaturas documentadas e que os exemplos do README batem com o código.
+Conferir AuthUtils.hasAccess comparando com o contrato legado (tipos opcionais, fallback para roles?: string[], etc.) e ajustar se necessário para que os consumidores atuais não precisem alterar chamadas.
+Revisar CinnamonSession vs. estruturas antigas (AuthProps, OidcAuthLike) para garantir coerência entre fluxo server-first e client legacy, documentando qualquer nuance nas seções de README/ANOTACOES.
+Passar pelos exemplos do README e comentários de código para eliminar divergências de naming/props e alinhar com o estado atual dos componentes.
+
+CINNAMON SESSION
+
+Etapa 4 fechada:
+
+CinnamonSession é o contrato oficial (ver src/auth/types.ts:6). Todos os componentes server-first (RequireAuthServer, PageWithAuthServer, PageServer) recebem essa sessão já normalizada.
+Os consumidores legados continuam conversando via OidcAuthLike: PageWithAuth e RequireAuth aceitam o objeto cru do react-oidc-context, chamam sessionFromOidcAuth e reutilizam hasAccess em cima da CinnamonSession interna (src/lib-components/PageWithAuth/PageWithAuth.tsx:7, src/lib-components/RequireAuth/RequireAuth.tsx:5).
+Componentes híbridos como Navbar admitiram auth (ainda tipado como any) ou user serializável; em ambos os casos convertem para CinnamonSession antes de filtrar systems/roles (src/lib-components/Navbar/Navbar.tsx:1). Isso reforça o mesmo fluxo provider → sessão → hasAccess descrito nas docs.
+Tanto o entry principal quanto o entry server exportam os tipos/funcões necessários para montar essa cadeia (por causa do export * from "./auth" em src/index.ts:10 e da ponte server-first em src/entry-server.ts:1), então o contrato fica coerente para client e server.
+Com isso, o item “coerência entre CinnamonSession e entradas legadas” está atendido: não há divergência entre o que o código expõe e o que os consumers esperam, restando apenas possíveis refinamentos futuros (tipar NavbarProps.auth melhor, por exemplo).
+
+PAGE:
+
+Etapa 5 (comportamento + documentação de Page*):
+
+Código atual:
+
+Page client controla contexto da navbar e medições via hooks (ref’s + ToastContainer). Props expostas: navbar, footer, centralized, flexDirection, haveToast, components, createNavbarContext?.
+PageServer renderiza shell puro em Server Component e delega barras/toast para os bridges client. Mantém mesmas props (menos createNavbarContext, coerente porque não há hook server-side).
+PageWithAuth adapta OidcAuthLike para CinnamonSession e reutiliza RequireAuth.
+PageWithAuthServer recebe session serializável + onUnauthenticated e compõe com RequireAuthServer.
+Documentação:
+
+README cobre o fluxo client (PageWithAuth) e server (PageWithAuthServer, PageServer, RequireAuthServer), incluindo import do CSS e passo‑a‑passo “resolver sessão → serializar props → hidratar wrappers”. Trechos Next.js and Server Usage e “Official server-first flow” batem com o comportamento real.
+ANOTACOES/PLANO também descrevem o pipeline provider → sessão → hasAccess.
+Pontos pequenos:
+
+README não menciona createNavbarContext, mas isso é detalhe interno de DX e não bloqueia compat; podemos inserir numa rodada de docs pós-merge se achar necessário.
+Fora isso, não identifiquei divergência entre código e documentação para os Page/PageServer.
