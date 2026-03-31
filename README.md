@@ -254,12 +254,12 @@ All public interfaces (`User`, `System`, `SideMenuLink`, `Role`, etc.) are expor
 
 ## Validation Status
 
-The `v2-auth` work has already been exercised in two real consumers:
+The current `v2` state has already been exercised in two real consumers:
 
 - `info-cin-front`: validated the Next/server-first path through an isolated lab route, including cookie-backed session resolution, authorized/unauthorized states, server redirects, role filtering and mixed client/server composition.
 - `prorank-front`: validated the legacy React SPA path with Keycloak/OIDC, including `PageWithAuth`, `RequireAuth`, `AuthUtils.hasAccess(auth, roles)`, forbidden flow and the application shell in real client usage.
 
-This means the branch is no longer only architectural work; it has already been checked in both server-first and legacy client scenarios.
+This means the migration is no longer only architectural work; it has already been checked in both server-first and legacy client scenarios.
 
 ## Public Exports
 
@@ -273,6 +273,9 @@ Main entry:
 - `RequireAuthServer`
 - `Navbar`
 - `Footer`
+- `Dialog`
+- `ErrorScreen`, `httpErrors`
+- `ImageInput`
 - `useNavbar`, `useNavbarContext`
 - `ToastContainer`, `toast`
 - `IconRenderer`
@@ -297,14 +300,14 @@ Sempre que possível, prefira a camada estável. A camada compat existe apenas p
 
 ## Known Compatibility Notes
 
-These points are important when comparing `v2-auth` with the legacy `main` branch:
+These points are important when comparing `v2` with the legacy `main` branch:
 
-- the main entry no longer exposes some legacy items such as `ImageInput`, `Dialog`, `ErrorScreen` and `httpErrors`;
+- the main entry has recovered the most visible legacy items (`Dialog`, `ErrorScreen`, `httpErrors`, `ImageInput`), but these components still deserve final validation for visual parity and consumer ergonomics;
 - `@cincoders/cinnamon/server` currently exports the server-safe components, but not the broader set of public types yet;
 - `NavbarProps.auth` is still permissive to preserve compatibility with raw provider objects;
 - `useNavbar()` still exposes the historical typo `setSearchFuncion` for compatibility with legacy consumers.
 
-These notes do not currently block the `v2-auth` merge into `v2`, but they should be treated consciously before a broader release communication.
+These notes do not currently block the migration close-out, but they should be treated consciously before a broader release communication.
 
 ## Development
 
@@ -326,7 +329,7 @@ Library build details:
 
 - `main` contains the legacy implementation
 - `v2` is the Tailwind/Shadcn migration
-- `v2-auth` focuses on auth decoupling and React/Next compatibility
+- the recent auth and React/Next compatibility work was consolidated into `v2`
 
 ## Current Status
 
@@ -334,7 +337,7 @@ The library is already functional as a reusable package, but the migration is st
 
 Current focus areas:
 
-- finalizing the auth contract
-- ensuring consistent consumption in Next.js
+- validating visual and behavioral parity of the recently reintroduced legacy components
+- auditing the final public contract against `main`
 - preserving important legacy behavior while modernizing the implementation
-- documenting integration expectations clearly for consumer projects
+- documenting the final integration expectations clearly for consumer projects
