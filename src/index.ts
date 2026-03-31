@@ -13,7 +13,8 @@ export {
 export { Navbar } from "./lib-components/Navbar/Navbar";
 export { Footer } from "./lib-components/Footer/Footer";
 export { Dialog } from "./lib-components/Dialog";
-export { ErrorScreen, httpErrors } from "./lib-components/ErrorScreen";
+export { ErrorScreen, httpErrors } from "./lib-components/ErrorScreen/ErrorScreen";
+export { ImageInput } from "./lib-components/ImageInput/ImageInput";
 export { IconRenderer } from "./lib-components/IconRender";
 export {
   NavbarContext,
