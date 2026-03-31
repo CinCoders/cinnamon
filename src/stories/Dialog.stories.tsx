@@ -49,7 +49,7 @@ export const DialogInformation: Story = {
   args: {
     type: "information",
     title: "Information Dialog Title",
-    children: "Information dialog message.",
+    children: "DialogInformation appears in front of app content to provide additional information to the users.",
     acceptLabel: "Confirmar",
   },
 };
@@ -59,7 +59,7 @@ export const DialogAlert: Story = {
   args: {
     type: "alert",
     title: "Alert Message Title",
-    children: "Alert dialog message.",
+    children: "ADialogAlert is an option to display important information through an alert message, ensuring that the user is aware of a critical information.",
   },
 };
 
@@ -68,7 +68,7 @@ export const DialogDecision: Story = {
   args: {
     type: "decision",
     title: "Decision Dialog Title",
-    children: "Decision dialog message.",
+    children: "DialogDecision presents a message to the user and includes a confirmation button and a cancel button, enabling the user to make a decision regarding a specific question.",
   },
 };
 
@@ -77,7 +77,7 @@ export const DialogConfirmation: Story = {
   args: {
     type: "confirmation",
     title: "Confirmation Dialog Title",
-    children: "Confirmation dialog message.",
+    children: "DialogConfirmation presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.",
   },
 };
 
@@ -86,6 +86,6 @@ export const DialogError: Story = {
   args: {
     type: "error",
     title: "Error Dialog Title",
-    children: "Error dialog message.",
+    children: "DialogError presents a message to the user and includes a confirmation button and a cancel button, ensuring that the user acknowledges the message.",
   },
 };

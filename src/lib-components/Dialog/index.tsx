@@ -45,20 +45,12 @@ export interface DialogProps {
   rejectFunction?: () => void;
 }
 
-const typeToHeaderBg: Record<DialogProps["type"], string> = {
-  information: "bg-primary",
-  alert: "bg-amber-500",
-  decision: "bg-sky-600",
-  confirmation: "bg-emerald-600",
-  error: "bg-red-600",
-};
-
-const typeToColorHex: Record<DialogProps["type"], string> = {
-  information: "#0f172a",   // ajuste se quiser (ou use o primary real)
-  alert: "#f59e0b",
-  decision: "#0284c7",
-  confirmation: "#059669",
-  error: "#dc2626",
+const dialogAccents: Record<DialogProps["type"], string> = {
+  information: "#9C27B0", // MUI secondary.main
+  alert: "#ED6C02", // MUI warning.main
+  decision: "#0288D1", // MUI info.dark
+  confirmation: "#2E7D32", // MUI success.main
+  error: "#D32F2F", // MUI error.main
 };
 
 export function Dialog({
@@ -73,8 +65,7 @@ export function Dialog({
   rejectFunction,
 }: DialogProps) {
   const isSimple = type === "information" || type === "alert";
-  const headerBg = typeToHeaderBg[type];
-  const accent = typeToColorHex[type];
+  const accent = dialogAccents[type];
 
   function onHide() {
     setVisibility(false);
@@ -99,28 +90,47 @@ export function Dialog({
           onPointerDownOutside={(e) => e.preventDefault()}
           className={cn(
             "fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
-            "rounded-md border border-border bg-background shadow-lg",
+            "overflow-hidden rounded-md border border-border bg-background shadow-lg",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
             "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
           )}
         >
-          {/* header bar + title */}
-          <div className={cn("flex items-center justify-between rounded-t-md px-4 py-3", headerBg)}>
-            <DialogPrimitive.Title className="text-sm font-semibold text-white">
-                {title}
-            </DialogPrimitive.Title>
-          </div>
+          {/* header bar */}
+          <div
+            className="h-8 w-full rounded-t-md"
+            style={{ backgroundColor: accent }}
+            aria-hidden="true"
+          />
 
-          {/* body */}
-          <div className="px-6 pb-6 text-sm text-foreground">
-            {typeof children === "string" ? <p>{children}</p> : children}
+          {/* title + message */}
+          <div className="px-8 pt-6">
+            <DialogPrimitive.Title className="text-lg font-semibold text-foreground">
+              {title}
+            </DialogPrimitive.Title>
+
+            {typeof children === "string" ? (
+              <DialogPrimitive.Description className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {children}
+              </DialogPrimitive.Description>
+            ) : (
+              <DialogPrimitive.Description asChild>
+                <div className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {children}
+                </div>
+              </DialogPrimitive.Description>
+            )}
           </div>
 
           {/* footer */}
-          <div className="flex items-center justify-end gap-2 border-t border-border px-6 py-4">
+          <div className="flex items-center justify-end gap-3 border-t border-border px-8 py-6">
             {isSimple ? (
-              <Button type="button" onClick={onHide} className={cn("text-white", headerBg)}>
+              <Button
+                type="button"
+                onClick={onHide}
+                className="text-white"
+                style={{ backgroundColor: accent }}
+              >
                 {acceptLabel}
               </Button>
             ) : (

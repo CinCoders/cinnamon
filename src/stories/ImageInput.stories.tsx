@@ -20,12 +20,17 @@ function Stateful(args: React.ComponentProps<typeof ImageInput>) {
   const [file, setFile] = React.useState<File | undefined>(undefined);
 
   return (
-    <div className="mx-auto w-full max-w-xs">
+    <div className="flex w-40 flex-col items-center gap-4 pt-4 text-center">
       <ImageInput
         {...args}
         file={file}
         setFile={setFile as React.Dispatch<React.SetStateAction<File>>}
       />
+
+      <div className="flex w-full flex-col text-sm">
+        <span className="font-medium">Nome do arquivo:</span>
+        <span>{file?.name ?? "exemplo.png"}</span>
+      </div>
     </div>
   );
 }
