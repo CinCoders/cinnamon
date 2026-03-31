@@ -119,7 +119,7 @@ export function Navbar(props: NavbarProps) {
   return (
     <div className="w-full">
       <header className="cinnamon-navbar-inner sticky top-0 z-50 w-full bg-white shadow-md relative">
-        <div className="flex h-16 items-center px-3">
+        <div className="flex h-16 items-center px-4">
           <div className="flex items-center gap-2">
             {!isLandingPage && sideMenuLinks.length !== 0 && (
               <HamburgerButton
@@ -141,7 +141,7 @@ export function Navbar(props: NavbarProps) {
             </div>
           </div>
 
-          <div className="flex-1 px-4 flex justify-end">
+          <div className="flex flex-1 justify-end pr-8">
             {haveSearchBar && (
               <input
                 className="h-[2.7rem] w-[25vw] max-w-[30rem] rounded-[10px] bg-[#f2f2f2] pl-8 pr-8 outline-none"
@@ -152,14 +152,20 @@ export function Navbar(props: NavbarProps) {
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div
+            className={cn(
+              "flex items-center gap-3",
+              haveSearchBar ? "ml-4" : "ml-auto"
+            )}
+          >
             {!isLandingPage && filteredSystemsList.length > 0 && (
               <div className="relative">
                 <button
                   type="button"
-                  className="h-10 w-10"
+                  className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer transition-shadow duration-150 hover:shadow-[0_4px_10px_rgba(0,0,0,0.18)] focus-visible:outline-none"
                   aria-haspopup="menu"
                   aria-expanded={systemsOpen}
+                  aria-label="Abrir lista de sistemas"
                   onClick={() => setSystemsOpen((v) => !v)}
                 >
                   <img
@@ -196,9 +202,10 @@ export function Navbar(props: NavbarProps) {
                 <button
                   type="button"
                   className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-full text-white",
+                    "flex h-10 w-10 items-center justify-center rounded-full text-white cursor-pointer transition-shadow duration-150 hover:shadow-[0_4px_10px_rgba(0,0,0,0.18)] focus-visible:outline-none",
                     "bg-[#db1e2f]",
                   )}
+                  aria-label="Abrir menu do usuário"
                   onClick={() => setUserOpen((v) => !v)}
                 >
                   {(
