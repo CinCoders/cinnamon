@@ -28,6 +28,28 @@ Cinnamon is centered around reusable application-shell components such as:
 
 The goal is not only to provide isolated UI pieces, but to offer a reusable structure for authenticated web applications.
 
+## Architecture Overview
+
+Cinnamon should be understood as an application-shell library, not only as a collection of isolated UI widgets.
+
+Its core responsibility is to compose:
+
+- layout (`Page`, `PageServer`)
+- authentication-aware wrappers (`PageWithAuth`, `PageWithAuthServer`)
+- authorization gates (`RequireAuth`, `RequireAuthServer`)
+- shared shell pieces (`Navbar`, `Footer`, toast, systems popup, side menu)
+
+Internally, the auth model follows this mental flow:
+
+`provider -> adapter -> CinnamonSession -> hasAccess -> render`
+
+That means:
+
+- consumers may still use a legacy OIDC provider on the client;
+- Cinnamon normalizes that input into a session-like contract;
+- authorization stays centered on roles instead of on a specific provider object;
+- Next/server-first consumers can bypass the provider entirely and pass `CinnamonSession` directly.
+
 ## Installation
 
 ```bash
@@ -140,6 +162,8 @@ type CinnamonSession = {
 };
 ```
 
+This is the internal contract used by the server-safe path and by the normalized client path.
+
 ## Client Auth Usage
 
 For client-side React apps, `RequireAuth` and `PageWithAuth` currently accept an auth object compatible with `react-oidc-context`.
@@ -228,6 +252,15 @@ To keep the visual language consistent between Client and Server components, the
 
 All public interfaces (`User`, `System`, `SideMenuLink`, `Role`, etc.) are exported from `@cincoders/cinnamon`. Server-first apps (Next.js) should import those types instead of redefining them locally so that future library updates stay in sync.
 
+## Validation Status
+
+The `v2-auth` work has already been exercised in two real consumers:
+
+- `info-cin-front`: validated the Next/server-first path through an isolated lab route, including cookie-backed session resolution, authorized/unauthorized states, server redirects, role filtering and mixed client/server composition.
+- `prorank-front`: validated the legacy React SPA path with Keycloak/OIDC, including `PageWithAuth`, `RequireAuth`, `AuthUtils.hasAccess(auth, roles)`, forbidden flow and the application shell in real client usage.
+
+This means the branch is no longer only architectural work; it has already been checked in both server-first and legacy client scenarios.
+
 ## Public Exports
 
 Main entry:
@@ -262,6 +295,17 @@ Server entry:
 
 Sempre que possível, prefira a camada estável. A camada compat existe apenas para manter projetos legados funcionando durante a migração.
 
+## Known Compatibility Notes
+
+These points are important when comparing `v2-auth` with the legacy `main` branch:
+
+- the main entry no longer exposes some legacy items such as `ImageInput`, `Dialog`, `ErrorScreen` and `httpErrors`;
+- `@cincoders/cinnamon/server` currently exports the server-safe components, but not the broader set of public types yet;
+- `NavbarProps.auth` is still permissive to preserve compatibility with raw provider objects;
+- `useNavbar()` still exposes the historical typo `setSearchFuncion` for compatibility with legacy consumers.
+
+These notes do not currently block the `v2-auth` merge into `v2`, but they should be treated consciously before a broader release communication.
+
 ## Development
 
 Useful scripts:
@@ -283,12 +327,6 @@ Library build details:
 - `main` contains the legacy implementation
 - `v2` is the Tailwind/Shadcn migration
 - `v2-auth` focuses on auth decoupling and React/Next compatibility
-
-Additional internal project notes are available in:
-
-- `PROJECT_CONTEXT.md`
-- `NEXT_COMPATIBILITY_CONSIDERATIONS.md`
-- `LEGACY_TO_V2_MIGRATION_SUMMARY.md`
 
 ## Current Status
 

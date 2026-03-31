@@ -103,9 +103,9 @@ Em Next.js, especialmente com Server Components, esse modelo começa a gerar fri
 
 Em resumo: no legado, a Cinnamon dependia demais do provider OIDC/Keycloak como base da autorização.
 
-## Como Está / Deve Ficar na V2
+## Como Está na `v2-auth`
 
-A `v2-auth` tenta reorganizar essa arquitetura para que a auth da Cinnamon fique mais estável, previsível e preparada para React SPA e Next.js.
+A `v2-auth` reorganiza essa arquitetura para que a auth da Cinnamon fique mais estável, previsível e preparada para React SPA e Next.js.
 
 ### `CinnamonSession` como contrato oficial
 
@@ -119,9 +119,9 @@ Essa sessão representa o mínimo necessário para que a biblioteca tome decisõ
 
 Com isso, a Cinnamon deixa de depender diretamente do provider para entender auth.
 
-### `hasAccess(session, permittedRoles)` como regra oficial
+### `hasAccess(...)` como regra oficial
 
-A regra de autorização da Cinnamon deve girar em torno de uma função simples e previsível:
+A regra de autorização da Cinnamon gira em torno de uma função simples e previsível:
 
 `hasAccess(session, permittedRoles)`
 
@@ -129,9 +129,17 @@ Essa regra responde apenas se a sessão atual pode ou não acessar determinado r
 
 Isso torna a autorização mais portátil e mais fácil de reaproveitar em client e server.
 
+Na implementação atual da `v2-auth`, `hasAccess` aceita:
+
+- `CinnamonSession`
+- objeto legado compatível com OIDC
+- `null` / `undefined`
+
+Ou seja: internamente a direção continua sendo session-first, mas a API pública ainda preserva compatibilidade com consumers legados como o `prorank-front`.
+
 ### Provider client tratado como adaptação
 
-Na `v2`, o provider de autenticação continua podendo existir no fluxo client, especialmente para manter compatibilidade com aplicações React que já usam OIDC.
+Na `v2-auth`, o provider de autenticação continua podendo existir no fluxo client, especialmente para manter compatibilidade com aplicações React que já usam OIDC.
 
 Mas a ideia correta é:
 
@@ -157,6 +165,15 @@ Nesse cenário, o server não precisa conhecer o provider client. Ele precisa co
 
 Mas conceitualmente ele deve ser entendido como a camada client que recebe um provider compatível, adapta isso para `CinnamonSession` e então usa a regra central da biblioteca.
 
+No estado atual da `v2-auth`, o fluxo de `RequireAuth` é:
+
+1. observar `auth.isLoading`
+2. montar `sessionFromOidcAuth(auth)`
+3. verificar acesso
+4. renderizar `children`, `ForbiddenPage` ou acionar `signinRedirect()`
+
+Isso é importante porque confirma que o caminho client ainda existe e continua sendo uma camada de adaptação, não o contrato central da biblioteca.
+
 ### `RequireAuthServer` como caminho natural para Next
 
 `RequireAuthServer` representa melhor a direção arquitetural desejada para Next.js.
@@ -169,9 +186,17 @@ Nesse modelo, a Cinnamon recebe uma sessão já resolvida, aplica a regra de aut
 
 Esse fluxo combina melhor com SSR e com a ideia de Server Components.
 
-## Diferença Central Entre Legado e V2
+Na implementação atual, o caminho server trabalha com:
 
-No legado, a auth da Cinnamon girava em torno do provider OIDC; na `v2`, a auth da Cinnamon deve girar em torno de `CinnamonSession`, tratando o provider apenas como integração.
+- `session: CinnamonSession | null`
+- `permittedRoles`
+- `onUnauthenticated`
+
+Ou seja: autenticação ausente no server não dispara integração com provider; ela delega ao consumer a responsabilidade de redirecionar, por exemplo usando `redirect()` no Next.
+
+## Diferença Central Entre Legado e `v2-auth`
+
+No legado, a auth da Cinnamon girava em torno do provider OIDC; na `v2-auth`, a auth da Cinnamon gira em torno de `CinnamonSession`, tratando o provider apenas como integração.
 
 ## Fluxo Mental da Auth
 
@@ -192,6 +217,29 @@ Esse fluxo é importante porque separa responsabilidades de maneira mais saudáv
 - o adaptador traduz isso para o formato da Cinnamon
 - a Cinnamon decide acesso
 - a UI apenas reflete o resultado
+
+## Compatibilidade Retroativa no Estado Atual
+
+A `v2-auth` não abandonou o legado abruptamente.
+
+Hoje, a compatibilidade retroativa está preservada em pontos importantes:
+
+- `PageWithAuth` e `RequireAuth` continuam aceitando auth compatível com `react-oidc-context`;
+- `AuthUtils.hasAccess(auth, roles)` continua funcionando com o objeto cru do provider;
+- `OidcAuthLike` aceita `user: null`, refletindo o formato real do `react-oidc-context`;
+- `ForbiddenPage` continua aceitando `auth` e `publicURL` como props opcionais de compatibilidade no fluxo client.
+
+Isso permite que a biblioteca evolua internamente para um contrato session-first sem quebrar os consumers antigos imediatamente.
+
+## O Que Ainda Não Está Totalmente Fechado
+
+Embora a arquitetura de auth esteja bem consolidada, alguns pontos continuam claramente posicionados como compatibilidade ou melhoria futura:
+
+- `NavbarProps.auth` ainda está permissivo para aceitar o provider cru;
+- o entry `@cincoders/cinnamon/server` ainda exporta só os componentes server-safe, e não um conjunto mais amplo de tipos;
+- o typo histórico `setSearchFuncion` continua exposto em `useNavbar()` por compatibilidade.
+
+Esses pontos não mudam a direção da arquitetura, mas ajudam a descrever com honestidade o estado atual da branch.
 
 ## Por Que Isso Importa
 
