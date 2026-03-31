@@ -10,15 +10,7 @@ export type AuthLike = {
   signoutRedirect?: () => void;
 };
 
-// permite passar User completo OU parcial, e mantém compatibilidade de tipo
 export type UserLike = Partial<User>;
-
-// export type UserLike = {
-//   name?: string;
-//   username?: string;
-//   email?: string;
-//   positions?: Position[];
-// };
 
 export interface UserPopupProps {
   user?: UserLike;

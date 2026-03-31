@@ -1,4 +1,3 @@
-// src/lib-components/Navbar/Navbar.tsx
 "use client";
 
 import * as React from "react";
@@ -25,14 +24,14 @@ export interface NavbarProps {
   title?: string;
   h1?: boolean;
   searchFunction?: (searchString: string) => void;
-  searchDropdownLabelsList?: string[]; // (vamos usar depois se quiser)
+  searchDropdownLabelsList?: string[];
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
-  IconComponent?: React.ComponentType<any>; // ou React.ElementType, mas aí teria que ser <IconComponent /> no JSX
+  IconComponent?: React.ComponentType<any>;
   children?: React.ReactNode;
   accountManagementUrl?: string;
 }
@@ -93,7 +92,6 @@ export function Navbar(props: NavbarProps) {
   const [profile, setProfile] = React.useState<User>(user);
 
   React.useEffect(() => {
-    // mantém compat com auth, mas sem depender
     if (merged.auth?.user?.profile) {
       const p = merged.auth.user.profile;
       setProfile({
@@ -120,10 +118,8 @@ export function Navbar(props: NavbarProps) {
 
   return (
     <div className="w-full">
-      {/* Header sticky */}
       <header className="cinnamon-navbar-inner sticky top-0 z-50 w-full bg-white shadow-md relative">
         <div className="flex h-16 items-center px-3">
-          {/* LEFT */}
           <div className="flex items-center gap-2">
             {!isLandingPage && sideMenuLinks.length !== 0 && (
               <HamburgerButton
@@ -145,7 +141,6 @@ export function Navbar(props: NavbarProps) {
             </div>
           </div>
 
-          {/* SEARCH (flex-1 empurra o right) */}
           <div className="flex-1 px-4 flex justify-end">
             {haveSearchBar && (
               <input
@@ -157,9 +152,7 @@ export function Navbar(props: NavbarProps) {
             )}
           </div>
 
-          {/* RIGHT */}
           <div className="flex items-center gap-2">
-            {/* Systems (grid) */}
             {!isLandingPage && filteredSystemsList.length > 0 && (
               <div className="relative">
                 <button
@@ -230,7 +223,6 @@ export function Navbar(props: NavbarProps) {
         </div>
       </header> 
 
-      {/* SideMenu default igual legado */}
       {!isLandingPage &&
         (children ? (
           children

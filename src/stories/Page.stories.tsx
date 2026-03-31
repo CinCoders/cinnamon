@@ -1,4 +1,3 @@
-// src/stories/Page.stories.tsx
 import type { Meta, StoryObj } from "@storybook/react";
 import { Page } from "../lib-components/Page/Page";
 import { testLinks, testSystems, testUser } from "./sampleData/SampleData";

@@ -15,13 +15,13 @@ O foco desta etapa nao e iniciar uma nova rodada de arquitetura, e sim confirmar
 
 ## Criterios que precisam ser fechados antes do merge
 
-- validar o fluxo real no `info-cin-front` *(em andamento)*;
-- validar ausencia de regressao no `prorank-front` *(em andamento)*;
+- validar o fluxo real no `info-cin-front` *(parcialmente validado)*;
+- validar ausencia de regressao no `prorank-front` *(✅ validado do ponto de vista da Cinnamon em 2026-03-30)*;
 - revisar inconsistencias pequenas de API e documentacao *(✅ exports/README atualizados em 2026-03-30)*;
 - fechar a sensacao de "API estavel + camada compat" na pratica, nao so no discurso *(✅ documentado no README/ANOTACOES)*;
 - testar composicao client/server em cenarios relevantes *(⚠️ rodar matriz descrita no Bloco 2)*;
 - testar auth e rotas de forma definitiva *(⚠️ cobrir cenarios do Bloco 3)*;
-- limpar a branch o maximo possivel antes do merge *(pendente, depois dos testes acima)*.
+- limpar a branch o maximo possivel antes do merge *(em andamento; limpeza inicial de codigo comentado e comentarios excessivos iniciada em 2026-03-31)*.
 
 ## Bloco 1 - Validacao real em consumers
 
@@ -164,11 +164,13 @@ Confirmar na pratica a ideia de que a Cinnamon possui:
 - consistencia dos exemplos do README;
 - pequenas inconsistencias de naming, props e comentarios.
 
-> 🔴 **Breaking change anotado:** a `v2-auth` deixou de expor `ImageInput`, `Dialog`, `ErrorScreen` e `httpErrors` no entry principal, diferentemente da `main`. Registrar para tratar logo após o merge (ou decidir por uma camada compat) antes de comunicar release.
+> 🔴 **Breaking change anotado:** a `v2-auth` deixou de expor `ImageInput`, `Dialog`, `ErrorScreen` e `httpErrors` no entry principal, diferentemente da `main`. A decisão nesta fase e **nao bloquear o merge por isso**: o ponto fica registrado para avaliacao logo depois da integracao em `v2`, antes de qualquer comunicacao de release.
 >
 > 🟡 **Melhoria pós-merge:** o entry `@cincoders/cinnamon/server` exporta apenas os componentes server-safe (`PageServer`, `PageWithAuthServer`, `RequireAuthServer`). Vale reexportar também os tipos (`PageServerProps`, `CinnamonSession`, etc.) depois do merge para evitar imports mistos em arquivos server-first.
 >
 > 🟡 **Melhoria pós-merge:** `NavbarProps.auth` ainda está tipado como `any` para aceitar o provider cru. Converter para `OidcAuthLike | CinnamonSession` após o merge garante melhor DX sem alterar o fluxo atual.
+>
+> 🟡 **Compatibilidade documentada:** `useNavbar()` ainda expõe `setSearchFuncion` com o typo historico do legado. Nesta fase a decisao e manter o nome por compatibilidade; um alias `setSearchFunction` pode ser introduzido depois sem remover a assinatura antiga.
 
 ### Resultado esperado
 
@@ -247,7 +249,7 @@ Achados dessa rodada:
 - o componente client interativo dentro do shell hidratou normalmente;
 - o componente client envolvendo children renderizados no server tambem funcionou;
 - o usuario esperado na navbar nao apareceu, mesmo com `hiddenUser: false` e `user` informado;
-- o icone do trecho `Made with [icone] by CInCoders` continua ausente no footer, o que confirma a pendencia ja conhecida da lib.
+- o problema visual do icone no footer foi observado nessa primeira rodada, mas deixou de ser uma pendencia aberta da lib apos a correcao posterior do asset na Cinnamon.
 
 Pendencias que continuam abertas nesta frente:
 

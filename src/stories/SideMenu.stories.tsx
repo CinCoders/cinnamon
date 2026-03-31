@@ -1,4 +1,3 @@
-// src/stories/SideMenu.stories.tsx
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { SideMenu } from "@/components/SideMenu/SideMenu";

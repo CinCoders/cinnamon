@@ -1,4 +1,3 @@
-// src/lib-components/Page/useNavbar.tsx
 "use client";
 
 import * as React from "react";
@@ -17,7 +16,6 @@ export function useNavbarContext() {
   return React.useContext(NavbarContext);
 }
 
-// igual legado (mas simplificado)
 export function useNavbar() {
   const ctx = React.useContext(NavbarContext);
   if (!ctx) throw new Error("Navbar context not available.");
