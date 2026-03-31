@@ -96,49 +96,51 @@ export function Footer({
         </div>
       )}
 
-      <div className="cinnamon-footer-shell flex h-10 w-full items-center justify-between bg-[#616161] text-[11px] leading-10 text-white">
-        <div className="text-left">
-          {copyrightText ? (
-            <>
-              ©{new Date().getFullYear()} {copyrightText}
-            </>
-          ) : null}
-        </div>
+      <div className="w-full bg-[#616161] text-white">
+        <div className="cinnamon-footer-shell flex h-10 w-full items-center justify-between px-8 text-[11px] leading-10">
+          <div className="text-left">
+            {copyrightText ? (
+              <>
+                ©{new Date().getFullYear()} {copyrightText}
+              </>
+            ) : null}
+          </div>
 
-        <div className="text-right max-[601px]:hidden">
-          {signatureText !== undefined ? (
-            signatureLink ? (
-              <a className="text-white" href={signatureLink}>
-                {signatureText}
-              </a>
+          <div className="text-right max-[601px]:hidden">
+            {signatureText !== undefined ? (
+              signatureLink ? (
+                <a className="text-white" href={signatureLink}>
+                  {signatureText}
+                </a>
+              ) : (
+                <span>{signatureText}</span>
+              )
             ) : (
-              <span>{signatureText}</span>
-            )
-          ) : (
-            <span className="inline-flex items-center gap-1">
-              {appVersion ? (
-                <span className="mr-[100px]">version: {appVersion}</span>
-              ) : null}
-              <a
-                href="https://www.npmjs.com/package/@cincoders/cinnamon"
-                className="inline-flex items-center gap-1 text-white no-underline"
-              >
-                Made with
-                <img
-                  src={cnmHeartIcon}
-                  alt="cnm"
-                  className="h-[15px] w-[15px]"
-                />
-              </a>
-              <span>by</span>
-              <a
-                href="https://cincoders.cin.ufpe.br/"
-                className="text-white no-underline"
-              >
-                CInCoders
-              </a>
-            </span>
-          )}
+              <span className="inline-flex items-center gap-1">
+                {appVersion ? (
+                  <span className="mr-[100px]">version: {appVersion}</span>
+                ) : null}
+                <a
+                  href="https://www.npmjs.com/package/@cincoders/cinnamon"
+                  className="inline-flex items-center gap-1 text-white no-underline"
+                >
+                  Made with
+                  <img
+                    src={cnmHeartIcon}
+                    alt="cnm"
+                    className="h-[15px] w-[15px]"
+                  />
+                </a>
+                <span>by</span>
+                <a
+                  href="https://cincoders.cin.ufpe.br/"
+                  className="text-white no-underline"
+                >
+                  CInCoders
+                </a>
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </footer>
