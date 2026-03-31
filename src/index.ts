@@ -12,6 +12,8 @@ export {
 } from "./lib-components/PageWithAuth";
 export { Navbar } from "./lib-components/Navbar/Navbar";
 export { Footer } from "./lib-components/Footer/Footer";
+export { Dialog } from "./lib-components/Dialog";
+export { ErrorScreen, httpErrors } from "./lib-components/ErrorScreen";
 export { IconRenderer } from "./lib-components/IconRender";
 export {
   NavbarContext,
