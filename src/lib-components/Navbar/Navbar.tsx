@@ -61,8 +61,9 @@ export function Navbar(props: NavbarProps) {
   const sessionFromUser = React.useMemo<CinnamonSession | null>(() => {
     const roleNames =
       user?.positions
-        ?.flatMap((position) =>
-          position.roles?.map((role) => role.name).filter(Boolean) ?? [],
+        ?.flatMap(
+          (position) =>
+            position.roles?.map((role) => role.name).filter(Boolean) ?? [],
         )
         .filter((role): role is string => !!role) ?? [];
 
@@ -117,7 +118,11 @@ export function Navbar(props: NavbarProps) {
     function handlePointerDown(event: MouseEvent | TouchEvent) {
       const target = event.target as Node;
 
-      if (userOpen && userPopupRef.current && !userPopupRef.current.contains(target)) {
+      if (
+        userOpen &&
+        userPopupRef.current &&
+        !userPopupRef.current.contains(target)
+      ) {
         setUserOpen(false);
       }
 
@@ -148,7 +153,7 @@ export function Navbar(props: NavbarProps) {
 
   return (
     <div className="w-full">
-      <header className="cinnamon-navbar-inner sticky top-0 z-50 w-full bg-white shadow-md relative">
+      <header className="cinnamon-navbar-inner relative sticky top-0 z-50 w-full bg-white shadow-md">
         <div className="flex h-16 items-center px-4">
           <div className="flex items-center gap-2">
             {!isLandingPage && sideMenuLinks.length !== 0 && (
@@ -185,7 +190,7 @@ export function Navbar(props: NavbarProps) {
           <div
             className={cn(
               "flex items-center gap-3",
-              haveSearchBar ? "ml-4" : "ml-auto"
+              haveSearchBar ? "ml-4" : "ml-auto",
             )}
           >
             {!isLandingPage && filteredSystemsList.length > 0 && (
@@ -258,7 +263,7 @@ export function Navbar(props: NavbarProps) {
             )}
           </div>
         </div>
-      </header> 
+      </header>
 
       {!isLandingPage &&
         (children ? (

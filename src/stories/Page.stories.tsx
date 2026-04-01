@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Page } from "../lib-components/Page/Page";
 import { testLinks, testSystems, testUser } from "./sampleData/SampleData";
+import { Layers } from "lucide-react";
 
 type PageStoryArgs = {
   // Children
@@ -33,7 +34,7 @@ type PageStoryArgs = {
 const meta: Meta<PageStoryArgs> = {
   title: "Lib Components/Page",
   component: Page as unknown as React.ComponentType<any>, // cast simples p/ Page aceitar story-args
-  parameters: { docs: { page: null } },
+  parameters: { docs: { page: null }, layout: "fullscreen" },
 
   argTypes: {
     centralized: { control: "boolean", table: { category: "Page" } },

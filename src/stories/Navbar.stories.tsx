@@ -16,7 +16,7 @@ type NavbarStoryArgs = NavbarProps & {
 const meta: Meta<NavbarStoryArgs> = {
   title: "Lib Components/Navbar",
   component: Navbar,
-  parameters: { docs: { page: null } },
+  parameters: { docs: { page: null }, layout: "fullscreen" },
 
   args: {
     h1: true,
