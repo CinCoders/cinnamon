@@ -110,6 +110,36 @@ export function Navbar(props: NavbarProps) {
 
   const [userOpen, setUserOpen] = React.useState(false);
   const [systemsOpen, setSystemsOpen] = React.useState(false);
+  const userPopupRef = React.useRef<HTMLDivElement>(null);
+  const systemsPopupRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    function handlePointerDown(event: MouseEvent | TouchEvent) {
+      const target = event.target as Node;
+
+      if (userOpen && userPopupRef.current && !userPopupRef.current.contains(target)) {
+        setUserOpen(false);
+      }
+
+      if (
+        systemsOpen &&
+        systemsPopupRef.current &&
+        !systemsPopupRef.current.contains(target)
+      ) {
+        setSystemsOpen(false);
+      }
+    }
+
+    if (!userOpen && !systemsOpen) return;
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, [systemsOpen, userOpen]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchString(e.target.value);
@@ -159,7 +189,7 @@ export function Navbar(props: NavbarProps) {
             )}
           >
             {!isLandingPage && filteredSystemsList.length > 0 && (
-              <div className="relative">
+              <div className="relative" ref={systemsPopupRef}>
                 <button
                   type="button"
                   className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer transition-shadow duration-150 hover:shadow-[0_4px_10px_rgba(0,0,0,0.18)] focus-visible:outline-none"
@@ -198,7 +228,7 @@ export function Navbar(props: NavbarProps) {
             )}
 
             {!hiddenUser && (
-              <div className="relative">
+              <div className="relative" ref={userPopupRef}>
                 <button
                   type="button"
                   className={cn(
