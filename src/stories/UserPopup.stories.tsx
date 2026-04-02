@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
 
 const meta: Meta<typeof UserPopup> = {
-  title: "Components/UserPopup",
+  title: "Lib Components/UserPopup",
   component: UserPopup,
 };
 export default meta;
@@ -18,15 +18,23 @@ export const Default: Story = {
       positions: [
         {
           id: "1",
-          name: "Admin",
+          name: "Position 1",
           roles: [
-            { id: "r1", name: "Owner", description: "Acesso total" },
-            { id: "r2", name: "Billing", description: "Faturas e cobrança" },
+            { id: "r1", name: "Role 1", description: "Role 1" },
+            { id: "r2", name: "Role 2", description: "Role 2" },
           ],
         },
         {
           id: "2",
-          name: "Viewer",
+          name: "Position 2",
+          roles: [
+            { id: "r1", name: "Role 1", description: "Role 1" },
+            { id: "r2", name: "Role 2", description: "Role 2" },
+          ],
+        },
+        {
+          id: "3",
+          name: "Position 3",
           roles: [],
         },
       ],

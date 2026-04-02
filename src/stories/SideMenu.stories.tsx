@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { testLinks } from "./sampleData/SampleData";
 
 const meta = {
-  title: "Components/SideMenu",
+  title: "Lib Components/SideMenu",
   component: SideMenu,
   args: {
     links: testLinks,

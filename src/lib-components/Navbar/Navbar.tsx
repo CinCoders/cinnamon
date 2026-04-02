@@ -155,7 +155,7 @@ export function Navbar(props: NavbarProps) {
     <div className="w-full">
       <header className="cinnamon-navbar-inner relative sticky top-0 z-50 w-full bg-white shadow-md">
         <div className="flex h-16 items-center px-4">
-          <div className="flex items-center gap-2">
+          <div className="ml-5 flex items-center gap-2">
             {!isLandingPage && sideMenuLinks.length !== 0 && (
               <HamburgerButton
                 isOpen={sideMenuOpen}
@@ -189,7 +189,7 @@ export function Navbar(props: NavbarProps) {
 
           <div
             className={cn(
-              "flex items-center gap-3",
+              "mr-5 flex items-center gap-3",
               haveSearchBar ? "ml-4" : "ml-auto",
             )}
           >
