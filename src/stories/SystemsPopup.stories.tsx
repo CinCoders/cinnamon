@@ -3,7 +3,7 @@ import { SystemsPopup } from "@/components/SystemsPopup/SystemsPopup";
 import { testSystems } from "./sampleData/SampleData";
 
 const meta: Meta<typeof SystemsPopup> = {
-  title: "Components/SystemsPopup",
+  title: "Lib Components/SystemsPopup",
   component: SystemsPopup,
   args: {
     systemsList: testSystems,
