@@ -135,14 +135,22 @@ export function Navbar(props: NavbarProps) {
       }
     }
 
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      if (userOpen) setUserOpen(false);
+      if (systemsOpen) setSystemsOpen(false);
+    }
+
     if (!userOpen && !systemsOpen) return;
 
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [systemsOpen, userOpen]);
 

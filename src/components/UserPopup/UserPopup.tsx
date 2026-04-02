@@ -94,7 +94,7 @@ export function UserPopup(props: UserPopupProps) {
                       </Accordion.Header>
 
                       {hasRoles && (
-                        <Accordion.Content className="px-0 pb-2">
+                        <Accordion.Content className="overflow-hidden px-0 pb-2">
                           <div className="px-4">
                             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                               <div className="font-semibold text-foreground">Função</div>
