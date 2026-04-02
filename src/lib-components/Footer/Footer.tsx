@@ -41,7 +41,7 @@ export function Footer({
     <footer className="sticky bottom-0 w-full">
       {largeFooter && (
         <div className="w-full bg-[#424242] text-white">
-          <div className="cinnamon-footer-shell mx-auto w-full max-w-6xl px-6">
+          <div className="cinnamon-footer-shell w-full px-6">
             <div
               className="cinnamon-footer-top flex h-[110px] items-center justify-around
                             max-[801px]:h-[15vh] max-[501px]:h-[30vh]
