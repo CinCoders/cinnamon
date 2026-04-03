@@ -1,0 +1,141 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+import Brackets from "../assets/icons/code-brackets.svg";
+import CnmIcon from "../assets/icons/cnmIcon.svg";
+import LogoCoders from "../assets/icons/cincodersicon.svg";
+
+<Meta title="About/CinCoders" />
+
+<style>
+  {`
+    .about-subheading {
+      font-weight: 700;
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 6px;
+      line-height: 24px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      margin-top: 40px;
+    }
+
+    .about-link-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      row-gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .about-link-list {
+        row-gap: 20px;
+        column-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .about-link-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 20px;
+      border: 1px solid #00000010;
+      border-radius: 5px;
+      color: #333333;
+      transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+    }
+
+    .about-link-item:hover {
+      border-color: #1ea7fd50;
+      transform: translate3d(0, -3px, 0);
+      box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+    }
+
+    .about-link-item:active {
+      border-color: #1ea7fd;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .about-link-item strong {
+      display: block;
+      margin-bottom: 2px;
+      font-weight: 700;
+    }
+
+    .about-link-item img {
+      height: 40px;
+      width: 40px;
+      margin-right: 15px;
+      flex: none;
+    }
+
+    .about-link-item span,
+    .about-link-item p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .about-logo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .about-logo img {
+      height: 91px;
+      width: min(100%, 550px);
+      margin-bottom: 55px;
+    }
+  `}
+</style>
+
+<div className="about-logo">
+  <img src={LogoCoders} alt="CinCoders" />
+</div>
+
+# Welcome to CInCoders
+
+A dynamic and innovative development team from the Center of Informatics (CIn) at the University of Pernambuco (UFPE).
+We are a group of passionate coders, driven by the desire to create impactful solutions that shape the future of technology.
+With a strong foundation in software development and a relentless pursuit of excellence, we thrive on transforming ideas into practical, user-centric applications.
+Join us on this exciting journey as we push boundaries, collaborate, and unleash the power of code to build a better tomorrow.
+
+<div className="about-subheading">Open source projects</div>
+
+<div className="about-link-list">
+  <a className="about-link-item" href="/?path=/docs/about-cinnamon--docs">
+    <img src={CnmIcon} alt="Cinnamon" />
+    <span>
+      <strong>Cinnamon</strong>
+      Browse Cinnamon components and example stories now by navigating to them in
+      the sidebar. View their code in the `stories` directory to learn how they work.
+    </span>
+  </a>
+  <a className="about-link-item" href="https://cs-deadlines.cin.ufpe.br" target="_blank">
+    <img src={Brackets} alt="CS-Deadlines" />
+    <span>
+      <strong>CS-Deadlines</strong>
+      Top Computer Science Conference Deadlines! Discover the latest updates on top
+      computer science conferences and their submission deadlines with our comprehensive
+      platform.
+    </span>
+  </a>
+  <a className="about-link-item" href="https://github.com/CinCoders/research-back" target="_blank">
+    <img src={Brackets} alt="Research Dashboard API" />
+    <span>
+      <strong>Research Dashboard API</strong>
+      A versatile tool that not only extracts information from professors' Lattes curriculum
+      but also qualifies and presents the extracted data in a more convenient and summarized
+      manner.
+    </span>
+  </a>
+  <a className="about-link-item" href="https://github.com/CinCoders/research-front" target="_blank">
+    <img src={Brackets} alt="Research Dashboard" />
+    <span>
+      <strong>Research Dashboard</strong>
+      An intuitive and user-friendly front end that showcases the information extracted
+      from professors' Lattes curriculum through the API with dashboards and visualizations.
+    </span>
+  </a>
+</div>

@@ -1,0 +1,328 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+import Comments from "../assets/icons/comments.svg";
+import GitImg from "../assets/icons/github-mark.svg";
+import InstallIcon from "../assets/icons/plugin.svg";
+import KeycloakImg from "../assets/icons/keycloakicon.svg";
+import LicenseImg from "../assets/icons/repo.svg";
+import ReactImg from "../assets/icons/react-icon.svg";
+import LogoCinnamon from "../assets/icons/cnmnorounded.svg";
+
+export const TailwindLogo = () => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 48 48"
+    width="40"
+    height="40"
+    className="about-inline-logo"
+  >
+    <path
+      fill="#38bdf8"
+      d="M24 14c-5.333 0-8.667 2.667-10 8 2-2.667 4.333-3.667 7-3 1.522.381 2.61 1.488 3.815 2.714C26.776 23.709 29.05 26 34 26c5.333 0 8.667-2.667 10-8-2 2.667-4.333 3.667-7 3-1.522-.381-2.61-1.488-3.815-2.714C31.224 16.291 28.95 14 24 14Zm-10 12c-5.333 0-8.667 2.667-10 8 2-2.667 4.333-3.667 7-3 1.522.381 2.61 1.488 3.815 2.714C16.776 35.709 19.05 38 24 38c5.333 0 8.667-2.667 10-8-2 2.667-4.333 3.667-7 3-1.522-.381-2.61-1.488-3.815-2.714C21.224 28.291 18.95 26 14 26Z"
+    />
+  </svg>
+);
+
+export const ShadcnLogo = () => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 48 48"
+    width="40"
+    height="40"
+    className="about-inline-logo"
+  >
+    <rect x="4" y="4" width="40" height="40" rx="10" fill="#111827" />
+    <path
+      d="M15 17h18M15 24h11M22 31h11"
+      stroke="#ffffff"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+export const InstallCommand = ({ command }) => (
+  <div className="about-install-command" onClick={(event) => event.stopPropagation()}>
+    <code>{command}</code>
+    <button
+      type="button"
+      className="about-copy-button"
+      onClick={async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const button = event.currentTarget;
+        const originalLabel = button.textContent;
+
+        try {
+          await navigator.clipboard.writeText(command);
+          button.textContent = "Copied";
+        } catch {
+          button.textContent = "Copy failed";
+        }
+
+        window.setTimeout(() => {
+          button.textContent = originalLabel;
+        }, 1500);
+      }}
+    >
+      Copy
+    </button>
+
+  </div>
+);
+
+<Meta title="About/Cinnamon" />
+
+<style>
+  {`
+    .about-subheading {
+      font-weight: 700;
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 6px;
+      line-height: 24px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      margin-top: 40px;
+    }
+
+    .about-link-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      row-gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .about-link-list {
+        row-gap: 20px;
+        column-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .about-link-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 20px;
+      border: 1px solid #00000010;
+      border-radius: 5px;
+      color: #333333;
+      transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+    }
+
+    .about-link-item:hover {
+      border-color: #1ea7fd50;
+      transform: translate3d(0, -3px, 0);
+      box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+    }
+
+    .about-link-item:active {
+      border-color: #1ea7fd;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .about-link-item strong {
+      display: block;
+      margin-bottom: 2px;
+      font-weight: 700;
+    }
+
+    .about-link-item img {
+      height: 40px;
+      width: 40px;
+      margin-right: 15px;
+      flex: none;
+    }
+
+    .about-link-item span,
+    .about-link-item p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .about-logo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .about-logo img {
+      height: auto;
+      width: min(100%, 350px);
+      margin-bottom: 55px;
+    }
+
+    .about-install {
+      display: block;
+      width: 100%;
+    }
+
+    .about-install-row {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .about-install-command {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 8px 8px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .about-install-command code {
+      font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: #111827;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+
+    .about-copy-button {
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #111827;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+      flex: none;
+    }
+
+    .about-copy-button:hover {
+      background: #f3f4f6;
+    }
+
+    .about-copy-button:focus-visible {
+      outline: 2px solid #1ea7fd;
+      outline-offset: 2px;
+    }
+
+    .about-inline-logo {
+      margin-right: 15px;
+      flex: none;
+    }
+  `}
+</style>
+
+<div className="about-logo">
+  <img src={LogoCinnamon} alt="Cinnamon" />
+</div>
+
+# Welcome to Cinnamon's Storybook
+
+Cinnamon is a powerful React package that offers a variety of components designed to simplify the development process and enhance the appearance of systems across multiple projects.
+With its reusable components, Cinnamon helps standardize authenticated application shells across different projects and teams.
+In the v2 direction, the library replaces the legacy MUI and styled-components stack with a lighter Tailwind-based foundation and Radix/Shadcn-style primitives.
+Whether you're working on a React SPA or a server-oriented setup, Cinnamon aims to streamline development and keep layout, navigation, and auth-related composition consistent.
+
+<div className="about-subheading">Technologies used</div>
+
+<div className="about-link-list">
+  <a className="about-link-item" href="https://react.dev/" target="_blank">
+    <img src={ReactImg} alt="React" />
+    <span>
+      <strong>React</strong>
+      Cinnamon is a library specifically designed for React projects, offering
+      an extensive collection of components tailored for seamless integration
+      with React applications.
+    </span>
+  </a>
+  <a
+    className="about-link-item"
+    href="https://www.keycloak.org/"
+    target="_blank"
+  >
+    <img src={KeycloakImg} alt="Keycloak" />
+    <span>
+      <strong>Keycloak / OIDC compatibility</strong>
+      Cinnamon keeps compatibility with legacy OIDC-based flows while
+      normalizing auth into a simpler session model, so teams can keep Keycloak
+      or adapt another provider.
+    </span>
+  </a>
+  <a
+    className="about-link-item"
+    href="https://tailwindcss.com/"
+    target="_blank"
+  >
+    <TailwindLogo />
+    <span>
+      <strong>TailwindCSS</strong>
+      The v2 library ships with a compiled CSS artifact and a Tailwind-based
+      styling foundation focused on predictable shell layout across consumer
+      apps.
+    </span>
+  </a>
+  <a className="about-link-item" href="https://ui.shadcn.com/" target="_blank">
+    <ShadcnLogo />
+    <span>
+      <strong>shadcn/ui primitives</strong>
+      Cinnamon v2 builds on modern unstyled primitives to compose accessible UI
+      behavior without coupling the library to the older visual stack.
+    </span>
+  </a>
+</div>
+
+<div className="about-subheading">Repository information</div>
+
+<div className="about-link-list">
+  <a
+    className="about-link-item"
+    href="https://github.com/CinCoders/cinnamon/blob/main/docs/CONTRIBUTING.md"
+    target="_blank"
+  >
+    <img src={Comments} alt="Contribution guide" />
+    <span>
+      <strong>Contributions are welcome!</strong>
+      To know a step by step guide on how to contribute refer to our
+      contribution guide. Show your support by giving a star to the project.
+    </span>
+  </a>
+  <div className="about-link-item">
+    <div className="about-install">
+      <div className="about-install-row">
+        <img src={InstallIcon} alt="Usage" />
+        <span>
+          <strong>Installation in other projects</strong>
+          To install the Cinnamon package into your project use the node package
+          manager and run the command:
+        </span>
+      </div>
+      <InstallCommand command="npm install @cincoders/cinnamon" />
+    </div>
+  </div>
+  <a
+    className="about-link-item"
+    href="https://github.com/CinCoders/cinnamon"
+    target="_blank"
+  >
+    <img src={GitImg} alt="GitHub project" />
+    <span>
+      <strong>GitHub project</strong>
+      View the source and add issues.
+    </span>
+  </a>
+  <a
+    className="about-link-item"
+    href="https://github.com/CinCoders/cinnamon/blob/main/LICENSE"
+    target="_blank"
+  >
+    <img src={LicenseImg} alt="MIT License" />
+    <span>
+      <strong>MIT License</strong>
+      Cinnamon is released under the MIT license, which means that you have the
+      freedom to use, modify, and distribute the package for any purpose.
+    </span>
+  </a>
+</div>

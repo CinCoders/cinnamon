@@ -11,6 +11,10 @@ const config: StorybookConfig = {
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
 
+  "features": {
+    sidebarOnboardingChecklist: false
+  },
+
   "addons": [
     //"@chromatic-com/storybook",
     "@storybook/addon-vitest",
