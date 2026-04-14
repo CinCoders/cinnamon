@@ -33,13 +33,30 @@ export function RequireAuth({ auth, publicURL, permittedRoles, children }: Props
   const [waiting, setWaiting] = useState(true);
 
   useEffect(() => {
-    if (auth.isLoading && !waiting) setWaiting(true);
+    if (!auth.isLoading) {
+      setWaiting(true);
+      return;
+    }
+
+    if (!waiting) return;
+
+    const timeoutId = window.setTimeout(() => setWaiting(false), 6000);
+    return () => window.clearTimeout(timeoutId);
   }, [auth.isLoading, waiting]);
+
+  useEffect(() => {
+    if (auth.isAuthenticated || auth.isLoading) return;
+
+    const timeoutId = window.setTimeout(() => {
+      void auth.signinRedirect();
+    }, 500);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [auth.isAuthenticated, auth.isLoading, auth]);
 
   // === LOADING ===
   if (auth.isLoading) {
     if (waiting) {
-      setTimeout(() => setWaiting(false), 6000);
       return <FullPageLoading />;
     }
 
@@ -73,6 +90,5 @@ export function RequireAuth({ auth, publicURL, permittedRoles, children }: Props
   }
 
   // === NOT AUTHENTICATED ===
-  setTimeout(() => auth.signinRedirect(), 500);
   return <FullPageLoading />;
 }
