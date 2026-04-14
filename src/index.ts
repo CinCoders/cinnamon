@@ -18,6 +18,7 @@ export { ImageInput } from "./lib-components/ImageInput/ImageInput";
 export { IconRenderer } from "./lib-components/IconRender";
 export {
   NavbarContext,
+  NavbarClientProvider,
   useNavbar,
   useNavbarContext,
 } from "./lib-components/Page";
