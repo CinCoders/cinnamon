@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { hasAccess } from "@/auth";
 import type { CinnamonSession } from "@/auth/types";
-import { ForbiddenPage } from "../ForbiddenPage/ForbiddenPage";
+import { ForbiddenPageServer } from "../ForbiddenPage/ForbiddenPageServer";
 
 type Props = {
   session: CinnamonSession | null;
@@ -33,7 +33,7 @@ export function RequireAuthServer({
 
   // Server já opera diretamente no contrato oficial CinnamonSession.
   if (!hasAccess(session, permittedRoles)) {
-    return <ForbiddenPage />;
+    return <ForbiddenPageServer />;
   }
 
   return <>{children}</>;
