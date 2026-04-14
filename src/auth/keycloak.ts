@@ -10,11 +10,11 @@ export type KeycloakPayload = {
 };
 
 /**
- * Decodifica JWT (somente payload) de forma segura para browser/Node.
- * - Não valida assinatura (isso é trabalho do backend)
- * - Serve apenas para extrair claims/roles no CLIENT
+ * Decodifica o payload do JWT sem validar assinatura.
+ * - Não usar para autorização real no server
+ * - Serve apenas para extrair claims/roles em fluxos client ou de adaptação
  */
-export function decodeJwtPayload<T = unknown>(token: string): T | null {
+export function unsafeDecodeJwtPayload<T = unknown>(token: string): T | null {
   try {
     const payload = token.split(".")[1];
     if (!payload) return null;
@@ -41,12 +41,12 @@ export function decodeJwtPayload<T = unknown>(token: string): T | null {
 }
 
 /**
- * Extrai roles do token do Keycloak (realm roles).
- * - Por enquanto mantém o mesmo comportamento do legado: realm_access.roles
- * - Depois podemos evoluir para resource roles se precisar.
+ * Extrai roles do token do Keycloak sem validar assinatura.
+ * - Não usar para autorização real no server
+ * - Mantém o comportamento legado: realm_access.roles
  */
-export function rolesFromKeycloakAccessToken(accessToken: string): string[] {
-  const payload = decodeJwtPayload<KeycloakPayload>(accessToken);
+export function unsafeDecodeRolesFromKeycloakAccessToken(accessToken: string): string[] {
+  const payload = unsafeDecodeJwtPayload<KeycloakPayload>(accessToken);
   return payload?.realm_access?.roles ?? [];
 }
 
@@ -65,7 +65,7 @@ export function sessionFromOidcAuth(auth: OidcAuthLike): CinnamonSession {
 
   return {
     isAuthenticated: auth.isAuthenticated,
-    roles: rolesFromKeycloakAccessToken(auth.user.access_token),
+    roles: unsafeDecodeRolesFromKeycloakAccessToken(auth.user.access_token),
     user: {
       id: profile?.sub,
       email: profile?.email,
