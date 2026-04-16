@@ -30,19 +30,17 @@ function FullPageLoading() {
 }
 
 export function RequireAuth({ auth, publicURL, permittedRoles, children }: Props) {
-  const [waiting, setWaiting] = useState(true);
+  const [loadingTimedOut, setLoadingTimedOut] = useState(false);
 
   useEffect(() => {
     if (!auth.isLoading) {
-      setWaiting(true);
+      setLoadingTimedOut(false);
       return;
     }
 
-    if (!waiting) return;
-
-    const timeoutId = window.setTimeout(() => setWaiting(false), 6000);
+    const timeoutId = window.setTimeout(() => setLoadingTimedOut(true), 6000);
     return () => window.clearTimeout(timeoutId);
-  }, [auth.isLoading, waiting]);
+  }, [auth.isLoading]);
 
   useEffect(() => {
     if (auth.isAuthenticated || auth.isLoading) return;
@@ -56,7 +54,7 @@ export function RequireAuth({ auth, publicURL, permittedRoles, children }: Props
 
   // === LOADING ===
   if (auth.isLoading) {
-    if (waiting) {
+    if (!loadingTimedOut) {
       return <FullPageLoading />;
     }
 
