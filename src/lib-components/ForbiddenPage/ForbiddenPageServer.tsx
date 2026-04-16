@@ -1,4 +1,6 @@
-import forbidden403 from "@/assets/icons/forbidden_403.svg";
+import forbidden403Raw from "@/assets/icons/forbidden_403.svg?raw";
+
+const forbidden403 = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(forbidden403Raw)}`;
 
 export function ForbiddenPageServer() {
   return (
@@ -6,7 +8,7 @@ export function ForbiddenPageServer() {
       <img
         src={forbidden403}
         alt="Imagem indicando erro 403 - acesso negado"
-        className="h-auto w-full max-w-[450px] min-w-[260px]"
+        className="h-auto w-40 sm:w-110 md:w-126"
       />
 
       <p className="mt-4 text-[clamp(1.2rem,1.5vw,1.6rem)] font-bold text-slate-900">

@@ -1,6 +1,6 @@
 "use client";
 
-import forbidden403 from "@/assets/icons/forbidden_403.svg";
+import forbidden403Raw from "@/assets/icons/forbidden_403.svg?raw";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 
@@ -20,6 +20,8 @@ export interface ForbiddenPageProps {
   publicURL?: string;
 }
 
+const forbidden403 = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(forbidden403Raw)}`;
+
 export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
   const email = auth?.user?.profile?.email ?? "";
   const baseURL = publicURL ?? "/";
@@ -37,7 +39,7 @@ export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
       <img
         src={forbidden403}
         alt="Imagem indicando erro 403 - acesso negado"
-        className="h-auto w-full max-w-[450px] min-w-[260px]"
+        className="h-auto w-40 sm:w-56 md:w-72"
       />
 
       <p className="mt-4 text-[clamp(1.2rem,1.5vw,1.6rem)] font-bold text-slate-900">
