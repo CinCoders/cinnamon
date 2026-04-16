@@ -39,7 +39,7 @@ export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
       <img
         src={forbidden403}
         alt="Imagem indicando erro 403 - acesso negado"
-        className="h-auto w-40 sm:w-56 md:w-72"
+        className="h-auto w-40 sm:w-100 md:w-120 lg:w-140 xl:w-160"
       />
 
       <p className="mt-4 text-[clamp(1.2rem,1.5vw,1.6rem)] font-bold text-slate-900">

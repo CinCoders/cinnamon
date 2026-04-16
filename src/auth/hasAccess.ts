@@ -3,15 +3,28 @@ import { sessionFromOidcAuth } from "./keycloak";
 
 type SessionLike = CinnamonSession | OidcAuthLike | null | undefined;
 
+function isCinnamonSession(subject: SessionLike): subject is CinnamonSession {
+  return !!subject && "roles" in subject;
+}
+
+function isOidcAuthLike(subject: SessionLike): subject is OidcAuthLike {
+  return (
+    !!subject &&
+    "isAuthenticated" in subject &&
+    "isLoading" in subject &&
+    "signinRedirect" in subject
+  );
+}
+
 function normalizeSession(subject: SessionLike): CinnamonSession | null {
   if (!subject) return null;
 
-  if ("roles" in subject) {
-    return subject as CinnamonSession;
+  if (isCinnamonSession(subject)) {
+    return subject;
   }
 
-  if ("user" in subject || "isAuthenticated" in subject) {
-    return sessionFromOidcAuth(subject as OidcAuthLike);
+  if (isOidcAuthLike(subject)) {
+    return sessionFromOidcAuth(subject);
   }
 
   return null;
