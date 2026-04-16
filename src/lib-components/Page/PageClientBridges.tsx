@@ -8,21 +8,43 @@ import { Footer } from "@/lib-components/Footer/Footer";
 import { ToastContainer } from "@/components/Toast/Toast";
 
 type ShellTarget = "nav" | "footer";
+type ShellStore = {
+  heights: Record<ShellTarget, number>;
+  listeners: Set<() => void>;
+};
+
+declare global {
+  interface Window {
+    __cinnamonShellStore?: ShellStore;
+  }
+}
 
 const cssVarMap: Record<ShellTarget, string> = {
   nav: "--cinnamon-shell-nav-height",
   footer: "--cinnamon-shell-footer-height",
 };
 
-const shellHeights: Record<ShellTarget, number> = {
-  nav: 0,
-  footer: 0,
-};
+function getShellStore(): ShellStore {
+  if (typeof window === "undefined") {
+    return {
+      heights: { nav: 0, footer: 0 },
+      listeners: new Set(),
+    };
+  }
 
-const listeners = new Set<() => void>();
+  if (!window.__cinnamonShellStore) {
+    window.__cinnamonShellStore = {
+      heights: { nav: 0, footer: 0 },
+      listeners: new Set(),
+    };
+  }
+
+  return window.__cinnamonShellStore;
+}
 
 function notifyListeners() {
-  listeners.forEach((listener) => listener());
+  const store = getShellStore();
+  store.listeners.forEach((listener) => listener());
 }
 
 function updateCssVar(name: string, value: number) {
@@ -31,9 +53,10 @@ function updateCssVar(name: string, value: number) {
 }
 
 function setShellHeight(target: ShellTarget, value: number) {
-  shellHeights[target] = value;
+  const store = getShellStore();
+  store.heights[target] = value;
   updateCssVar(cssVarMap[target], value);
-  const offset = shellHeights.nav + shellHeights.footer;
+  const offset = store.heights.nav + store.heights.footer;
   updateCssVar("--cinnamon-shell-offset", offset);
   notifyListeners();
 }
@@ -75,13 +98,14 @@ function useShellMeasurement(target: ShellTarget) {
 }
 
 function useShellHeight(target: ShellTarget) {
-  const [height, setHeight] = React.useState(() => shellHeights[target]);
+  const [height, setHeight] = React.useState(() => getShellStore().heights[target]);
 
   React.useEffect(() => {
-    const listener = () => setHeight(shellHeights[target]);
-    listeners.add(listener);
+    const store = getShellStore();
+    const listener = () => setHeight(getShellStore().heights[target]);
+    store.listeners.add(listener);
     return () => {
-      listeners.delete(listener);
+      store.listeners.delete(listener);
     };
   }, [target]);
 
