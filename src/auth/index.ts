@@ -1,3 +1,3 @@
 export * from "./types";
 export * from "./hasAccess";
-export * from "./keycloak";
+export { sessionFromOidcAuth } from "./keycloak";

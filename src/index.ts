@@ -25,7 +25,6 @@ export {
 export * from "./lib/utils";
 export { ForbiddenPage } from "./lib-components/ForbiddenPage/ForbiddenPage";
 export * from "./auth";
-export * as Auth from "./auth";
 export * as AuthUtils from "./auth";
 export { ToastContainer, toast } from "./components/Toast/Toast";
 export type {
