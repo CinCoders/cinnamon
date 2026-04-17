@@ -10,13 +10,18 @@ import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
 import { SystemsPopup } from "@/components/SystemsPopup/SystemsPopup";
 import { IconRenderer } from "@/lib-components/IconRender";
-import { hasAccess, sessionFromOidcAuth, type CinnamonSession } from "@/auth";
+import {
+  hasAccess,
+  sessionFromOidcAuth,
+  type CinnamonSession,
+  type OidcAuthLike,
+} from "@/auth";
 
 import { cn } from "@/lib/utils";
 import { useNavbarContext } from "@/lib-components/Page/useNavbar";
 
 export interface NavbarProps {
-  auth?: any;
+  auth?: OidcAuthLike;
   logoRedirectUrl?: string;
   logoSrc?: string;
   haveSearchBar?: boolean;
@@ -41,6 +46,7 @@ export function Navbar(props: NavbarProps) {
   const merged = { ...props, ...(ctx?.navbarProps ?? {}) };
 
   const {
+    auth,
     logoRedirectUrl = "/",
     logoSrc,
     haveSearchBar = false,
@@ -76,9 +82,9 @@ export function Navbar(props: NavbarProps) {
   }, [user]);
 
   const session = React.useMemo<CinnamonSession | null>(() => {
-    if (merged.auth) return sessionFromOidcAuth(merged.auth);
+    if (auth) return sessionFromOidcAuth(auth);
     return sessionFromUser;
-  }, [merged.auth, sessionFromUser]);
+  }, [auth, sessionFromUser]);
 
   const filteredSystemsList = React.useMemo(() => {
     if (!systemsList.length) return [];
@@ -90,21 +96,18 @@ export function Navbar(props: NavbarProps) {
     });
   }, [session, systemsList]);
 
-  const [profile, setProfile] = React.useState<User>(user);
-
-  React.useEffect(() => {
-    if (merged.auth?.user?.profile) {
-      const p = merged.auth.user.profile;
-      setProfile({
+  const profile = React.useMemo<User>(() => {
+    if (auth?.user?.profile) {
+      const p = auth.user.profile;
+      return {
         name: p.given_name ?? "",
         email: p.email ?? "",
         username: p.preferred_username ?? "",
-      });
-    } else {
-      setProfile(user);
+      };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [merged.auth, user?.name, user?.email]);
+
+    return user;
+  }, [auth, user]);
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState("");
@@ -262,7 +265,7 @@ export function Navbar(props: NavbarProps) {
                   <div className="absolute right-0 top-12 z-[9999]">
                     <UserPopup
                       user={profile}
-                      auth={merged.auth}
+                      auth={auth}
                       accountManagementUrl={accountManagementUrl}
                     />
                   </div>

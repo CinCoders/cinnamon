@@ -39,7 +39,7 @@ export function PageServer({
     );
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-white">
       {renderedNavbar}
 
       <main
