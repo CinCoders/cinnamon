@@ -90,7 +90,6 @@ function useShellMeasurement(target: ShellTarget) {
       } else {
         window.removeEventListener("resize", measure);
       }
-      setShellHeight(target, 0);
     };
   }, [target]);
 
