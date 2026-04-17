@@ -15,14 +15,13 @@ interface ToastContainerProps {
 
 export function ToastContainer({ topInitialPosition, toastProps }: ToastContainerProps) {
   const top = (topInitialPosition ?? 0) + 16;
+  const mergedStyle = {
+    ...(toastProps.style ?? {}),
+    top,
+  };
 
   return (
-    <>
-      <style>{`
-        .Toastify__toast-container--top-right { top: ${top}px; }
-      `}</style>
-      <ToastifyContainer {...toastProps} />
-    </>
+    <ToastifyContainer {...toastProps} style={mergedStyle} />
   );
 }
 

@@ -1,8 +1,6 @@
 "use client";
 
 import forbidden403Raw from "@/assets/icons/forbidden_403.svg?raw";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 
 type LegacyForbiddenAuth = {
   user?: {
@@ -56,14 +54,13 @@ export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
       </div>
 
       {auth?.signoutRedirect ? (
-        <Button
-          variant="outline"
-          className="mt-6 rounded-full border-slate-300 bg-white text-slate-900 hover:bg-slate-100"
+        <button
+          type="button"
+          className="mt-6 inline-flex h-10 items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-100"
           onClick={() => void handleLogout()}
         >
-          <LogOut className="h-4 w-4" />
           Log out
-        </Button>
+        </button>
       ) : null}
     </div>
   );

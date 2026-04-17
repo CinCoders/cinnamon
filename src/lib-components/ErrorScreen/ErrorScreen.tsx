@@ -1,5 +1,3 @@
-"use client";
-
 import notFound404 from "@/assets/icons/notFound_404.svg";
 import comingSoon501 from "@/assets/icons/comingSoon_501.svg";
 import inactive503 from "@/assets/icons/inactive_503.svg";
