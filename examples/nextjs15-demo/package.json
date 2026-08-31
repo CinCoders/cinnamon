@@ -1,0 +1,29 @@
+{
+  "name": "cinnamon-nextjs15-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "refresh-lib": "cd ../.. && npm run build:lib",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cincoders/cinnamon": "file:../..",
+    "@eslint/eslintrc": "^3.3.5",
+    "eslint-config-next": "^16.2.10",
+    "jose": "^5.9.6",
+    "next": "^15.3.3",
+    "oidc-client-ts": "^3.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-oidc-context": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.8.0"
+  }
+}
