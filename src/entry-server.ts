@@ -1,6 +1,21 @@
-export { hasAccess } from "./auth/hasAccess";
-export type { CinnamonSession } from "./auth/types";
-export { RequireAuthServer } from "./lib-components/RequireAuth/RequireAuthServer";
+// Public API — v2 (server entry, RSC-safe).
+//
+// Scoped to `PageWithAuthServer` and its config types. `hasAccess`,
+// `RequireAuthServer`, `PageServer`, `ForbiddenPageServer` still exist and are
+// built, but are not re-exported until validated. To expose one later, add it here.
+
 export { PageWithAuthServer } from "./lib-components/PageWithAuth/PageWithAuthServer";
-export { PageServer } from "./lib-components/Page/PageServer";
-export { ForbiddenPageServer } from "./lib-components/ForbiddenPage/ForbiddenPageServer";
+export type { PageServerProps } from "./lib-components/Page/PageServer";
+export type { CinnamonSession, CinnamonUser } from "./auth/types";
+
+export type { NavbarProps } from "./lib-components/Navbar/Navbar";
+export type { FooterProps } from "./lib-components/Footer/Footer";
+export type {
+  User,
+  SideMenuLink,
+  System,
+  Link,
+  LinkComponent,
+  Position,
+  Role,
+} from "./interfaces";
