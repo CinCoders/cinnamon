@@ -14,30 +14,12 @@ interface PageWithAuthProps extends PageProps {
   };
 }
 
-export function PageWithAuth({
-  authProps,
-  navbar,
-  footer,
-  centralized = false,
-  haveToast = false,
-  createNavbarContext = true,
-  components,
-  children,
-}: PageWithAuthProps) {
+export function PageWithAuth({ authProps, children, ...pageProps }: PageWithAuthProps) {
   const { auth, publicURL, permittedRoles } = authProps;
 
   return (
     <RequireAuth auth={auth} publicURL={publicURL} permittedRoles={permittedRoles}>
-      <Page
-        navbar={navbar}
-        footer={footer}
-        centralized={centralized}
-        haveToast={haveToast}
-        components={components}
-        createNavbarContext={createNavbarContext}
-      >
-        {children}
-      </Page>
+      <Page {...pageProps}>{children}</Page>
     </RequireAuth>
   );
 }
