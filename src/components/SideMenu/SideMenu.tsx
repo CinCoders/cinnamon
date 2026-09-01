@@ -3,7 +3,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import type { Link as CinnamonLink, SideMenuLink } from "@/interfaces";
+import type { Link as CinnamonLink, SideMenuLink, LinkComponent } from "@/interfaces";
+import { DefaultAnchor } from "@/lib/DefaultAnchor";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { IconRenderer } from "@/lib-components/IconRender";
 
@@ -12,6 +13,7 @@ export interface SideMenuProps {
   top: string; // ex: "64px"
   visibility?: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  linkComponent?: LinkComponent;
 }
 
 function isExternal(link?: { external?: boolean; href?: string }) {
@@ -32,7 +34,7 @@ function ItemIcon({
 }: {
   iconUrl?: string;
   title?: string;
-  IconComponent?: React.JSXElementConstructor<any>;
+  IconComponent?: React.ComponentType<{ className?: string }>;
   iconId?: SideMenuLink["iconId"];
   className?: string;
 }) {
@@ -65,14 +67,17 @@ function SameTabLink({
   onClick,
   children,
   className,
+  linkComponent,
 }: {
   href?: string;
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
+  linkComponent: LinkComponent;
 }) {
+  const LinkImpl = linkComponent;
   return (
-    <a
+    <LinkImpl
       href={href ?? "#"}
       onClick={onClick}
       className={cn(
@@ -81,7 +86,7 @@ function SameTabLink({
       )}
     >
       {children}
-    </a>
+    </LinkImpl>
   );
 }
 
@@ -95,6 +100,8 @@ function NewTabLink({
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
+  // aceito por compat com SameTabLink no ponto de uso; links externos sempre usam <a>
+  linkComponent?: LinkComponent;
 }) {
   return (
     <a
@@ -117,7 +124,9 @@ export function SideMenu({
   top,
   visibility = false,
   setVisibility,
+  linkComponent,
 }: SideMenuProps) {
+  const LinkImpl = linkComponent ?? DefaultAnchor;
   const [openGroups, setOpenGroups] = React.useState<Record<number, boolean>>(
     {}
   );
@@ -227,6 +236,7 @@ export function SideMenu({
                     <Row
                       href={link.href}
                       onClick={onNavigate}
+                      linkComponent={LinkImpl}
                       className={cn(
                         "border-b border-white/10",
                         "transition-colors duration-150",
@@ -273,6 +283,7 @@ export function SideMenu({
                               <ChildRow
                                 href={child.href}
                                 onClick={onNavigate}
+                                linkComponent={LinkImpl}
                                 className={cn(
                                   "min-h-[35px] px-2",
                                   "transition-colors duration-150",

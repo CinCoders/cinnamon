@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import type { JSXElementConstructor } from "react";
 import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
-import type { User, SideMenuLink, System } from "@/interfaces";
+import type { User, SideMenuLink, System, LinkComponent } from "@/interfaces";
 import { SideMenu } from "@/components/SideMenu/SideMenu";
 import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
@@ -18,6 +17,7 @@ import {
 } from "@/auth";
 
 import { cn } from "@/lib/utils";
+import { DefaultAnchor } from "@/lib/DefaultAnchor";
 import { useNavbarContext } from "@/lib-components/Page/useNavbar";
 
 export interface NavbarProps {
@@ -29,16 +29,15 @@ export interface NavbarProps {
   title?: string;
   h1?: boolean;
   searchFunction?: (searchString: string) => void;
-  searchDropdownLabelsList?: string[];
-  logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
-  IconComponent?: React.ComponentType<any>;
   children?: React.ReactNode;
   accountManagementUrl?: string;
+  /** Injeta um componente de link (ex: `next/link`) para navegação interna sem full reload. */
+  linkComponent?: LinkComponent;
 }
 
 export function Navbar(props: NavbarProps) {
@@ -60,8 +59,8 @@ export function Navbar(props: NavbarProps) {
     systemsList = [],
     currentSystemIconUrl,
     children,
-    IconComponent,
     accountManagementUrl,
+    linkComponent,
   } = merged;
 
   const sessionFromUser = React.useMemo<CinnamonSession | null>(() => {
@@ -100,7 +99,7 @@ export function Navbar(props: NavbarProps) {
     if (auth?.user?.profile) {
       const p = auth.user.profile;
       return {
-        name: p.given_name ?? "",
+        name: p.given_name ?? p.name ?? "",
         email: p.email ?? "",
         username: p.preferred_username ?? "",
       };
@@ -162,6 +161,8 @@ export function Navbar(props: NavbarProps) {
     searchFunction(e.target.value);
   }
 
+  const Link: LinkComponent = linkComponent ?? DefaultAnchor;
+
   return (
     <div className="w-full">
       <header className="cinnamon-navbar-inner relative sticky top-0 z-50 w-full bg-white shadow-md">
@@ -178,7 +179,7 @@ export function Navbar(props: NavbarProps) {
               <IconRenderer iconUrl={currentSystemIconUrl} />
             )}
 
-            <div className="ml-2 text-[#2c2c2c] whitespace-nowrap">
+            <div className="ml-2 text-cinnamon-dark whitespace-nowrap">
               {h1 ? (
                 <span className="text-2xl font-semibold">{title}</span>
               ) : (
@@ -227,20 +228,23 @@ export function Navbar(props: NavbarProps) {
 
                 {systemsOpen && (
                   <div className="absolute right-0 top-12 z-[9999]">
-                    <SystemsPopup systemsList={filteredSystemsList} />
+                    <SystemsPopup
+                      systemsList={filteredSystemsList}
+                      linkComponent={linkComponent}
+                    />
                   </div>
                 )}
               </div>
             )}
 
             {logoSrc && (
-              <a href={logoRedirectUrl}>
+              <Link href={logoRedirectUrl}>
                 <img
                   src={logoSrc}
                   alt="Logo"
                   className="mx-3 w-full min-w-[60px] max-w-[120px]"
                 />
-              </a>
+              </Link>
             )}
 
             {!hiddenUser && (
@@ -249,7 +253,7 @@ export function Navbar(props: NavbarProps) {
                   type="button"
                   className={cn(
                     "flex h-10 w-10 items-center justify-center rounded-full text-white cursor-pointer transition-shadow duration-150 hover:shadow-[0_4px_10px_rgba(0,0,0,0.18)] focus-visible:outline-none",
-                    "bg-[#db1e2f]",
+                    "bg-cinnamon-primary",
                   )}
                   aria-label="Abrir menu do usuário"
                   onClick={() => setUserOpen((v) => !v)}
@@ -267,6 +271,7 @@ export function Navbar(props: NavbarProps) {
                       user={profile}
                       auth={auth}
                       accountManagementUrl={accountManagementUrl}
+                      linkComponent={linkComponent}
                     />
                   </div>
                 )}
@@ -285,6 +290,7 @@ export function Navbar(props: NavbarProps) {
             top="64px"
             setVisibility={setSideMenuOpen}
             links={sideMenuLinks}
+            linkComponent={linkComponent}
           />
         ))}
     </div>

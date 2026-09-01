@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -36,7 +35,7 @@ export function HamburgerButton({
       {/* Top */}
       <span
         className={cn(
-          "absolute left-0 top-0 h-px w-full bg-[#db1e2f] transition-all duration-200 ease-in-out",
+          "absolute left-0 top-0 h-px w-full bg-cinnamon-primary transition-all duration-200 ease-in-out",
           // hover só quando fechado: top sobe
           !isOpen && "group-hover:top-[-20%]",
           // aberto: vira parte do X
@@ -46,14 +45,14 @@ export function HamburgerButton({
       {/* Middle */}
       <span
         className={cn(
-          "absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-[#db1e2f] transition-all duration-200 ease-in-out",
+          "absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-cinnamon-primary transition-all duration-200 ease-in-out",
           isOpen && "opacity-0"
         )}
       />
       {/* Bottom */}
       <span
         className={cn(
-          "absolute left-0 bottom-0 h-px w-full bg-[#db1e2f] transition-all duration-200 ease-in-out",
+          "absolute left-0 bottom-0 h-px w-full bg-cinnamon-primary transition-all duration-200 ease-in-out",
           // hover só quando fechado: bottom desce
           !isOpen && "group-hover:bottom-[-20%]",
           // aberto: vira parte do X

@@ -4,7 +4,8 @@ import * as React from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { User } from "@/interfaces";
+import { DefaultAnchor } from "@/lib/DefaultAnchor";
+import type { User, LinkComponent } from "@/interfaces";
 
 export type AuthLike = {
   signoutRedirect?: () => void;
@@ -17,6 +18,7 @@ export interface UserPopupProps {
   logoutMethod?(): void;
   auth?: AuthLike;
   accountManagementUrl?: string;
+  linkComponent?: LinkComponent;
 }
 
 export function UserPopup(props: UserPopupProps) {
@@ -25,7 +27,10 @@ export function UserPopup(props: UserPopupProps) {
     logoutMethod,
     auth,
     accountManagementUrl,
+    linkComponent,
   } = props;
+
+  const LinkImpl: LinkComponent = linkComponent ?? DefaultAnchor;
 
   function logoutFunction() {
     if (logoutMethod) return logoutMethod();
@@ -39,7 +44,7 @@ export function UserPopup(props: UserPopupProps) {
     <div className="w-72 max-h-[80vh] overflow-y-auto overflow-x-hidden rounded-xl bg-muted shadow-lg">
       <div className="flex flex-col items-center">
         {/* Avatar */}
-        <div className="my-4 grid h-28 w-28 place-items-center rounded-full bg-primary text-primary-foreground text-[50px]">
+        <div className="my-4 grid h-28 w-28 place-items-center rounded-full bg-cinnamon-primary text-white text-[50px]">
           {initial}
         </div>
 
@@ -57,7 +62,7 @@ export function UserPopup(props: UserPopupProps) {
         {/* Gerenciar conta */}
         {accountManagementUrl ? (
           <Button asChild variant="outline" className="mb-4 h-8 w-40 rounded-full">
-            <a href={accountManagementUrl}>Gerenciar sua conta</a>
+            <LinkImpl href={accountManagementUrl}>Gerenciar sua conta</LinkImpl>
           </Button>
         ) : (
           <Button variant="outline" className="mb-4 h-8 w-40 rounded-full" disabled>
@@ -83,11 +88,12 @@ export function UserPopup(props: UserPopupProps) {
                           className={cn(
                             "flex w-full items-center justify-between px-4 py-3 text-left text-sm",
                             "text-foreground",
+                            "[&[data-state=open]>span:last-child]:rotate-180",
                             !hasRoles && "opacity-50 cursor-not-allowed"
                           )}
                         >
                           <span className="font-medium">{position.name}</span>
-                          <span className={cn("transition-transform", hasRoles && "data-[state=open]:rotate-180")}>
+                          <span className="transition-transform">
                             ▼
                           </span>
                         </Accordion.Trigger>

@@ -1,7 +1,5 @@
-"use client";
-
-import * as React from "react";
 import cnmHeartIcon from "@/assets/icons/cnmheart.svg";
+import { phoneToTel } from "@/lib/utils";
 
 export interface FooterProps {
   title?: string;
@@ -16,11 +14,6 @@ export interface FooterProps {
   signatureLink?: string;
   largeFooter?: boolean;
   appVersion?: string;
-}
-
-function phoneToTel(phone?: string) {
-  if (!phone) return "";
-  return phone.replace(/\(|\)|\s|-+/g, "");
 }
 
 export function Footer({
@@ -40,7 +33,7 @@ export function Footer({
   return (
     <footer className="sticky bottom-0 w-full">
       {largeFooter && (
-        <div className="w-full bg-[#424242] text-white">
+        <div className="w-full bg-cinnamon-footer-bg text-white">
           <div className="cinnamon-footer-shell w-full px-6">
             <div
               className="cinnamon-footer-top flex h-[110px] items-center justify-around
@@ -96,7 +89,7 @@ export function Footer({
         </div>
       )}
 
-      <div className="w-full bg-[#616161] text-white">
+      <div className="w-full bg-cinnamon-footer-bar text-white">
         <div className="cinnamon-footer-shell flex h-10 w-full items-center justify-between px-8 text-[11px] leading-10">
           <div className="text-left">
             {copyrightText ? (
