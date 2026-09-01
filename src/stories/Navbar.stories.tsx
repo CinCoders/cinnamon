@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Navbar } from "@/lib-components/Navbar/Navbar";
 import type { NavbarProps } from "@/lib-components/Navbar/Navbar";
 import { testLinks, testSystems, testUser } from "./sampleData/SampleData";
-import { Wrench } from "lucide-react";
 
 /**
  * Aqui criamos um tipo da STORY
@@ -27,7 +26,6 @@ const meta: Meta<NavbarStoryArgs> = {
     sideMenuLinks: testLinks,
     title: "Cinnamon",
     systemsList: [],
-    IconComponent: () => <Wrench className="h-6 w-6 text-[#db1e2f]" />,
 
     // 👇 propriedade exclusiva da story
     systemsListPopup: true,

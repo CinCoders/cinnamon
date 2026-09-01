@@ -13,13 +13,15 @@ type Story = StoryObj<typeof HamburgerButton>;
 
 export const Default: Story = {};
 
+function InteractiveHamburger() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="p-6 bg-background text-foreground">
+      <HamburgerButton isOpen={open} onClick={() => setOpen((v) => !v)} />
+    </div>
+  );
+}
+
 export const Interactive: Story = {
-  render: () => {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="p-6 bg-background text-foreground">
-        <HamburgerButton isOpen={open} onClick={() => setOpen((v) => !v)} />
-      </div>
-    );
-  },
+  render: () => <InteractiveHamburger />,
 };

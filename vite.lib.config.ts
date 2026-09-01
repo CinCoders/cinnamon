@@ -1,6 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+import preserveDirectives from "rollup-preserve-directives";
+
+const external = [
+  "react",
+  "react-dom",
+  "react/jsx-runtime",
+  "react/jsx-dev-runtime",
+];
 
 export default defineConfig({
   plugins: [react()],
@@ -12,26 +20,21 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
-      name: "Cinnamon",
-      formats: ["es", "cjs", "iife"],
-      fileName: (format) => {
-        if (format === "es") return "cinnamon.esm.js";
-        if (format === "cjs") return "cinnamon.ssr.js";
-        return "cinnamon.min.js";
-      },
-    },
+    copyPublicDir: false,
+    sourcemap: false,
     rollupOptions: {
-      external: ["react", "react-dom", "react-router-dom", "react/jsx-runtime", "react/jsx-dev-runtime",],
+      input: path.resolve(__dirname, "src/index.ts"),
+      external,
+      preserveEntrySignatures: "exports-only",
+      plugins: [preserveDirectives()],
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "react-router-dom": "ReactRouterDOM",
-          "react/jsx-runtime": "jsxRuntime",
-          "react/jsx-dev-runtime": "jsxDevRuntime",
-        },
+        dir: "dist",
+        format: "es",
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        chunkFileNames: "chunks/[name]-[hash].js",
+        exports: "named",
       },
     },
   },

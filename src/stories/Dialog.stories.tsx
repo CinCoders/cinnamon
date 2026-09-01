@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type * as React from "react";
 import { useEffect, useState } from "react";
 import { Dialog, type DialogProps } from "@/lib-components/Dialog";
 import { Button } from "@/components/ui/button";
 
-const meta: Meta<typeof Dialog> = {
+type StatefulArgs = Omit<DialogProps, "setVisibility">;
+
+const meta: Meta<StatefulArgs> = {
   title: "Lib Components/Dialog",
-  component: Dialog,
+  component: Dialog as React.ComponentType<StatefulArgs>,
   argTypes: {
     type: {
       options: ["information", "alert", "decision", "confirmation", "error"],
@@ -16,9 +19,9 @@ const meta: Meta<typeof Dialog> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof Dialog>;
+type Story = StoryObj<StatefulArgs>;
 
-function Stateful(args: Omit<DialogProps, "setVisibility">) {
+function Stateful(args: StatefulArgs) {
   const [open, setOpen] = useState(args.visibility ?? false);
 
   useEffect(() => {
@@ -32,7 +35,7 @@ function Stateful(args: Omit<DialogProps, "setVisibility">) {
       <Button onClick={() => setOpen(true)}>Show Dialog</Button>
 
       <Dialog
-        {...(args as any)}
+        {...args}
         visibility={open}
         setVisibility={setOpen}
         {...(!withoutFns && {
@@ -45,7 +48,7 @@ function Stateful(args: Omit<DialogProps, "setVisibility">) {
 }
 
 export const DialogInformation: Story = {
-  render: (args) => Stateful(args as any),
+  render: (args) => <Stateful {...args} />,
   args: {
     type: "information",
     title: "Information Dialog Title",
@@ -56,7 +59,7 @@ export const DialogInformation: Story = {
 };
 
 export const DialogAlert: Story = {
-  render: (args) => Stateful(args as any),
+  render: (args) => <Stateful {...args} />,
   args: {
     type: "alert",
     title: "Alert Message Title",
@@ -66,7 +69,7 @@ export const DialogAlert: Story = {
 };
 
 export const DialogDecision: Story = {
-  render: (args) => Stateful(args as any),
+  render: (args) => <Stateful {...args} />,
   args: {
     type: "decision",
     title: "Decision Dialog Title",
@@ -76,7 +79,7 @@ export const DialogDecision: Story = {
 };
 
 export const DialogConfirmation: Story = {
-  render: (args) => Stateful(args as any),
+  render: (args) => <Stateful {...args} />,
   args: {
     type: "confirmation",
     title: "Confirmation Dialog Title",
@@ -86,7 +89,7 @@ export const DialogConfirmation: Story = {
 };
 
 export const DialogError: Story = {
-  render: (args) => Stateful(args as any),
+  render: (args) => <Stateful {...args} />,
   args: {
     type: "error",
     title: "Error Dialog Title",

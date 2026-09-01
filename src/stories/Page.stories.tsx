@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type * as React from "react";
 import { Page } from "../lib-components/Page/Page";
 import { testLinks, testSystems, testUser } from "./sampleData/SampleData";
-import { Layers } from "lucide-react";
 
 type PageStoryArgs = {
   // Children
@@ -33,7 +33,7 @@ type PageStoryArgs = {
 
 const meta: Meta<PageStoryArgs> = {
   title: "Lib Components/Page",
-  component: Page as unknown as React.ComponentType<any>, // cast simples p/ Page aceitar story-args
+  component: Page as unknown as React.ComponentType<PageStoryArgs>,
   parameters: { docs: { page: null }, layout: "fullscreen" },
 
   argTypes: {
@@ -105,8 +105,6 @@ export const Default: Story = {
         title: args.title,
         sideMenuLinks: testLinks,
         systemsList: args.systemsListPopup ? testSystems : [],
-        //IconComponent: () => <Wrench className="h-6 w-6 text-[#db1e2f]" />,
-        IconComponent: undefined,
       }}
       footer={{
         title: args.footerTitle,
@@ -119,7 +117,6 @@ export const Default: Story = {
         copyrightText: args.footerCopyrightText,
       }}
       centralized={args.centralized}
-      createNavbarContext={false}
     >
       <div
         style={{
