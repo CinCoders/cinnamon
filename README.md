@@ -1,54 +1,21 @@
 # Cinnamon
 
-`@cincoders/cinnamon` is a React component library focused on standardized application layout, navigation, and authentication-aware page composition.
+`@cincoders/cinnamon` is a React component library from CInCoders focused on standardized application layout, navigation, and authentication-aware page composition. v2 replaces the legacy MUI + styled-components stack with TailwindCSS v4, Radix UI primitives, and first-class support for Next.js 15 App Router (React Server Components).
 
-The current `v2` direction replaces the legacy MUI + `styled-components` stack with:
+## Table of Contents
 
-- TailwindCSS
-- Radix / Shadcn-based primitives
-- Vite in library mode
-- clearer client/server boundaries
-- support for both React SPA and Next.js scenarios
+- [Installation](#installation)
+- [CSS Setup](#css-setup)
+- [Basic Usage](#basic-usage)
+- [Auth Model](#auth-model)
+- [Client Auth Usage](#client-auth-usage)
+- [Server / Next.js Usage](#server--nextjs-usage)
+- [Shared Icons](#shared-icons)
+- [Shell CSS Variables](#shell-css-variables)
+- [API Reference](#api-reference)
+- [Development](#development)
 
-## Current Scope
-
-Cinnamon is centered around reusable application-shell components such as:
-
-- `Page`
-- `PageServer`
-- `PageWithAuth`
-- `PageWithAuthServer`
-- `RequireAuth`
-- `RequireAuthServer`
-- `Navbar`
-- `Footer`
-- auth helpers and utilities
-- shared type exports (`User`, `System`, `SideMenuLink`, etc.)
-- design assets such as the Cinnamon icon registry (`iconId`)
-
-The goal is not only to provide isolated UI pieces, but to offer a reusable structure for authenticated web applications.
-
-## Architecture Overview
-
-Cinnamon should be understood as an application-shell library, not only as a collection of isolated UI widgets.
-
-Its core responsibility is to compose:
-
-- layout (`Page`, `PageServer`)
-- authentication-aware wrappers (`PageWithAuth`, `PageWithAuthServer`)
-- authorization gates (`RequireAuth`, `RequireAuthServer`)
-- shared shell pieces (`Navbar`, `Footer`, toast, systems popup, side menu)
-
-Internally, the auth model follows this mental flow:
-
-`provider -> adapter -> CinnamonSession -> hasAccess -> render`
-
-That means:
-
-- consumers may still use a legacy OIDC provider on the client;
-- Cinnamon normalizes that input into a session-like contract;
-- authorization stays centered on roles instead of on a specific provider object;
-- Next/server-first consumers can bypass the provider entirely and pass `CinnamonSession` directly.
+---
 
 ## Installation
 
@@ -56,72 +23,56 @@ That means:
 npm install @cincoders/cinnamon
 ```
 
-Peer dependencies expected by the library:
+**Peer dependencies:**
 
-- `react`
-- `react-dom`
-- `react-router-dom`
+```bash
+npm install react react-dom react-router-dom
+```
 
-## Importing CSS
+`react-oidc-context` is an **optional** peer dependency — install it only if your app uses the Keycloak/OIDC client flow:
 
-Cinnamon ships its styles as a separate CSS artifact.
+```bash
+npm install react-oidc-context  # optional
+```
 
-You must import the library CSS in the consumer project:
+---
+
+## CSS Setup
+
+Cinnamon ships its styles as a standalone compiled CSS artifact. Import it once in your application entry:
 
 ```ts
-import "@cincoders/cinnamon/dist/cinnamon.css";
+// React/Vite/CRA — src/main.tsx or src/index.tsx
+import "@cincoders/cinnamon/cinnamon.css";
+
+// Next.js App Router — app/layout.tsx
+import "@cincoders/cinnamon/cinnamon.css";
+
+// Next.js Pages Router — pages/_app.tsx
+import "@cincoders/cinnamon/cinnamon.css";
 ```
 
-Without this import, components may render structurally but will not have the intended visual appearance.
+### Tailwind Preflight Conflict
 
-> Exemplos rápidos:
->
-> - React/Vite/CRA: importe no entry (`src/main.tsx` / `src/index.tsx` / `_app.tsx`).
-> - Next 13+: adicione em `app/layout.tsx` ou `pages/_app.tsx` (dependendo da versão).
+If your app runs its own Tailwind (v3 or v4), make sure Cinnamon's CSS is imported **after** your own base styles, or disable Tailwind's preflight in your app config:
 
-### Tailwind Preflight / Global Resets
-
-Many consumer projects use TailwindCSS (or another design system) with a global “preflight” reset. If that reset runs *after* you import Cinnamon’s CSS it will override the library’s utility classes (e.g., forcing every `button`/`input` to be transparent and removing `transform` definitions). When that happens the shell stops behaving correctly: the hamburger menu stays open, the systems popup never closes, the user avatar disappears, etc.
-
-When integrating Cinnamon make sure your reset does **not** clobber the library styles. Recommended approaches:
-
-- prefer disabling Tailwind’s preflight for the app that consumes Cinnamon (`corePlugins: { preflight: false }` in `tailwind.config.*`), or
-- keep your custom reset scoped to your own selectors and always import `@cincoders/cinnamon/dist/cinnamon.css` after any other base styles.
-
-This small precaution ensures the Storybook layout matches what you get in React/Next consumers.
-
-### Por que manter o `dist/cinnamon.css`?
-
-- **Previsibilidade entre apps**: Next, CRA, Vite e outros conseguem importar um único arquivo global sem depender de runtime de CSS-in-JS ou de plugins do bundler.
-- **Separação de responsabilidades**: os componentes React continuam puros; todo o reset, variáveis e utilitários gerados pelo Tailwind compilado vivem em um só artefato.
-- **Compatibilidade com SSR**: projetos server-first apenas importam o CSS no layout global; não existe injeção dinâmica de `<style>` que dependa do browser.
-
-> Se o shell parecer desalinhado no seu app, verifique se algum reset do consumidor está vindo depois do `cinnamon.css`. Ajuste a ordem dos imports ou desabilite o preflight global — no Storybook a folha é aplicada por último, e é por isso que o layout fica correto lá.
-
-### Variáveis de layout do shell
-
-Para padronizar o espaçamento independentemente do reset aplicado pelo consumidor, o arquivo `cinnamon.css` expõe variáveis CSS globais:
-
-- `--cinnamon-shell-inline`: padding horizontal usado pelo `Navbar` e pelo bloco superior do `Footer`.
-- `--cinnamon-shell-max-width`: limite máximo aplicado às shells (`.cinnamon-navbar-shell` e `.cinnamon-footer-shell`) antes que um reset externo remova o `margin: auto`.
-- `--cinnamon-main-padding`: preenchimento padrão aplicado ao conteúdo principal gerenciado por `Page`.
-
-Caso um produto precise alterar esses valores, basta sobrescrevê-los no escopo global antes ou depois de importar a folha de estilos:
-
-```css
-:root {
-  --cinnamon-shell-max-width: 80rem;
-  --cinnamon-shell-inline: clamp(20px, 3vw, 48px);
-}
+```js
+// tailwind.config.js (v3)
+module.exports = {
+  corePlugins: { preflight: false },
+};
 ```
 
-Essa abordagem mantém o alinhamento horizontal dos blocos mesmo quando o consumidor zera `margin`/`padding` em todos os elementos.
+Without this precaution, your reset may override Cinnamon's utility classes (transforms, button appearance, etc.), causing the hamburger menu or popups to stop working.
 
-## Basic Usage in React
+---
+
+## Basic Usage
+
+### Layout without auth
 
 ```tsx
-import "@cincoders/cinnamon/dist/cinnamon.css";
-
+import "@cincoders/cinnamon/cinnamon.css";
 import { Page } from "@cincoders/cinnamon";
 
 export function HomePage() {
@@ -136,17 +87,36 @@ export function HomePage() {
 }
 ```
 
+### Navbar with systems menu
+
+```tsx
+import { Page } from "@cincoders/cinnamon";
+
+<Page
+  navbar={{
+    title: "My App",
+    auth,
+    systemsList: [
+      {
+        title: "RH",
+        href: "https://rh.example.com",
+        description: "Sistema de RH",
+        visibleRole: "sys_hr-users",
+        iconId: "cincoders",
+      },
+    ],
+  }}
+  footer={{ copyrightText: "CInCoders" }}
+>
+  ...
+</Page>
+```
+
+---
+
 ## Auth Model
 
-The `v2-auth` branch moves authorization toward a more decoupled model.
-
-The core authorization idea is:
-
-- represent the current user through a session-like object
-- evaluate access through roles
-- avoid coupling the whole library to a specific auth provider
-
-Current session shape:
+Cinnamon's internal authorization flows around a single normalized session object, independent of any specific provider:
 
 ```ts
 type CinnamonSession = {
@@ -162,25 +132,60 @@ type CinnamonSession = {
 };
 ```
 
-This is the internal contract used by the server-safe path and by the normalized client path.
+The mental flow is:
+
+```
+provider → sessionFromOidcAuth() → CinnamonSession → hasAccess(session, roles) → render
+```
+
+- **Client** apps may still use `react-oidc-context`; Cinnamon normalizes the auth object internally via `sessionFromOidcAuth()`.
+- **Server** apps (Next.js) resolve the session from cookies/headers before rendering and pass `CinnamonSession` directly — no provider dependency needed.
+
+### `OidcAuthLike`
+
+For structural compatibility with `react-oidc-context` without importing its types:
+
+```ts
+type OidcAuthLike = {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user?: {
+    access_token: string;
+    profile?: {
+      sub?: string;
+      email?: string;
+      name?: string;
+      preferred_username?: string;
+      given_name?: string;
+      family_name?: string;
+    };
+  } | null;
+  signinRedirect: () => Promise<unknown> | unknown;
+  signoutRedirect?: () => Promise<unknown> | unknown;
+};
+```
+
+---
 
 ## Client Auth Usage
 
-For client-side React apps, `RequireAuth` and `PageWithAuth` currently accept an auth object compatible with `react-oidc-context`.
+### With `react-oidc-context`
 
 ```tsx
-import "@cincoders/cinnamon/dist/cinnamon.css";
-
+import "@cincoders/cinnamon/cinnamon.css";
+import { useAuth } from "react-oidc-context";
 import { PageWithAuth } from "@cincoders/cinnamon";
 
-export function ProtectedPage({ auth }: { auth: any }) {
+export function ProtectedPage() {
+  const auth = useAuth();
+
   return (
     <PageWithAuth
       authProps={{
         auth,
-        permittedRoles: ["admin"],
+        permittedRoles: ["sys_hr-users"],
       }}
-      navbar={{ title: "Dashboard" }}
+      navbar={{ title: "Dashboard", auth }}
       footer={{ copyrightText: "My Organization" }}
     >
       <div>Protected content</div>
@@ -189,155 +194,314 @@ export function ProtectedPage({ auth }: { auth: any }) {
 }
 ```
 
-Legacy consumers que ainda chamam `AuthUtils.hasAccess(auth, roles)` podem continuar passando o objeto do `react-oidc-context`: a função agora normaliza internamente para `CinnamonSession`, mantendo compatibilidade enquanto recomendamos migrar gradualmente para sessões explícitas.
+### Inline authorization
 
-## Next.js and Server Usage
+```tsx
+import { RequireAuth } from "@cincoders/cinnamon";
 
-For server-oriented scenarios, Cinnamon exposes a separate server entry:
+<RequireAuth auth={auth} permittedRoles={["admin"]}>
+  <AdminPanel />
+</RequireAuth>
+```
+
+### Manual session check
+
+```tsx
+import { sessionFromOidcAuth, hasAccess } from "@cincoders/cinnamon";
+
+const session = sessionFromOidcAuth(auth);
+if (hasAccess(session, ["sys_hr-users"])) {
+  // render protected content
+}
+```
+
+---
+
+## Server / Next.js Usage
+
+Import server-safe components from the dedicated entry:
 
 ```ts
 import {
   PageServer,
   PageWithAuthServer,
   RequireAuthServer,
+  ForbiddenPageServer,
 } from "@cincoders/cinnamon/server";
 ```
 
-Example:
+### Protected server page
 
 ```tsx
-import "@cincoders/cinnamon/dist/cinnamon.css";
-
+// app/dashboard/page.tsx
+import "@cincoders/cinnamon/cinnamon.css";
 import { PageWithAuthServer } from "@cincoders/cinnamon/server";
+import { redirect } from "next/navigation";
+import { getSessionFromCookies } from "@/lib/auth"; // your implementation
 
-export default function ProtectedRoute() {
-  const session = {
-    isAuthenticated: true,
-    roles: ["admin"],
-    user: { name: "Ada" },
-  };
+export default async function DashboardPage() {
+  const session = await getSessionFromCookies();
 
   return (
     <PageWithAuthServer
       authProps={{
         session,
         permittedRoles: ["admin"],
-        onUnauthenticated: () => {
-          throw new Error("Redirect not implemented in this example.");
-        },
+        onUnauthenticated: () => redirect("/login"),
       }}
-      navbar={{ title: "Admin" }}
+      navbar={{ title: "Dashboard" }}
       footer={{ copyrightText: "My Organization" }}
     >
-      <div>Protected content</div>
+      <p>Protected content visible only to admins.</p>
     </PageWithAuthServer>
   );
 }
 ```
 
-In a real Next.js app, `onUnauthenticated` should usually trigger a framework redirect.
+### Inline server authorization gate
 
-### Official server-first flow
+```tsx
+import { RequireAuthServer } from "@cincoders/cinnamon/server";
+import { redirect } from "next/navigation";
 
-1. **Resolver sessão no server** – converta o token recebido (Keycloak/OIDC) para `CinnamonSession` antes de chegar ao componente. `PageWithAuthServer`/`RequireAuthServer` esperam um objeto serializável, e o redirecionamento (`onUnauthenticated`) deve ser tratado com as APIs do Next.
-2. **Montar o shell com dados serializáveis** – passe apenas objetos simples para `navbar`/`footer` (use `iconId` para reusar os ícones oficiais). Os wrappers client internos (`NavbarClientShell`, `FooterClientShell`, `ToastClientShell`) cuidam da hidratação.
-3. **CSS** – o `<main>` server-first usa `min-height: calc(100vh - var(--cinnamon-shell-offset))`. Quando o browser hidrata, os wrappers medem navbar/footer, atualizam as variáveis CSS (`--cinnamon-shell-nav-height`, `--cinnamon-shell-footer-height`, `--cinnamon-shell-offset`) e o layout fica idêntico ao `Page` client. Não é necessário nenhum código extra no consumidor.
-4. **Toast e props de layout** – `centralized`, `flexDirection` e `haveToast` funcionam da mesma forma que no client. Caso um consumer forneça `components.toastContainer`, ele continua sendo responsável por hidratar o toast manualmente.
+<RequireAuthServer
+  session={session}
+  permittedRoles={["sys_hr-users"]}
+  onUnauthenticated={() => redirect("/forbidden")}
+>
+  <SensitiveContent />
+</RequireAuthServer>
+```
 
-> Resumo: em Next, o fluxo oficial é resolver/autorizar no servidor, renderizar `PageWithAuthServer` (ou `PageServer`) com props serializáveis e deixar os wrappers client da Cinnamon hidratarem Navbar/Footer/Toast automaticamente.
+### `NavbarClientProvider` — server layout with updatable Navbar
 
-### Shared Icons and Types
+For layouts where child pages need to update Navbar props (e.g., per-page title) via `useNavbar()`, wrap with `NavbarClientProvider`:
 
-To keep the visual language consistent between Client and Server components, the library exposes a small icon registry. Any component that accepts an `iconId` (e.g. `Navbar` → `SideMenuLink`, `SystemsPopup`) renders the exact same SVG whether it is hydrated on the client or serialized via `PageServer`. Consumers may still pass `iconUrl` or `IconComponent`, but using `iconId` is the recommended zero-config path.
+```tsx
+// app/layout.tsx
+import { NavbarClientProvider } from "@cincoders/cinnamon";
 
-All public interfaces (`User`, `System`, `SideMenuLink`, `Role`, etc.) are exported from `@cincoders/cinnamon`. Server-first apps (Next.js) should import those types instead of redefining them locally so that future library updates stay in sync.
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html>
+      <body>
+        <NavbarClientProvider navbar={{ title: "My App" }}>
+          {children}
+        </NavbarClientProvider>
+      </body>
+    </html>
+  );
+}
+```
 
-## Validation Status
+### Server-first flow summary
 
-The current `v2` state has already been exercised in two real consumers:
+1. **Resolve session on the server** — convert your token (Keycloak/OIDC) to `CinnamonSession` before reaching the component.
+2. **Pass serializable props** — use `iconId` for icons (server-safe); avoid passing class instances.
+3. **Shell hydration** — `NavbarClientShell`, `FooterClientShell`, and `ToastClientShell` hydrate automatically, measuring heights and updating CSS variables (`--cinnamon-shell-nav-height`, `--cinnamon-shell-footer-height`, `--cinnamon-shell-offset`). No extra code needed in the consumer.
+4. **Redirects** — `onUnauthenticated` should call `next/navigation`'s `redirect()` on the server.
 
-- `info-cin-front`: validated the Next/server-first path through an isolated lab route, including cookie-backed session resolution, authorized/unauthorized states, server redirects, role filtering and mixed client/server composition.
-- `prorank-front`: validated the legacy React SPA path with Keycloak/OIDC, including `PageWithAuth`, `RequireAuth`, `AuthUtils.hasAccess(auth, roles)`, forbidden flow and the application shell in real client usage.
+---
 
-This means the migration is no longer only architectural work; it has already been checked in both server-first and legacy client scenarios.
+## Shared Icons
 
-## Public Exports
+To ensure the same icon renders in both client and server paths, use `iconId` instead of `iconUrl`:
 
-Main entry:
+```tsx
+import type { CinnamonIconId } from "@cincoders/cinnamon";
 
-- `Page`
-- `PageServer`
-- `PageWithAuth`
-- `PageWithAuthServer`
-- `RequireAuth`
-- `RequireAuthServer`
-- `Navbar`
-- `Footer`
-- `Dialog`
-- `ErrorScreen`, `httpErrors`
-- `ImageInput`
-- `useNavbar`, `useNavbarContext`
-- `ToastContainer`, `toast`
-- `IconRenderer`
-- `ForbiddenPage`
-- auth helpers
-- utility helpers
-- icon registry typing (`CinnamonIconId`)
-- shared data interfaces (`User`, `System`, `SideMenuLink`, etc.)
+// In System / SideMenuLink / Navbar props:
+{ iconId: "cincoders" } // type-checked against CinnamonIconId
+```
 
-Server entry:
+Using `iconId` renders the official Cinnamon SVG registry — no URL or external asset needed. `iconUrl` and `IconComponent` remain supported as alternatives.
 
-- `RequireAuthServer`
-- `PageWithAuthServer`
-- `PageServer`
+---
 
-### Estável vs. compatibilidade
+## Shell CSS Variables
 
-- **Camada estável (v2)**: `Page`, `PageServer`, `PageWithAuth`, `PageWithAuthServer`, `RequireAuth`, `RequireAuthServer`, `Navbar`, `Footer`, tipos públicos, helpers principais (`hasAccess`, `useNavbar`, `ToastContainer`, `IconRenderer`, registro de ícones, etc.).
-- **Camada compat (legado)**: namespaces `Auth`/`AuthUtils`, contratos baseados em OIDC cru, props herdadas que ainda existem para não quebrar consumidores e nomes historicos como `setSearchFuncion` dentro de `useNavbar()`. Eles continuam exportados, mas podem ser aposentados em uma versão futura.
+Declared in `:root` by `cinnamon.css`. Updated at runtime by the client shells.
 
-Sempre que possível, prefira a camada estável. A camada compat existe apenas para manter projetos legados funcionando durante a migração.
+| Variable | Default | Description |
+|---|---|---|
+| `--cinnamon-shell-nav-height` | `0px` | Current Navbar height |
+| `--cinnamon-shell-footer-height` | `0px` | Current Footer height |
+| `--cinnamon-shell-offset` | `0px` | `nav + footer` height sum |
+| `--cinnamon-shell-inline` | `clamp(16px, 2vw, 40px)` | Horizontal shell padding |
+| `--cinnamon-shell-max-width` | `72rem` | Shell max-width cap |
+| `--cinnamon-main-padding` | `20px clamp(10px, 2%, 40px)` | `<main>` default padding |
 
-## Known Compatibility Notes
+Override in your app:
 
-These points are important when comparing `v2` with the legacy `main` branch:
+```css
+:root {
+  --cinnamon-shell-max-width: 80rem;
+  --cinnamon-shell-inline: clamp(20px, 3vw, 48px);
+}
+```
 
-- the main entry has recovered the most visible legacy items (`Dialog`, `ErrorScreen`, `httpErrors`, `ImageInput`), but these components still deserve final validation for visual parity and consumer ergonomics;
-- `@cincoders/cinnamon/server` currently exports the server-safe components, but not the broader set of public types yet;
-- `NavbarProps.auth` is still permissive to preserve compatibility with raw provider objects;
-- `useNavbar()` still exposes the historical typo `setSearchFuncion` for compatibility with legacy consumers.
+### Design tokens
 
-These notes do not currently block the migration close-out, but they should be treated consciously before a broader release communication.
+Available as Tailwind utilities (`bg-cinnamon-primary`, `text-cinnamon-dark`, etc.):
+
+| Token | Value |
+|---|---|
+| `--color-cinnamon-primary` | `#db1e2f` |
+| `--color-cinnamon-dark` | `#2c2c2c` |
+| `--color-cinnamon-footer-bg` | `#424242` |
+| `--color-cinnamon-footer-bar` | `#616161` |
+
+---
+
+## API Reference
+
+### Main entry — `@cincoders/cinnamon`
+
+**Layout**
+
+| Export | Description |
+|---|---|
+| `Page` | Client layout shell — wraps Navbar + main + Footer, provides Navbar context |
+| `PageWithAuth` | Client-side auth guard + layout; accepts `OidcAuthLike` |
+| `NavbarClientProvider` | Provides Navbar context without mounting a full `Page` |
+
+**Navigation**
+
+| Export | Description |
+|---|---|
+| `Navbar` | Application top bar with systems menu, user popup, side menu |
+| `Footer` | Application footer with contact info, copyright, and signature |
+| `useNavbar()` | Hook to read/update Navbar props from any child component |
+| `useNavbarContext()` | Low-level hook to access the raw `NavbarContext` value |
+| `NavbarContext` | React context object (for custom providers) |
+
+**Authorization**
+
+| Export | Description |
+|---|---|
+| `RequireAuth` | Client-side auth gate; redirects unauthenticated users |
+| `hasAccess(session, roles)` | Returns `true` if session has any of the required roles |
+| `sessionFromOidcAuth(auth)` | Converts `OidcAuthLike` → `CinnamonSession` by decoding the JWT |
+
+**UI Components**
+
+| Export | Description |
+|---|---|
+| `Dialog` | Modal dialog (information / alert / confirmation / decision / error types) |
+| `ErrorScreen` | Full-page error display for 404 / 501 / 503 states |
+| `httpErrors` | Const object of error type keys (`httpErrors.NOTFOUND_404`, etc.) |
+| `ImageInput` | Image file upload with preview, keyboard + touch accessible |
+| `IconRenderer` | Renders an icon from `iconUrl`, `IconComponent`, or `iconId` |
+| `ForbiddenPage` | 403 forbidden page with user email display and logout button |
+| `ToastContainer` | Toast notification container |
+| `toast` | Imperative toast trigger |
+
+**Types**
+
+| Export | Description |
+|---|---|
+| `CinnamonSession` | Normalized auth session contract |
+| `OidcAuthLike` | Structural OIDC auth interface |
+| `CinnamonUser` | User shape inside `CinnamonSession` |
+| `User` | Legacy user shape (name, email, username, positions) |
+| `System` | System entry in the systems menu |
+| `SideMenuLink` | Navigation link in the side menu |
+| `Role`, `Position`, `Link`, `Option` | Supporting data interfaces |
+| `CinnamonIconId` | Union type of all valid icon registry IDs |
+| `AuthUtils` | Namespace re-export of auth helpers (compat) |
+
+---
+
+### Server entry — `@cincoders/cinnamon/server`
+
+| Export | Description |
+|---|---|
+| `PageServer` | RSC layout shell; uses CSS variables for shell offset |
+| `PageWithAuthServer` | Server-side auth guard + layout; expects `CinnamonSession` |
+| `RequireAuthServer` | Server-side authorization gate |
+| `ForbiddenPageServer` | Static 403 page (no user data, no JS) |
+| `hasAccess` | Same as main entry, available server-side |
+| `CinnamonSession` | Type export for server session typing |
+
+---
 
 ## Development
 
-Useful scripts:
+### Prerequisites
+
+- Node.js ≥ 18
+- npm ≥ 9
+
+### Scripts
 
 ```bash
+# Run Storybook dev server
 npm run storybook
+
+# Build Storybook static site
 npm run build-storybook
+
+# Full library build (JS + types + CSS)
 npm run build:lib
+
+# JS bundles only
+npm run build:lib:js
+
+# Type declarations only
+npm run build:lib:types
+
+# Standalone cinnamon.css only
+npm run build:lib:css
+
+# Build + yarn link (for local consumer testing)
+npm run build-link
 ```
 
-Library build details:
+### Build output
 
-- JavaScript bundles are built with Vite
-- type declarations are generated with TypeScript
-- standalone CSS is generated separately
+| Path | Content |
+|---|---|
+| `dist/index.js` | Client entry — all `"use client"` components |
+| `dist/server/entry-server.js` | Server entry — RSC-safe, no browser APIs |
+| `dist/cinnamon.css` | Compiled standalone CSS |
+| `dist/**/*.d.ts` | Type declarations (path aliases rewritten by `tsc-alias`) |
 
-## Repository Notes
+### Type checking
 
-- `main` contains the legacy implementation
-- `v2` is the Tailwind/Shadcn migration
-- the recent auth and React/Next compatibility work was consolidated into `v2`
+```bash
+npx tsc --noEmit
+```
 
-## Current Status
+### Linking to a local consumer
 
-The library is already functional as a reusable package, but the migration is still being consolidated.
+```bash
+# In this repo
+npm run build-link
 
-Current focus areas:
+# In the consumer repo
+npm link @cincoders/cinnamon
+```
 
-- validating visual and behavioral parity of the recently reintroduced legacy components
-- auditing the final public contract against `main`
-- preserving important legacy behavior while modernizing the implementation
-- documenting the final integration expectations clearly for consumer projects
+---
+
+## Validated Consumers
+
+The v2 library has been exercised in two real projects:
+
+- **`info-cin-front`** — validated the Next.js/server-first path: cookie-backed session resolution, authorized/unauthorized states, server redirects, role filtering, mixed client/server composition.
+- **`prorank-front`** — validated the legacy React SPA path with Keycloak/OIDC: `PageWithAuth`, `RequireAuth`, `AuthUtils.hasAccess`, forbidden flow, application shell.
+
+---
+
+## Repository
+
+| Branch | Description |
+|---|---|
+| `main` | Legacy MUI + styled-components implementation (read-only reference) |
+| `v2` | Current: TailwindCSS v4 + Radix UI + RSC support |
+
+---
+
+## License
+
+MIT — © CInCoders, Centro de Informática, UFPE.
