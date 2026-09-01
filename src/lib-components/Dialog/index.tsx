@@ -43,6 +43,8 @@ export interface DialogProps {
   rejectLabel?: string;
   acceptFunction?: () => void;
   rejectFunction?: () => void;
+  /** Mantém o diálogo aberto após acionar accept/reject (default: fecha). */
+  keepOpen?: boolean;
 }
 
 const dialogAccents: Record<DialogProps["type"], string> = {
@@ -63,12 +65,23 @@ export function Dialog({
   rejectLabel = "Cancelar",
   acceptFunction,
   rejectFunction,
+  keepOpen = false,
 }: DialogProps) {
   const isSimple = type === "information" || type === "alert";
   const accent = dialogAccents[type];
 
   function onHide() {
     setVisibility(false);
+  }
+
+  function handleAccept() {
+    acceptFunction?.();
+    if (!keepOpen) onHide();
+  }
+
+  function handleReject() {
+    rejectFunction?.();
+    if (!keepOpen) onHide();
   }
 
   return (
@@ -86,8 +99,8 @@ export function Dialog({
         />
 
         <DialogPrimitive.Content
-          onEscapeKeyDown={(e) => e.preventDefault()}
-          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={onHide}
+          onPointerDownOutside={onHide}
           className={cn(
             "fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
             "overflow-hidden rounded-md border border-border bg-background shadow-lg",
@@ -138,7 +151,7 @@ export function Dialog({
                 <Button
                   type="button"
                   variant="ghost"
-                  onClick={rejectFunction ?? onHide}
+                  onClick={handleReject}
                   className="relative overflow-hidden"
                   style={{ color: accent }}
                   onPointerDown={(e) => createRipple(e, `${accent}55`)} // 55 ~ alpha
@@ -147,7 +160,7 @@ export function Dialog({
                 </Button>
                 <Button
                   type="button"
-                  onClick={acceptFunction ?? onHide}
+                  onClick={handleAccept}
                   className="relative overflow-hidden text-white"
                   style={{ backgroundColor: accent }}
                   onPointerDown={(e) => createRipple(e, "rgba(255,255,255,.35)")}

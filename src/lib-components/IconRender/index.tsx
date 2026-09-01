@@ -1,13 +1,11 @@
-"use client";
-
-import * as React from "react";
+import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
 import { resolveCinnamonIcon, type CinnamonIconId } from "@/icons";
 
 export interface IconRendererProps {
   iconUrl?: string;
   alt?: string;
-  IconComponent?: React.ComponentType<any>;
+  IconComponent?: ComponentType<{ className?: string }>;
   iconId?: CinnamonIconId;
   className?: string;
   sizeRem?: number; // opcional, default ~2.35
