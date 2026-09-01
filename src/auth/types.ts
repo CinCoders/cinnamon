@@ -32,8 +32,11 @@ export type OidcAuthLike = {
         email?: string;
         name?: string;
         preferred_username?: string;
+        given_name?: string;
+        family_name?: string;
       };
     }
     | null;
   signinRedirect: () => Promise<unknown> | unknown;
+  signoutRedirect?: () => Promise<unknown> | unknown;
 };

@@ -1,5 +1,14 @@
-import type { ComponentType, SVGProps } from "react";
+import type { AnchorHTMLAttributes, ComponentType, SVGProps } from "react";
 import type { CinnamonIconId } from "@/icons";
+
+/**
+ * Componente de link injetável. Permite ao consumidor passar `next/link`,
+ * o `Link` do react-router, etc., para preservar client-side routing.
+ * O default interno é um `<a>` cru (full reload em navegação interna no Next).
+ */
+export type LinkComponent = ComponentType<
+  AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
+>;
 
 export interface Role {
   id: number;
@@ -34,7 +43,7 @@ export interface System {
 export interface Link {
   id: number;
   iconUrl?: string;
-  IconComponent?: ComponentType<any>;
+  IconComponent?: ComponentType<{ className?: string }>;
   iconId?: CinnamonIconId;
   title: string;
   href?: string;
