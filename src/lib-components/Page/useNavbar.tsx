@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { NavbarProps } from "@/lib-components/Navbar/Navbar";
+import type { SideMenuLink } from "@/interfaces";
 
 export interface NavbarContextValue {
   navbarProps: NavbarProps;
@@ -24,9 +25,9 @@ export function useNavbar() {
     setTitle: (title: string) => ctx.setNavbarProps((p) => ({ ...p, title })),
     setHaveSearchBar: (haveSearchBar: boolean) =>
       ctx.setNavbarProps((p) => ({ ...p, haveSearchBar })),
-    setSideMenuLinks: (sideMenuLinks: any) =>
+    setSideMenuLinks: (sideMenuLinks: SideMenuLink[]) =>
       ctx.setNavbarProps((p) => ({ ...p, sideMenuLinks })),
-    setSearchFuncion: (searchFunction: any) =>
+    setSearchFunction: (searchFunction: (s: string) => void) =>
       ctx.setNavbarProps((p) => ({ ...p, searchFunction })),
   };
 }

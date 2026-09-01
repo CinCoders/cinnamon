@@ -20,7 +20,6 @@ export interface PageProps {
     footer?: React.ReactNode;
     toastContainer?: React.ReactNode;
   };
-  createNavbarContext?: boolean;
 }
 
 export function Page({
@@ -31,7 +30,6 @@ export function Page({
   flexDirection = "column",
   haveToast = false,
   components,
-  createNavbarContext = true,
 }: PageProps) {
   const navbarRef = React.useRef<HTMLDivElement>(null);
   const footerRef = React.useRef<HTMLDivElement>(null);
@@ -45,8 +43,11 @@ export function Page({
       setFootHeight(footerRef.current?.offsetHeight ?? 0);
     };
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+
+    const observer = new ResizeObserver(update);
+    if (navbarRef.current) observer.observe(navbarRef.current);
+    if (footerRef.current) observer.observe(footerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const diff = (navbar ? navHeight : 0) + (footer ? footHeight : 0);
@@ -56,12 +57,12 @@ export function Page({
   });
 
   React.useEffect(() => {
-    if (createNavbarContext && navbar) setNavbarProps({ ...navbar });
-  }, [createNavbarContext, navbar]);
+    if (navbar) setNavbarProps({ ...navbar });
+  }, [navbar]);
 
   const ctxValue = React.useMemo(
-    () => (createNavbarContext ? { navbarProps, setNavbarProps } : undefined),
-    [createNavbarContext, navbarProps],
+    () => ({ navbarProps, setNavbarProps }),
+    [navbarProps],
   );
 
   const cinnamonNavbar = navbar ? <Navbar {...navbar} /> : null;
