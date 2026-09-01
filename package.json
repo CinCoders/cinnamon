@@ -9,35 +9,34 @@
     "url": "https://github.com/CinCoders/cinnamon/issues"
   },
   "type": "module",
-  "main": "dist/cinnamon.ssr.js",
-  "module": "dist/cinnamon.esm.js",
-  "browser": "dist/cinnamon.esm.js",
-  "unpkg": "dist/cinnamon.min.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "sideEffects": ["**/*.css"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/cinnamon.esm.js",
-      "default": "./dist/cinnamon.esm.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./server": {
       "types": "./dist/entry-server.d.ts",
       "import": "./dist/server/entry-server.js",
       "default": "./dist/server/entry-server.js"
     },
-    "./dist/cinnamon.css": "./dist/cinnamon.css"
+    "./cinnamon.css": "./dist/cinnamon.css"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "test": "vitest run --config vitest.config.ts",
     "build:lib:js": "vite build -c vite.lib.config.ts && vite build -c vite.server.config.ts",
-    "build:lib:types": "tsc -p tsconfig.build.json",
+    "build:lib:types": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:lib:css": "node ./scripts/build-standalone-css.mjs",
     "build:lib": "npm run build:lib:js && npm run build:lib:types && npm run build:lib:css",
-    "build-link": "npm i && npm run build:lib && (yarn unlink || true) && yarn link"
+    "build-link": "npm i && npm run build:lib && (yarn unlink || true) && yarn link",
+    "prepublishonly": "npm run build:lib"
   },
   "repository": {
     "type": "git",
@@ -61,22 +60,24 @@
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dialog": "^1.1.15",
-    "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tooltip": "^1.2.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
-    "react-oidc-context": "^3.3.0",
     "react-toastify": "^11.0.5",
-    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19",
-    "react-router-dom": "^6"
+    "react-oidc-context": "^3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "react-oidc-context": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.3",
@@ -108,6 +109,7 @@
     "react-dom": "^18.3.1",
     "rollup-preserve-directives": "^1.1.3",
     "storybook": "^10.1.11",
+    "tsc-alias": "^1.8.17",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",

@@ -13,7 +13,11 @@
         --primary-foreground: 210 40% 98%;
 
         --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
         --ring: 222.2 84% 4.9%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
     }
 
     .dark {
@@ -27,7 +31,11 @@
         --primary-foreground: 222.2 47.4% 11.2%;
 
         --border: 217.2 32.6% 17.5%;
+        --input: 217.2 32.6% 17.5%;
         --ring: 212.7 26.8% 83.9%;
+
+        --popover: 222.2 84% 4.9%;
+        --popover-foreground: 210 40% 98%;
     }
 
     .sbdocs-wrapper {
@@ -51,7 +59,17 @@
   --color-primary-foreground: hsl(var(--primary-foreground));
 
   --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  /* Cinnamon design tokens */
+  --color-cinnamon-primary: #db1e2f;
+  --color-cinnamon-dark: #2c2c2c;
+  --color-cinnamon-footer-bg: #424242;
+  --color-cinnamon-footer-bar: #616161;
 }
 
 @keyframes ripple {
