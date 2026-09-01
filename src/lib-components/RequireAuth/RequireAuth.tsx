@@ -50,7 +50,9 @@ export function RequireAuth({ auth, publicURL, permittedRoles, children }: Props
     }, 500);
 
     return () => window.clearTimeout(timeoutId);
-  }, [auth.isAuthenticated, auth.isLoading, auth]);
+    // auth.signinRedirect é estável no react-oidc-context; só re-agendamos quando o estado muda.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.isAuthenticated, auth.isLoading]);
 
   // === LOADING ===
   if (auth.isLoading) {

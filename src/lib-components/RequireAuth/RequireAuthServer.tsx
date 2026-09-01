@@ -28,7 +28,10 @@ export function RequireAuthServer({
   children,
 }: Props) {
   if (!session?.isAuthenticated) {
-    return onUnauthenticated();
+    // Espera-se que onUnauthenticated lance (ex.: redirect() do Next).
+    // Se não lançar, não renderizamos o retorno: evita crash do React com undefined.
+    onUnauthenticated();
+    return null;
   }
 
   // Server já opera diretamente no contrato oficial CinnamonSession.
