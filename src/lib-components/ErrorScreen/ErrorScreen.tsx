@@ -3,12 +3,14 @@ import comingSoon501 from "@/assets/icons/comingSoon_501.svg";
 import inactive503 from "@/assets/icons/inactive_503.svg";
 import maintenance503 from "@/assets/icons/maintenance_503.svg";
 
-export enum httpErrors {
-  NOTFOUND_404,
-  COMINGSOON_501,
-  INACTIVE_503,
-  MAINTENANCE_503,
-}
+export const httpErrors = {
+  NOTFOUND_404: "NOTFOUND_404",
+  COMINGSOON_501: "COMINGSOON_501",
+  INACTIVE_503: "INACTIVE_503",
+  MAINTENANCE_503: "MAINTENANCE_503",
+} as const;
+
+export type httpErrors = (typeof httpErrors)[keyof typeof httpErrors];
 
 export interface ErrorScreenProps {
   errorType: httpErrors;
@@ -45,7 +47,17 @@ const errorMap: Record<httpErrors, ErrorScreenContent> = {
 export function ErrorScreen({ errorType }: ErrorScreenProps) {
   const content = errorMap[errorType];
 
-  if (!content) return null;
+  if (!content) {
+    return (
+      <div className="flex w-full justify-center px-6 py-8">
+        <div className="flex w-full max-w-5xl flex-col items-center justify-center text-center">
+          <p className="text-[clamp(1.5rem,2vw,2rem)] font-bold text-slate-900">
+            Erro desconhecido.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full justify-center px-6 py-8">

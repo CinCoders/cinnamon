@@ -26,10 +26,13 @@ export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
 
   async function handleLogout() {
     if (!auth?.signoutRedirect) return;
-
-    await auth.signoutRedirect({
-      post_logout_redirect_uri: `${window.location.origin}${baseURL}`,
-    });
+    try {
+      await auth.signoutRedirect({
+        post_logout_redirect_uri: `${window.location.origin}${baseURL}`,
+      });
+    } catch (err) {
+      console.error("[ForbiddenPage] signoutRedirect failed:", err);
+    }
   }
 
   return (
@@ -45,10 +48,10 @@ export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
       </p>
 
       <div className="mt-3 flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-3 shadow-sm">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#DB1E2F] text-sm font-semibold text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cinnamon-primary text-sm font-semibold text-white">
           {(email.charAt(0) || "?").toUpperCase()}
         </div>
-        <p className="text-[clamp(1rem,1.3vw,1.15rem)] text-[#DB1E2F]">
+        <p className="text-[clamp(1rem,1.3vw,1.15rem)] text-cinnamon-primary">
           {email || "unknown user"}
         </p>
       </div>
