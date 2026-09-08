@@ -53,7 +53,6 @@ export function NavbarClientWrapper({
         border: "2px solid #3b82f6",
         borderRadius: "8px",
         marginBottom: "1rem",
-        overflow: "hidden",
       }}
     >
       <div
