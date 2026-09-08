@@ -41,7 +41,7 @@ export function UserPopup(props: UserPopupProps) {
     (user?.name?.[0] ?? user?.username?.charAt(0) ?? "").toUpperCase();
 
   return (
-    <div className="w-72 max-h-[80vh] overflow-y-auto overflow-x-hidden rounded-xl bg-muted shadow-lg">
+    <div className="w-72 max-h-[80vh] overflow-y-auto overflow-x-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg">
       <div className="flex flex-col items-center">
         {/* Avatar */}
         <div className="my-4 grid h-28 w-28 place-items-center rounded-full bg-cinnamon-primary text-white text-[50px]">
@@ -89,7 +89,7 @@ export function UserPopup(props: UserPopupProps) {
                             "flex w-full items-center justify-between px-4 py-3 text-left text-sm",
                             "text-foreground",
                             "[&[data-state=open]>span:last-child]:rotate-180",
-                            !hasRoles && "opacity-50 cursor-not-allowed"
+                            hasRoles ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
                           )}
                         >
                           <span className="font-medium">{position.name}</span>

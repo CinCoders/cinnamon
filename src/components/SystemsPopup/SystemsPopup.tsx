@@ -20,13 +20,13 @@ export function SystemsPopup({ systemsList = [], linkComponent }: SystemsPopupPr
   const LinkImpl: LinkComponent = linkComponent ?? DefaultAnchor;
   return (
     <TooltipProvider>
-      <div className="w-72 min-h-max rounded-xl bg-muted shadow-lg">
+      <div className="w-72 min-h-max rounded-xl border border-border bg-popover text-popover-foreground shadow-lg">
         <div className="grid min-h-max grid-cols-3 gap-2 p-1">
           {systemsList.map((system) => (
             <LinkImpl
               href={system.href}
               key={`system_${system.title}`}
-              className="group flex h-24 flex-col items-center justify-center gap-2 rounded-md p-2 no-underline transition hover:bg-[#E6E6E6]"
+              className="group flex h-24 cursor-pointer flex-col items-center justify-center gap-2 rounded-md p-2 no-underline transition hover:bg-[#E6E6E6]"
             >
               <Tooltip>
                 <TooltipTrigger asChild>
