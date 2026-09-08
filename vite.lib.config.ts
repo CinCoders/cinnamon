@@ -8,6 +8,8 @@ const external = [
   "react-dom",
   "react/jsx-runtime",
   "react/jsx-dev-runtime",
+  "motion",
+  "motion/react",
 ];
 
 export default defineConfig({
