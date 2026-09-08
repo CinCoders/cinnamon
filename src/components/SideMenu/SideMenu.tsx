@@ -35,18 +35,21 @@ function isExternal(link?: { external?: boolean; href?: string }) {
 /**
  * Trilho de acento animado: linha vertical + curva que segue o centro
  * vertical de um item (ativo ou sob hover/foco). Portado do HookSidebar.
+ * `dashed` (hover) usa gradiente tracejado; sólido é o item ativo.
  */
 function Rail({
   from = 0,
   y,
   visible,
   color,
+  dashed = false,
   className,
 }: {
   from?: number;
   y: number | null;
   visible: boolean;
   color?: string;
+  dashed?: boolean;
   className?: string;
 }) {
   const reduced = useReducedMotion();
@@ -58,17 +61,21 @@ function Rail({
     <motion.span
       aria-hidden
       initial={false}
-      style={{ color }}
+      style={color ? { color } : undefined}
       animate={{ opacity: visible && y !== null ? 1 : 0 }}
       transition={reduced ? { duration: 0 } : { duration: 0.2 }}
-      className={cn("pointer-events-none absolute inset-y-0 left-0 w-3", className)}
+      className={cn("pointer-events-none absolute inset-y-0 left-1 w-3", className)}
     >
       <motion.span
         initial={false}
         animate={{ top: from, height: Math.max(0, (y ?? 0) - RAIL_CORNER - from) }}
         transition={travel}
-        style={{ backgroundImage: RAIL_DASH }}
-        className="absolute left-1 w-px"
+        style={
+          dashed
+            ? { backgroundImage: RAIL_DASH }
+            : { backgroundColor: "currentColor" }
+        }
+        className="absolute left-1 w-0.5 rounded-full"
       />
       <motion.svg
         initial={false}
@@ -81,9 +88,10 @@ function Rail({
         className="absolute left-1"
       >
         <path
-          d="M0.5 0a8 8 0 0 0 8 8H12"
+          d="M1 0a8 8 0 0 0 8 8H12"
           stroke="currentColor"
-          strokeDasharray="2 2"
+          strokeWidth={dashed ? 1 : 2}
+          strokeDasharray={dashed ? "2 2" : undefined}
         />
       </motion.svg>
     </motion.span>
@@ -154,7 +162,7 @@ function SameTabLink({
       onClick={onClick}
       aria-current={ariaCurrent}
       className={cn(
-        "flex min-h-[54px] w-full cursor-pointer items-center justify-between px-2 text-white no-underline",
+        "flex min-h-[54px] w-full cursor-pointer items-center justify-between pl-4 pr-2 text-white no-underline",
         className
       )}
     >
@@ -186,7 +194,7 @@ function NewTabLink({
       onClick={onClick}
       aria-current={ariaCurrent}
       className={cn(
-        "flex min-h-[54px] w-full cursor-pointer items-center justify-between px-2 text-white no-underline",
+        "flex min-h-[54px] w-full cursor-pointer items-center justify-between pl-4 pr-2 text-white no-underline",
         className
       )}
     >
@@ -322,7 +330,8 @@ export function SideMenu({
               visible={
                 (pointerInside || focusInside) && hoverIndex !== activeIndex
               }
-              className="text-white/30"
+              dashed
+              className="text-white/40"
             />
             <Rail
               y={activeY}
@@ -361,7 +370,7 @@ export function SideMenu({
                       type="button"
                       onClick={() => toggleGroup(link.id)}
                       className={cn(
-                        "flex w-full cursor-pointer items-center justify-between px-2",
+                        "flex w-full cursor-pointer items-center justify-between pl-4 pr-2",
                         "min-h-[54px]",
                         "border-b border-white/10",
                         "transition-colors duration-150",
