@@ -50,8 +50,30 @@ export interface Link {
   external?: boolean;
 }
 
-export interface SideMenuLink extends Link {
-  children?: Link[];
+export interface SidebarNavItem {
+  id: string | number;
+  title: string;
+  href?: string;
+  external?: boolean;
+  IconComponent?: ComponentType<{ className?: string }>;
+  iconId?: CinnamonIconId;
+}
+
+/** Seção colapsável da sidebar. Renderizada sob um rótulo clicável. */
+export interface SidebarNavGroup {
+  id: string | number;
+  label: string;
+  defaultOpen?: boolean;
+  items: SidebarNavItem[];
+}
+
+/**
+ * Conteúdo da sidebar da aplicação. Renderizada dentro de um Drawer,
+ * aberta pelo botão de menu do Navbar.
+ */
+export interface SidebarData {
+  navMain: SidebarNavItem[];
+  navGroups?: SidebarNavGroup[];
 }
 
 export interface Option {

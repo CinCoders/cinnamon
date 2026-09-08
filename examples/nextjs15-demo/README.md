@@ -14,7 +14,7 @@ validado com os times consumidores.
 
 | Entry | Exporta |
 |---|---|
-| `@cincoders/cinnamon` | `PageWithAuth`, `Navbar`, `Footer`, `ToastContainer`, `toast` + tipos (`PageProps`, `NavbarProps`, `FooterProps`, `OidcAuthLike`, `CinnamonSession`, `CinnamonUser`, `System`, `SideMenuLink`, `LinkComponent`, …) |
+| `@cincoders/cinnamon` | `PageWithAuth`, `Navbar`, `Footer`, `ToastContainer`, `toast` + tipos (`PageProps`, `NavbarProps`, `FooterProps`, `OidcAuthLike`, `CinnamonSession`, `CinnamonUser`, `System`, `SidebarData`, `LinkComponent`, …) |
 | `@cincoders/cinnamon/server` | `PageWithAuthServer` + tipos (`PageServerProps`, `CinnamonSession`, `CinnamonUser`, `NavbarProps`, `FooterProps`, …) |
 | `@cincoders/cinnamon/cinnamon.css` | CSS compilado |
 

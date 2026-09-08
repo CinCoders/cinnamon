@@ -1,8 +1,8 @@
 // Public API — v2 (client entry).
 //
 // Scoped to `PageWithAuth` and the components it renders internally
-// (Navbar, Footer, Toast), plus the ready-made error screens. The rest
-// (Dialog, ImageInput, IconRenderer, Button, RequireAuth, Page, the
+// (Navbar, Footer, Toast), the ready-made error screens, and the icon
+// library. The rest (Dialog, ImageInput, Button, RequireAuth, Page, the
 // useNavbar hooks, ...) still exist in src/ and are built, but are
 // intentionally NOT re-exported until validated with the consuming teams.
 // To expose one later, add it here.
@@ -25,8 +25,32 @@ export { Navbar } from "./lib-components/Navbar/Navbar";
 export { Footer } from "./lib-components/Footer/Footer";
 export { ToastContainer, toast } from "./components/Toast/Toast";
 
+// Form primitives + the search field composed from them.
+export { Input } from "./components/ui/input";
+export type { InputProps } from "./components/ui/input";
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select";
+export { SearchInput } from "./lib-components/SearchInput/SearchInput";
+export type { SearchInputProps } from "./lib-components/SearchInput/SearchInput";
+
 export type { NavbarProps } from "./lib-components/Navbar/Navbar";
-export type { FooterProps } from "./lib-components/Footer/Footer";
+export type {
+  FooterProps,
+  FooterLink,
+  FooterLinkColumn,
+  FooterSocialLink,
+  FooterSupport,
+} from "./lib-components/Footer/Footer";
 
 // Auth contract types for `authProps.auth`.
 export type {
@@ -38,10 +62,23 @@ export type {
 // Domain types used by NavbarProps.
 export type {
   User,
-  SideMenuLink,
+  SidebarData,
+  SidebarNavItem,
+  SidebarNavGroup,
   System,
   Link,
   LinkComponent,
   Position,
   Role,
 } from "./interfaces";
+
+// Icon library — resolve a `CinnamonIconId` string to a component without
+// pulling an icon package into the consumer. `IconRenderer` renders any of the
+// supported icon sources (`iconId`, `IconComponent`, or `iconUrl`).
+export {
+  resolveCinnamonIcon,
+  getAvailableIconIds,
+} from "./icons";
+export type { CinnamonIconId } from "./icons";
+export { IconRenderer } from "./lib-components/IconRender";
+export type { IconRendererProps } from "./lib-components/IconRender";

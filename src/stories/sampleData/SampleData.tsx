@@ -13,23 +13,27 @@ import {
   Landmark,
 } from "lucide-react";
 
-import type { SideMenuLink, System, User } from "@/interfaces";
+import type { SidebarData, System, User } from "@/interfaces";
 
 const iconClass = "h-7 w-7 text-primary"; // ajusta se quiser
 
-export const testLinks: SideMenuLink[] = [
-  { id: 0, title: "Home", href: "#", IconComponent: () => <Home className={iconClass} /> },
-  {
-    id: 1,
-    title: "Contact",
-    href: "#",
-    IconComponent: () => <FileText className={iconClass} />,
-    children: [
-      { id: 2, title: "Register/Edit", href: "#" },
-      { id: 3, title: "List", href: "#" },
-    ],
-  },
-];
+export const testSidebar: SidebarData = {
+  navMain: [
+    { id: 0, title: "Home", href: "#", IconComponent: () => <Home className={iconClass} /> },
+    { id: 1, title: "Contact", href: "#", IconComponent: () => <FileText className={iconClass} /> },
+  ],
+  navGroups: [
+    {
+      id: "reports",
+      label: "Reports",
+      defaultOpen: true,
+      items: [
+        { id: 2, title: "Register/Edit", href: "#" },
+        { id: 3, title: "List", href: "#" },
+      ],
+    },
+  ],
+};
 
 export const testUser: User = {
   name: "Test User",

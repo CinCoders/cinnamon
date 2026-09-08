@@ -12,10 +12,18 @@ export type { NavbarProps } from "./lib-components/Navbar/Navbar";
 export type { FooterProps } from "./lib-components/Footer/Footer";
 export type {
   User,
-  SideMenuLink,
+  SidebarData,
+  SidebarNavItem,
+  SidebarNavGroup,
   System,
   Link,
   LinkComponent,
   Position,
   Role,
 } from "./interfaces";
+
+// Icon library (RSC-safe).
+export { resolveCinnamonIcon, getAvailableIconIds } from "./icons";
+export type { CinnamonIconId } from "./icons";
+export { IconRenderer } from "./lib-components/IconRender";
+export type { IconRendererProps } from "./lib-components/IconRender";

@@ -1,9 +1,14 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const { version } = JSON.parse(
+  readFileSync(path.resolve(dirname, "../package.json"), "utf8"),
+) as { version: string };
 
 const config: StorybookConfig = {
   "stories": [
@@ -38,6 +43,11 @@ const config: StorybookConfig = {
     // --- Tailwind v4 plugin ---
     viteConfig.plugins ??= [];
     viteConfig.plugins.push(tailwindcss());
+
+    viteConfig.define = {
+      ...viteConfig.define,
+      __CINNAMON_VERSION__: JSON.stringify(version),
+    };
 
     return viteConfig;
   },

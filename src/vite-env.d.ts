@@ -1,3 +1,6 @@
+/** Injected at build time from package.json `version` (see vite configs). */
+declare const __CINNAMON_VERSION__: string;
+
 declare module "*.svg" {
   const src: string;
   export default src;

@@ -3,7 +3,7 @@
 import * as React from "react";
 import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
-import type { User, SideMenuLink, System, LinkComponent } from "@/interfaces";
+import type { User, SidebarData, System, LinkComponent } from "@/interfaces";
 import { SideMenu } from "@/components/SideMenu/SideMenu";
 import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
@@ -30,7 +30,8 @@ export interface NavbarProps {
   h1?: boolean;
   searchFunction?: (searchString: string) => void;
   user?: User;
-  sideMenuLinks?: SideMenuLink[];
+  /** Conteúdo da sidebar. Quando presente, o botão de menu aparece no Navbar. */
+  sidebar?: SidebarData;
   /** href da rota atual, repassado ao SideMenu para destacar o item ativo. */
   activeHref?: string;
   isLandingPage?: boolean;
@@ -56,7 +57,7 @@ export function Navbar(props: NavbarProps) {
     user = { name: "-", email: "-" },
     title = "",
     h1 = false,
-    sideMenuLinks = [],
+    sidebar,
     activeHref,
     isLandingPage = false,
     systemsList = [],
@@ -110,6 +111,10 @@ export function Navbar(props: NavbarProps) {
 
     return user;
   }, [auth, user]);
+
+  const hasSidebar = Boolean(
+    sidebar && (sidebar.navMain?.length || sidebar.navGroups?.length),
+  );
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [searchString, setSearchString] = React.useState("");
@@ -171,7 +176,7 @@ export function Navbar(props: NavbarProps) {
       <header className="cinnamon-navbar-inner relative sticky top-0 z-50 w-full bg-white shadow-md">
         <div className="flex h-16 items-center px-4">
           <div className="ml-5 flex items-center gap-2">
-            {!isLandingPage && sideMenuLinks.length !== 0 && (
+            {!isLandingPage && hasSidebar && (
               <HamburgerButton
                 isOpen={sideMenuOpen}
                 onClick={() => setSideMenuOpen((v) => !v)}
@@ -212,7 +217,7 @@ export function Navbar(props: NavbarProps) {
               <div className="relative" ref={systemsPopupRef}>
                 <button
                   type="button"
-                  className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer transition-shadow duration-150 hover:shadow-[0_4px_10px_rgba(0,0,0,0.18)] focus-visible:outline-none"
+                  className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer transition-shadow duration-150 hover:shadow-[0_0_14px_2px_rgba(0,0,0,0.22)] active:shadow-[0_0_16px_3px_rgba(0,0,0,0.28)] focus-visible:outline-none"
                   aria-haspopup="menu"
                   aria-expanded={systemsOpen}
                   aria-label="Abrir lista de sistemas"
@@ -221,7 +226,7 @@ export function Navbar(props: NavbarProps) {
                   <img
                     src={systemsMenuIcon}
                     alt="Systems Menu"
-                    className="h-full w-full"
+                    className="h-7 w-7"
                     style={{
                       filter:
                         "invert(18%) sepia(64%) saturate(3884%) hue-rotate(342deg) brightness(101%) contrast(98%)",
@@ -288,14 +293,16 @@ export function Navbar(props: NavbarProps) {
         (children ? (
           children
         ) : (
-          <SideMenu
-            visibility={sideMenuOpen}
-            top="64px"
-            setVisibility={setSideMenuOpen}
-            links={sideMenuLinks}
-            linkComponent={linkComponent}
-            activeHref={activeHref}
-          />
+          hasSidebar && (
+            <SideMenu
+              visibility={sideMenuOpen}
+              top="64px"
+              setVisibility={setSideMenuOpen}
+              data={sidebar!}
+              linkComponent={linkComponent}
+              activeHref={activeHref}
+            />
+          )
         ))}
     </div>
   );

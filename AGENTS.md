@@ -129,7 +129,7 @@ src/
     unsafeDecodeJwtPayload.ts ← client-side JWT decode (no signature verify)
     index.ts
   interfaces/
-    index.ts                  ← Role, Position, User, System, SideMenuLink, etc.
+    index.ts                  ← Role, Position, User, System, SidebarData, etc.
   lib/
     utils.ts                  ← cn(), phoneToTel(), other pure utils
   styles/

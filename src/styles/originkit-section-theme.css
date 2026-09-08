@@ -1,0 +1,145 @@
+/*
+ * Originkit section theme (Tailwind v4).
+ * Required for section breakpoints (iphone:, android-sm:, …), fonts
+ * (font-tight, font-switzer, …), and authored spacing utilities.
+ * Import from global CSS after `@import "tailwindcss"`.
+ * Fonts are loaded separately at the top of globals (not here).
+ */
+
+@theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-tight: "Inter Tight", Inter, sans-serif;
+  --font-switzer: "Switzer", Inter, ui-sans-serif, sans-serif;
+  --font-rethink: "Rethink Sans", Inter, sans-serif;
+  --font-geist: "Geist", Inter, ui-sans-serif, sans-serif;
+  --font-tillana: Tillana, cursive;
+  --font-instrument: "Instrument Sans", Inter, sans-serif;
+  --font-instrument-serif: "Instrument Serif", Georgia, serif;
+  --font-instrument-tight: "Instrument Sans", Inter, sans-serif;
+  --font-clash: Inter, ui-sans-serif, sans-serif;
+  /* Canela Deck is self-hosted per section (canela-deck-bold.ttf). No Instrument Serif fallback — that masked missing @font-face. */
+  --font-canela-deck: "Canela Deck", Georgia, "Times New Roman", serif;
+  --font-helvetica-neue: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-monda: Monda, Inter, ui-sans-serif, sans-serif;
+  --font-geist-mono: "Geist Mono", ui-monospace, monospace;
+  --font-dm-mono: "DM Mono", ui-monospace, monospace;
+  --font-lato: Lato, ui-sans-serif, system-ui, sans-serif;
+  --font-urbanist: "Urbanist", Inter, ui-sans-serif, sans-serif;
+  --font-manrope: "Manrope", Inter, ui-sans-serif, sans-serif;
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-outfit: "Outfit", Inter, ui-sans-serif, sans-serif;
+  --font-audiowide: "Audiowide", Inter, ui-sans-serif, sans-serif;
+  --font-hedvig: "Hedvig Letters Serif", Georgia, ui-serif, serif;
+  --font-redhat: "Red Hat Display", Inter, ui-sans-serif, sans-serif;
+
+  --animate-hero-reveal: hero-reveal 300ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  --animate-section-rise: section-rise 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-trusted-marquee: trusted-marquee 36s linear infinite;
+  --animate-page-reveal: page-reveal 500ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  --animate-phone-slide-up: phone-slide-up 500ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  --animate-phone-flip-in-x: phone-flip-in-x 600ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  --animate-shine-infinite: shine-infinite 1.4s linear infinite;
+  --animate-logo-orbit: logo-orbit 14s linear infinite;
+  --animate-globe-orbit: globe-orbit 14s linear infinite;
+
+  --breakpoint-android-sm: 360px;
+  --breakpoint-iphone: 390px;
+  --breakpoint-iphone-max: 430px;
+  --breakpoint-ipad: 768px;
+  --breakpoint-ipad-air: 834px;
+  --breakpoint-ipad-landscape: 1024px;
+  --breakpoint-desktop-sm: 1280px;
+  --breakpoint-laptop: 1440px;
+  --breakpoint-wide: 1536px;
+  --breakpoint-wide-lg: 1600px;
+  --breakpoint-full-hd: 1920px;
+  --breakpoint-ultrawide: 2560px;
+}
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes section-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes trusted-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes page-reveal {
+  from { opacity: 0; transform: translateY(12%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes phone-slide-up {
+  from { opacity: 0; transform: translateY(48px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes phone-flip-in-x {
+  from { opacity: 0; transform: rotateX(78deg) translateY(56px); }
+  to { opacity: 1; transform: rotateX(0deg) translateY(0); }
+}
+
+@keyframes shine-infinite {
+  from { transform: translateX(-160%); }
+  to { transform: translateX(160%); }
+}
+
+@keyframes logo-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes globe-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes hero-reveal {
+    from { opacity: 0; transform: none; filter: none; }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes section-rise {
+    from { opacity: 0; transform: none; }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes trusted-marquee {
+    from, to { transform: none; }
+  }
+  @keyframes page-reveal {
+    from { opacity: 0; transform: none; }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes phone-slide-up {
+    from { opacity: 0; transform: none; }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes phone-flip-in-x {
+    from { opacity: 0; transform: none; }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes shine-infinite {
+    from, to { transform: none; }
+  }
+  @keyframes logo-orbit {
+    from, to { transform: none; }
+  }
+  @keyframes globe-orbit {
+    from, to { transform: none; }
+  }
+}

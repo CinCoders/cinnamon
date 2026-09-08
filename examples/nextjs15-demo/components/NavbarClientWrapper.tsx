@@ -3,9 +3,62 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Navbar, type CinnamonSession, type LinkComponent } from "@cincoders/cinnamon";
+import {
+  Navbar,
+  type CinnamonSession,
+  type LinkComponent,
+  type SidebarData,
+} from "@cincoders/cinnamon";
 import { useAuth } from "./AuthProvider";
 import { toOidcAuthLike } from "../lib/oidc";
+
+// Ícones vêm da própria cinnamon via `iconId` — o consumidor não precisa
+// instalar um pacote de ícones. Os favoritos usam uma bolinha colorida local.
+const dot = (color: string) =>
+  function Dot() {
+    return <span className={`inline-block h-2.5 w-2.5 rounded-full ${color}`} />;
+  };
+
+const sidebar: SidebarData = {
+  navMain: [
+    { id: "overview", title: "Overview", href: "/", iconId: "layout" },
+    { id: "tasks", title: "Tasks", href: "#", iconId: "listChecks" },
+    { id: "meetings", title: "Meetings", href: "#", iconId: "calendarClock" },
+    { id: "notes", title: "Notes", href: "#", iconId: "notebook" },
+    { id: "calendar", title: "Calendar", href: "#", iconId: "calendar" },
+    { id: "completed", title: "Completed", href: "#", iconId: "checkCircle" },
+    { id: "notifications", title: "Notifications", href: "#", iconId: "bell" },
+  ],
+  navGroups: [
+    {
+      id: "favorites",
+      label: "Favorites",
+      defaultOpen: true,
+      items: [
+        { id: "design", title: "Design", href: "#", IconComponent: dot("bg-green-400 dark:bg-green-300") },
+        { id: "development", title: "Development", href: "#", IconComponent: dot("bg-blue-400 dark:bg-blue-300") },
+        { id: "workshop", title: "Workshop", href: "#", IconComponent: dot("bg-orange-400 dark:bg-orange-300") },
+        { id: "personal", title: "Personal", href: "#", IconComponent: dot("bg-red-400 dark:bg-red-300") },
+      ],
+    },
+    {
+      id: "teams",
+      label: "Teams",
+      items: [
+        { id: "engineering", title: "Engineering", href: "#", iconId: "wrench" },
+        { id: "marketing", title: "Marketing", href: "#", iconId: "megaphone" },
+      ],
+    },
+    {
+      id: "topics",
+      label: "Topics",
+      items: [
+        { id: "product-updates", title: "Product Updates", href: "#", iconId: "package" },
+        { id: "company-news", title: "Company News", href: "#", iconId: "newspaper" },
+      ],
+    },
+  ],
+};
 
 interface NavbarClientWrapperProps {
   /** Server-validated session, used only for the debug strip above the Navbar. */
@@ -26,13 +79,6 @@ export function NavbarClientWrapper({
   // Real Keycloak auth object from react-oidc-context — same session the server validated.
   const auth = toOidcAuthLike(useAuth());
   const pathname = usePathname();
-
-  const sideMenuLinks = [
-    { id: 1, title: "🏠 Início (Home)", href: "/" },
-    { id: 2, title: "📊 Gráficos & Métricas (Apenas Admin)", href: "/graficos" },
-    { id: 3, title: "⚡ Componentes Interativos (Client)", href: "/interativo" },
-    { id: 4, title: "🔒 Tela de Login / Logout", href: "/login" },
-  ];
 
   const systemsList = [
     { title: "Dashboard Geral", href: "/", description: "Página principal acessível a Admin e User" },
@@ -79,7 +125,7 @@ export function NavbarClientWrapper({
         title={title}
         auth={auth}
         linkComponent={NextLinkAdapter}
-        sideMenuLinks={sideMenuLinks}
+        sidebar={sidebar}
         activeHref={pathname}
         systemsList={systemsList}
         haveSearchBar={true}

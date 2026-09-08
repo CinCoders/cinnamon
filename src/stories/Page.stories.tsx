@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type * as React from "react";
 import { Page } from "../lib-components/Page/Page";
-import { testLinks, testSystems, testUser } from "./sampleData/SampleData";
+import { testSidebar, testSystems, testUser } from "./sampleData/SampleData";
 
 type PageStoryArgs = {
   // Children
@@ -21,14 +21,12 @@ type PageStoryArgs = {
   systemsListPopup: boolean;
 
   // Footer (viram footer={{...}})
-  footerTitle: string;
-  footerTelephone: string;
-  footerTelephoneComplement: string;
-  footerEmail: string;
-  footerLink: string;
-  footerTextLink: string;
   footerDescription: string;
+  footerSupportTitle: string;
+  footerTelephone: string;
+  footerEmail: string;
   footerCopyrightText: string;
+  footerAppVersion: string;
 };
 
 const meta: Meta<PageStoryArgs> = {
@@ -53,17 +51,12 @@ const meta: Meta<PageStoryArgs> = {
     systemsListPopup: { control: "boolean", table: { category: "Navbar" } },
 
     // Footer
-    footerTitle: { control: "text", table: { category: "Footer" } },
-    footerTelephone: { control: "text", table: { category: "Footer" } },
-    footerTelephoneComplement: {
-      control: "text",
-      table: { category: "Footer" },
-    },
-    footerEmail: { control: "text", table: { category: "Footer" } },
-    footerLink: { control: "text", table: { category: "Footer" } },
-    footerTextLink: { control: "text", table: { category: "Footer" } },
     footerDescription: { control: "text", table: { category: "Footer" } },
+    footerSupportTitle: { control: "text", table: { category: "Footer" } },
+    footerTelephone: { control: "text", table: { category: "Footer" } },
+    footerEmail: { control: "text", table: { category: "Footer" } },
     footerCopyrightText: { control: "text", table: { category: "Footer" } },
+    footerAppVersion: { control: "text", table: { category: "Footer" } },
   },
 
   args: {
@@ -79,14 +72,12 @@ const meta: Meta<PageStoryArgs> = {
     hiddenUser: false,
     systemsListPopup: true,
 
-    footerTitle: "FOOTER TITLE",
-    footerTelephone: "(xx) xxxx-xxxx",
-    footerTelephoneComplement: "Internal number: xxxx / xxxx",
-    footerEmail: "sample@email.com",
-    footerLink: "https://www.google.com",
-    footerTextLink: "Site",
-    footerDescription: "Footer's description with \n line break",
+    footerDescription: "Centro de Informática — UFPE",
+    footerSupportTitle: "Suporte Técnico",
+    footerTelephone: "(81) 2126-8430",
+    footerEmail: "helpdesk@cin.ufpe.br",
     footerCopyrightText: "CIn UFPE | All rights reserved",
+    footerAppVersion: "1.4.0",
   },
 };
 
@@ -103,18 +94,18 @@ export const Default: Story = {
         user: args.hiddenUser ? undefined : testUser,
         h1: args.h1,
         title: args.title,
-        sideMenuLinks: testLinks,
+        sidebar: testSidebar,
         systemsList: args.systemsListPopup ? testSystems : [],
       }}
       footer={{
-        title: args.footerTitle,
-        telephone: args.footerTelephone,
-        telephoneComplement: args.footerTelephoneComplement,
-        email: args.footerEmail,
-        link: args.footerLink,
-        textLink: args.footerTextLink,
         description: args.footerDescription,
+        support: {
+          title: args.footerSupportTitle,
+          telephone: args.footerTelephone,
+          email: args.footerEmail,
+        },
         copyrightText: args.footerCopyrightText,
+        appVersion: args.footerAppVersion,
       }}
       centralized={args.centralized}
     >

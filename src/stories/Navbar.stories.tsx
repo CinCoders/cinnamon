@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Navbar } from "@/lib-components/Navbar/Navbar";
 import type { NavbarProps } from "@/lib-components/Navbar/Navbar";
-import { testLinks, testSystems, testUser } from "./sampleData/SampleData";
+import { testSidebar, testSystems, testUser } from "./sampleData/SampleData";
 
 /**
  * Aqui criamos um tipo da STORY
@@ -23,7 +23,7 @@ const meta: Meta<NavbarStoryArgs> = {
     haveSearchBar: false,
     hiddenUser: false,
     user: testUser,
-    sideMenuLinks: testLinks,
+    sidebar: testSidebar,
     title: "Cinnamon",
     systemsList: [],
 
