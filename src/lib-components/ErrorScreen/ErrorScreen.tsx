@@ -1,7 +1,15 @@
-import notFound404 from "@/assets/icons/notFound_404.svg";
-import comingSoon501 from "@/assets/icons/comingSoon_501.svg";
-import inactive503 from "@/assets/icons/inactive_503.svg";
-import maintenance503 from "@/assets/icons/maintenance_503.svg";
+import notFound404Raw from "@/assets/icons/notFound_404.svg?raw";
+import comingSoon501Raw from "@/assets/icons/comingSoon_501.svg?raw";
+import inactive503Raw from "@/assets/icons/inactive_503.svg?raw";
+import maintenance503Raw from "@/assets/icons/maintenance_503.svg?raw";
+
+const svgDataUri = (raw: string) =>
+  `data:image/svg+xml;charset=utf-8,${encodeURIComponent(raw)}`;
+
+const notFound404 = svgDataUri(notFound404Raw);
+const comingSoon501 = svgDataUri(comingSoon501Raw);
+const inactive503 = svgDataUri(inactive503Raw);
+const maintenance503 = svgDataUri(maintenance503Raw);
 
 export const httpErrors = {
   NOTFOUND_404: "NOTFOUND_404",
