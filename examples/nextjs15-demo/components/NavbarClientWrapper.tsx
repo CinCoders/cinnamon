@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Navbar, type CinnamonSession, type LinkComponent } from "@cincoders/cinnamon";
 import { useAuth } from "./AuthProvider";
 import { toOidcAuthLike } from "../lib/oidc";
@@ -24,6 +25,7 @@ export function NavbarClientWrapper({
 }: NavbarClientWrapperProps) {
   // Real Keycloak auth object from react-oidc-context — same session the server validated.
   const auth = toOidcAuthLike(useAuth());
+  const pathname = usePathname();
 
   const sideMenuLinks = [
     { id: 1, title: "🏠 Início (Home)", href: "/" },
@@ -78,6 +80,7 @@ export function NavbarClientWrapper({
         auth={auth}
         linkComponent={NextLinkAdapter}
         sideMenuLinks={sideMenuLinks}
+        activeHref={pathname}
         systemsList={systemsList}
         haveSearchBar={true}
         searchFunction={(q) => console.log("[Demo Navbar] Pesquisando:", q)}
