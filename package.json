@@ -35,7 +35,7 @@
     "build:lib:types": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:lib:css": "node ./scripts/build-standalone-css.mjs",
     "build:lib": "npm run build:lib:js && npm run build:lib:types && npm run build:lib:css",
-    "build-link": "npm i && npm run build:lib && (yarn unlink || true) && yarn link",
+    "build-pack": "npm i && npm run build:lib && npm pack",
     "prepublishonly": "npm run build:lib"
   },
   "repository": {

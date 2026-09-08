@@ -27,7 +27,7 @@ npm run build:lib:css       # Standalone cinnamon.css only
 npm run storybook           # Dev server for visual testing
 npm run build-storybook     # Static Storybook site
 npx tsc --noEmit            # Type check without emitting
-npm run build-link          # build:lib + npm link (local consumer testing)
+npm run build-pack          # build:lib + npm pack (local consumer testing)
 ```
 
 In the `examples/nextjs15-demo/` consumer:
