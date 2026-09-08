@@ -238,7 +238,7 @@ export function Navbar(props: NavbarProps) {
             )}
 
             {logoSrc && (
-              <Link href={logoRedirectUrl}>
+              <Link href={logoRedirectUrl} className="cursor-pointer">
                 <img
                   src={logoSrc}
                   alt="Logo"

@@ -81,7 +81,7 @@ function SameTabLink({
       href={href ?? "#"}
       onClick={onClick}
       className={cn(
-        "flex min-h-[54px] w-full items-center justify-between px-2 text-white no-underline",
+        "flex min-h-[54px] w-full cursor-pointer items-center justify-between px-2 text-white no-underline",
         className
       )}
     >
@@ -110,7 +110,7 @@ function NewTabLink({
       rel="noopener noreferrer"
       onClick={onClick}
       className={cn(
-        "flex min-h-[54px] w-full items-center justify-between px-2 text-white no-underline",
+        "flex min-h-[54px] w-full cursor-pointer items-center justify-between px-2 text-white no-underline",
         className
       )}
     >
@@ -206,7 +206,7 @@ export function SideMenu({
                       type="button"
                       onClick={() => toggleGroup(link.id)}
                       className={cn(
-                        "flex w-full items-center justify-between px-2",
+                        "flex w-full cursor-pointer items-center justify-between px-2",
                         "min-h-[54px]",
                         "border-b border-white/10",
                         "transition-colors duration-150",

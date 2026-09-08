@@ -59,7 +59,7 @@ export function ForbiddenPage({ auth, publicURL }: ForbiddenPageProps) {
       {auth?.signoutRedirect ? (
         <button
           type="button"
-          className="mt-6 inline-flex h-10 items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-100"
+          className="mt-6 inline-flex h-10 cursor-pointer items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-100"
           onClick={() => void handleLogout()}
         >
           Log out
