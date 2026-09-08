@@ -6,14 +6,30 @@
 
 - [Installation](#installation)
 - [CSS Setup](#css-setup)
-- [Basic Usage](#basic-usage)
-- [Auth Model](#auth-model)
-- [Client Auth Usage](#client-auth-usage)
-- [Server / Next.js Usage](#server--nextjs-usage)
+- [Usage with React (SPA / Vite)](#usage-with-react-spa--vite)
+  - [Layout without auth](#layout-without-auth)
+  - [Navbar with systems menu](#navbar-with-systems-menu)
+  - [Protected page with `PageWithAuth`](#protected-page-with-pagewithauth)
+  - [Inline authorization](#inline-authorization)
+- [Usage with Next.js (App Router)](#usage-with-nextjs-app-router)
+  - [Protected server page](#protected-server-page)
+  - [Inline server authorization gate](#inline-server-authorization-gate)
+  - [Server layout with an updatable Navbar](#server-layout-with-an-updatable-navbar)
+  - [Server-first flow summary](#server-first-flow-summary)
+- [Authentication](#authentication)
+  - [`OidcAuthLike`](#oidcauthlike)
+  - [Manual session check](#manual-session-check)
 - [Shared Icons](#shared-icons)
-- [Shell CSS Variables](#shell-css-variables)
+- [Customization](#customization)
+  - [Shell CSS variables](#shell-css-variables)
+  - [Design tokens](#design-tokens)
 - [API Reference](#api-reference)
+  - [Main entry — `@cincoders/cinnamon`](#main-entry--cincoderscinnamon)
+  - [Server entry — `@cincoders/cinnamon/server`](#server-entry--cincoderscinnamonserver)
 - [Development](#development)
+- [Validated Consumers](#validated-consumers)
+- [Repository](#repository)
+- [License](#license)
 
 ---
 
@@ -67,7 +83,9 @@ Without this precaution, your reset may override Cinnamon's utility classes (tra
 
 ---
 
-## Basic Usage
+## Usage with React (SPA / Vite)
+
+Client-only apps import everything from the main entry `@cincoders/cinnamon`.
 
 ### Layout without auth
 
@@ -112,9 +130,159 @@ import { Page } from "@cincoders/cinnamon";
 </Page>
 ```
 
+### Protected page with `PageWithAuth`
+
+`PageWithAuth` is the ready-made guard for a private page. It resolves
+**loading → redirect/login → 403 → content** and mounts the `Page` shell
+(Navbar + Footer + layout) for you.
+
+```tsx
+import "@cincoders/cinnamon/cinnamon.css";
+import { useAuth } from "react-oidc-context";
+import { PageWithAuth } from "@cincoders/cinnamon";
+
+export function ProtectedPage() {
+  const auth = useAuth();
+
+  return (
+    <PageWithAuth
+      authProps={{
+        auth,
+        permittedRoles: ["sys_hr-users"], // ["*"] = any authenticated user
+      }}
+      navbar={{ title: "Dashboard", auth }}
+      footer={{ copyrightText: "My Organization" }}
+    >
+      <div>Protected content</div>
+    </PageWithAuth>
+  );
+}
+```
+
+Behavior, in order:
+
+| Session state | What `PageWithAuth` renders |
+|---|---|
+| `auth.isLoading` | "Loading…" screen (after 6s, a connection-failure message) |
+| not authenticated | calls `auth.signinRedirect()` → Keycloak login |
+| authenticated, none of `permittedRoles` | `ForbiddenPage` |
+| authenticated, has a role | `Page` + `children` |
+
+`permittedRoles` matches if the session has **at least one** of the roles.
+`["*"]` allows any authenticated user.
+
+### Inline authorization
+
+```tsx
+import { RequireAuth } from "@cincoders/cinnamon";
+
+<RequireAuth auth={auth} permittedRoles={["admin"]}>
+  <AdminPanel />
+</RequireAuth>
+```
+
 ---
 
-## Auth Model
+## Usage with Next.js (App Router)
+
+Import server-safe components from the dedicated entry — they run in React
+Server Components without pulling in browser APIs:
+
+```ts
+import {
+  PageServer,
+  PageWithAuthServer,
+  RequireAuthServer,
+  ForbiddenPageServer,
+} from "@cincoders/cinnamon/server";
+```
+
+Resolve the session on the server (from cookies/headers) and pass a
+`CinnamonSession` directly — no provider needed. See [Authentication](#authentication)
+for the session contract.
+
+### Protected server page
+
+```tsx
+// app/dashboard/page.tsx
+import "@cincoders/cinnamon/cinnamon.css";
+import { PageWithAuthServer } from "@cincoders/cinnamon/server";
+import { redirect } from "next/navigation";
+import { getSessionFromCookies } from "@/lib/auth"; // your implementation
+
+export default async function DashboardPage() {
+  const session = await getSessionFromCookies();
+
+  return (
+    <PageWithAuthServer
+      authProps={{
+        session,
+        permittedRoles: ["admin"],
+        onUnauthenticated: () => redirect("/login"), // must throw; redirect() does
+      }}
+      navbar={{ title: "Dashboard" }}
+      footer={{ copyrightText: "My Organization" }}
+    >
+      <p>Protected content visible only to admins.</p>
+    </PageWithAuthServer>
+  );
+}
+```
+
+Differences from the client `PageWithAuth`:
+
+- Receives `session: CinnamonSession | null`, not `auth`.
+- `onUnauthenticated` **must throw** (Next's `redirect()` throws) — otherwise nothing renders.
+- Missing role → `ForbiddenPageServer` (403 rendered on the server, no JS).
+- It is a Server Component: no `window`, hooks, or event handlers.
+
+### Inline server authorization gate
+
+```tsx
+import { RequireAuthServer } from "@cincoders/cinnamon/server";
+import { redirect } from "next/navigation";
+
+<RequireAuthServer
+  session={session}
+  permittedRoles={["sys_hr-users"]}
+  onUnauthenticated={() => redirect("/forbidden")}
+>
+  <SensitiveContent />
+</RequireAuthServer>
+```
+
+### Server layout with an updatable Navbar
+
+For layouts where child pages need to update Navbar props (e.g., per-page title)
+via `useNavbar()`, wrap with `NavbarClientProvider`:
+
+```tsx
+// app/layout.tsx
+import { NavbarClientProvider } from "@cincoders/cinnamon";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html>
+      <body>
+        <NavbarClientProvider navbar={{ title: "My App" }}>
+          {children}
+        </NavbarClientProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### Server-first flow summary
+
+1. **Resolve session on the server** — convert your token (Keycloak/OIDC) to `CinnamonSession` before reaching the component.
+2. **Pass serializable props** — use `iconId` for icons (server-safe); avoid passing class instances.
+3. **Shell hydration** — `NavbarClientShell`, `FooterClientShell`, and `ToastClientShell` hydrate automatically, measuring heights and updating the shell CSS variables. No extra code needed in the consumer.
+4. **Redirects** — `onUnauthenticated` should call `next/navigation`'s `redirect()` on the server.
+
+---
+
+## Authentication
 
 Cinnamon's internal authorization flows around a single normalized session object, independent of any specific provider:
 
@@ -139,7 +307,7 @@ provider → sessionFromOidcAuth() → CinnamonSession → hasAccess(session, ro
 ```
 
 - **Client** apps may still use `react-oidc-context`; Cinnamon normalizes the auth object internally via `sessionFromOidcAuth()`.
-- **Server** apps (Next.js) resolve the session from cookies/headers before rendering and pass `CinnamonSession` directly — no provider dependency needed.
+- **Server** apps (Next.js) resolve the session from cookies/headers before rendering and pass `CinnamonSession` directly.
 
 ### `OidcAuthLike`
 
@@ -165,45 +333,6 @@ type OidcAuthLike = {
 };
 ```
 
----
-
-## Client Auth Usage
-
-### With `react-oidc-context`
-
-```tsx
-import "@cincoders/cinnamon/cinnamon.css";
-import { useAuth } from "react-oidc-context";
-import { PageWithAuth } from "@cincoders/cinnamon";
-
-export function ProtectedPage() {
-  const auth = useAuth();
-
-  return (
-    <PageWithAuth
-      authProps={{
-        auth,
-        permittedRoles: ["sys_hr-users"],
-      }}
-      navbar={{ title: "Dashboard", auth }}
-      footer={{ copyrightText: "My Organization" }}
-    >
-      <div>Protected content</div>
-    </PageWithAuth>
-  );
-}
-```
-
-### Inline authorization
-
-```tsx
-import { RequireAuth } from "@cincoders/cinnamon";
-
-<RequireAuth auth={auth} permittedRoles={["admin"]}>
-  <AdminPanel />
-</RequireAuth>
-```
-
 ### Manual session check
 
 ```tsx
@@ -215,91 +344,8 @@ if (hasAccess(session, ["sys_hr-users"])) {
 }
 ```
 
----
-
-## Server / Next.js Usage
-
-Import server-safe components from the dedicated entry:
-
-```ts
-import {
-  PageServer,
-  PageWithAuthServer,
-  RequireAuthServer,
-  ForbiddenPageServer,
-} from "@cincoders/cinnamon/server";
-```
-
-### Protected server page
-
-```tsx
-// app/dashboard/page.tsx
-import "@cincoders/cinnamon/cinnamon.css";
-import { PageWithAuthServer } from "@cincoders/cinnamon/server";
-import { redirect } from "next/navigation";
-import { getSessionFromCookies } from "@/lib/auth"; // your implementation
-
-export default async function DashboardPage() {
-  const session = await getSessionFromCookies();
-
-  return (
-    <PageWithAuthServer
-      authProps={{
-        session,
-        permittedRoles: ["admin"],
-        onUnauthenticated: () => redirect("/login"),
-      }}
-      navbar={{ title: "Dashboard" }}
-      footer={{ copyrightText: "My Organization" }}
-    >
-      <p>Protected content visible only to admins.</p>
-    </PageWithAuthServer>
-  );
-}
-```
-
-### Inline server authorization gate
-
-```tsx
-import { RequireAuthServer } from "@cincoders/cinnamon/server";
-import { redirect } from "next/navigation";
-
-<RequireAuthServer
-  session={session}
-  permittedRoles={["sys_hr-users"]}
-  onUnauthenticated={() => redirect("/forbidden")}
->
-  <SensitiveContent />
-</RequireAuthServer>
-```
-
-### `NavbarClientProvider` — server layout with updatable Navbar
-
-For layouts where child pages need to update Navbar props (e.g., per-page title) via `useNavbar()`, wrap with `NavbarClientProvider`:
-
-```tsx
-// app/layout.tsx
-import { NavbarClientProvider } from "@cincoders/cinnamon";
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html>
-      <body>
-        <NavbarClientProvider navbar={{ title: "My App" }}>
-          {children}
-        </NavbarClientProvider>
-      </body>
-    </html>
-  );
-}
-```
-
-### Server-first flow summary
-
-1. **Resolve session on the server** — convert your token (Keycloak/OIDC) to `CinnamonSession` before reaching the component.
-2. **Pass serializable props** — use `iconId` for icons (server-safe); avoid passing class instances.
-3. **Shell hydration** — `NavbarClientShell`, `FooterClientShell`, and `ToastClientShell` hydrate automatically, measuring heights and updating CSS variables (`--cinnamon-shell-nav-height`, `--cinnamon-shell-footer-height`, `--cinnamon-shell-offset`). No extra code needed in the consumer.
-4. **Redirects** — `onUnauthenticated` should call `next/navigation`'s `redirect()` on the server.
+`hasAccess(session, roles)` returns `true` if the session has **any** of the
+required roles. It is available from both the main and the `/server` entry.
 
 ---
 
@@ -318,9 +364,11 @@ Using `iconId` renders the official Cinnamon SVG registry — no URL or external
 
 ---
 
-## Shell CSS Variables
+## Customization
 
-Declared in `:root` by `cinnamon.css`. Updated at runtime by the client shells.
+### Shell CSS variables
+
+Declared in `:root` by `cinnamon.css`. The first three are updated at runtime by the client shells.
 
 | Variable | Default | Description |
 |---|---|---|
@@ -410,8 +458,6 @@ Available as Tailwind utilities (`bg-cinnamon-primary`, `text-cinnamon-dark`, et
 | `CinnamonIconId` | Union type of all valid icon registry IDs |
 | `AuthUtils` | Namespace re-export of auth helpers (compat) |
 
----
-
 ### Server entry — `@cincoders/cinnamon/server`
 
 | Export | Description |
@@ -453,8 +499,8 @@ npm run build:lib:types
 # Standalone cinnamon.css only
 npm run build:lib:css
 
-# Build + yarn link (for local consumer testing)
-npm run build-link
+# Build + npm pack (for local consumer testing)
+npm run build-pack
 ```
 
 ### Build output
@@ -472,15 +518,21 @@ npm run build-link
 npx tsc --noEmit
 ```
 
-### Linking to a local consumer
+### Using the library in another project (without publishing to npm)
+
+To test changes in a consumer project before publishing, pack the library into a tarball and install it directly — this exercises the real `exports` map and RSC entry split, same as a published package would.
 
 ```bash
-# In this repo
-npm run build-link
+# In this repo — builds the lib and produces cincoders-cinnamon-<version>.tgz
+npm run build-pack
 
-# In the consumer repo
-npm link @cincoders/cinnamon
+# In the consumer repo — install from the tarball's absolute path
+npm install /absolute/path/to/cinnamon/cincoders-cinnamon-<version>.tgz
 ```
+
+After changing the library source, repeat both steps to pick up the new build (`npm install` on the same tarball path won't refresh a cached copy — regenerate the `.tgz` first).
+
+For a full working example, see [`examples/nextjs15-demo/`](examples/nextjs15-demo/README.md).
 
 ---
 
