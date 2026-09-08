@@ -2,6 +2,7 @@
 "use client";
 
 import * as React from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { Link as CinnamonLink, SideMenuLink, LinkComponent } from "@/interfaces";
 import { DefaultAnchor } from "@/lib/DefaultAnchor";
@@ -14,10 +15,79 @@ export interface SideMenuProps {
   visibility?: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
   linkComponent?: LinkComponent;
+  /**
+   * href da rota atual. A lib é agnóstica de router: o consumidor passa
+   * `usePathname()` (Next) ou `useLocation().pathname` (react-router).
+   * Quando bate com o `href` de um item, o trilho de acento o destaca.
+   */
+  activeHref?: string;
 }
+
+// deslocamento vertical da curva que liga o trilho ao item (px)
+const RAIL_CORNER = 8;
+const RAIL_DASH =
+  "repeating-linear-gradient(to top, transparent 0 2px, currentColor 2px 4px)";
 
 function isExternal(link?: { external?: boolean; href?: string }) {
   return Boolean(link?.external);
+}
+
+/**
+ * Trilho de acento animado: linha vertical + curva que segue o centro
+ * vertical de um item (ativo ou sob hover/foco). Portado do HookSidebar.
+ */
+function Rail({
+  from = 0,
+  y,
+  visible,
+  color,
+  className,
+}: {
+  from?: number;
+  y: number | null;
+  visible: boolean;
+  color?: string;
+  className?: string;
+}) {
+  const reduced = useReducedMotion();
+  const travel = reduced
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 34, mass: 0.7 };
+
+  return (
+    <motion.span
+      aria-hidden
+      initial={false}
+      style={{ color }}
+      animate={{ opacity: visible && y !== null ? 1 : 0 }}
+      transition={reduced ? { duration: 0 } : { duration: 0.2 }}
+      className={cn("pointer-events-none absolute inset-y-0 left-0 w-3", className)}
+    >
+      <motion.span
+        initial={false}
+        animate={{ top: from, height: Math.max(0, (y ?? 0) - RAIL_CORNER - from) }}
+        transition={travel}
+        style={{ backgroundImage: RAIL_DASH }}
+        className="absolute left-1 w-px"
+      />
+      <motion.svg
+        initial={false}
+        animate={{ top: (y ?? 0) - RAIL_CORNER }}
+        transition={travel}
+        width="12"
+        height="9"
+        viewBox="0 0 12 9"
+        fill="none"
+        className="absolute left-1"
+      >
+        <path
+          d="M0.5 0a8 8 0 0 0 8 8H12"
+          stroke="currentColor"
+          strokeDasharray="2 2"
+        />
+      </motion.svg>
+    </motion.span>
+  );
 }
 
 /**
@@ -68,18 +138,21 @@ function SameTabLink({
   children,
   className,
   linkComponent,
+  "aria-current": ariaCurrent,
 }: {
   href?: string;
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
   linkComponent: LinkComponent;
+  "aria-current"?: React.AriaAttributes["aria-current"];
 }) {
   const LinkImpl = linkComponent;
   return (
     <LinkImpl
       href={href ?? "#"}
       onClick={onClick}
+      aria-current={ariaCurrent}
       className={cn(
         "flex min-h-[54px] w-full cursor-pointer items-center justify-between px-2 text-white no-underline",
         className
@@ -95,6 +168,7 @@ function NewTabLink({
   onClick,
   children,
   className,
+  "aria-current": ariaCurrent,
 }: {
   href?: string;
   onClick?: () => void;
@@ -102,6 +176,7 @@ function NewTabLink({
   className?: string;
   // aceito por compat com SameTabLink no ponto de uso; links externos sempre usam <a>
   linkComponent?: LinkComponent;
+  "aria-current"?: React.AriaAttributes["aria-current"];
 }) {
   return (
     <a
@@ -109,6 +184,7 @@ function NewTabLink({
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
+      aria-current={ariaCurrent}
       className={cn(
         "flex min-h-[54px] w-full cursor-pointer items-center justify-between px-2 text-white no-underline",
         className
@@ -125,6 +201,7 @@ export function SideMenu({
   visibility = false,
   setVisibility,
   linkComponent,
+  activeHref,
 }: SideMenuProps) {
   const LinkImpl = linkComponent ?? DefaultAnchor;
   const [openGroups, setOpenGroups] = React.useState<Record<number, boolean>>(
@@ -149,6 +226,47 @@ export function SideMenu({
 
   const topValue = top ?? "0px";
   const topNum = Number.parseFloat(topValue) || 0;
+
+  // --- trilho de acento -----------------------------------------------------
+  // Um índice por item de topo (grupos são medidos pela linha principal, não
+  // pelos filhos): mede o centro vertical relativo à <ul>.
+  const listRef = React.useRef<HTMLUListElement>(null);
+  const rowRefs = React.useRef<(HTMLElement | null)[]>([]);
+  const [centers, setCenters] = React.useState<number[]>([]);
+  const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);
+  const [pointerInside, setPointerInside] = React.useState(false);
+  const [focusInside, setFocusInside] = React.useState(false);
+
+  const activeIndex =
+    activeHref === undefined
+      ? -1
+      : links.findIndex((l) => l.href === activeHref);
+
+  React.useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const measure = () =>
+      setCenters(
+        rowRefs.current.map((el) =>
+          el ? el.offsetTop + el.offsetHeight / 2 : 0
+        )
+      );
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [links, openGroups]);
+
+  const activeY = activeIndex < 0 ? null : (centers[activeIndex] ?? null);
+  const hoverY = hoverIndex === null ? null : (centers[hoverIndex] ?? null);
+
+  // acima do item ativo o trilho de acento já cobre o vão: desenha só a curva
+  const hoverFrom =
+    activeY !== null && hoverY !== null && hoverY <= activeY
+      ? Math.max(0, hoverY - RAIL_CORNER)
+      : (activeY ?? 0);
 
   return (
     <>
@@ -190,16 +308,53 @@ export function SideMenu({
             "[&::-webkit-scrollbar-thumb]:border-[rgb(50,50,50)]"
           )}
         >
-          <ul className="flex flex-col">
-            {links.map((link) => {
+          <ul
+            ref={listRef}
+            className="relative flex flex-col"
+            onMouseLeave={() => {
+              setPointerInside(false);
+              setHoverIndex(null);
+            }}
+          >
+            <Rail
+              from={hoverFrom}
+              y={hoverY}
+              visible={
+                (pointerInside || focusInside) && hoverIndex !== activeIndex
+              }
+              className="text-white/30"
+            />
+            <Rail
+              y={activeY}
+              visible={activeY !== null}
+              color="var(--color-cinnamon-primary)"
+            />
+
+            {links.map((link, index) => {
               const hasChildren = Boolean(link.children?.length);
               const isOpen = Boolean(openGroups[link.id]);
               const external = isExternal(link);
+              const isActive = index === activeIndex;
 
               const Row = external || !link.href ? NewTabLink : SameTabLink;
 
               return (
-                <li key={link.id} className="w-full">
+                <li
+                  key={link.id}
+                  ref={(el) => {
+                    rowRefs.current[index] = el;
+                  }}
+                  className="w-full"
+                  onMouseEnter={() => {
+                    setHoverIndex(index);
+                    setPointerInside(true);
+                  }}
+                  onFocus={() => {
+                    setHoverIndex(index);
+                    setFocusInside(true);
+                  }}
+                  onBlur={() => setFocusInside(false)}
+                >
                   {/* Linha principal */}
                   {hasChildren ? (
                     <button
@@ -237,11 +392,13 @@ export function SideMenu({
                       href={link.href}
                       onClick={onNavigate}
                       linkComponent={LinkImpl}
+                      aria-current={isActive ? "page" : undefined}
                       className={cn(
                         "border-b border-white/10",
                         "transition-colors duration-150",
                         "hover:bg-white/10 active:bg-white/15",
-                        "active:scale-[0.99]"
+                        "active:scale-[0.99]",
+                        isActive && "bg-white/10"
                       )}
                     >
                       <div className="flex items-center gap-2">
@@ -277,6 +434,8 @@ export function SideMenu({
                         {link.children!.map((child: CinnamonLink) => {
                           const childExternal = isExternal(child);
                           const ChildRow = childExternal ? NewTabLink : SameTabLink;
+                          const childActive =
+                            activeHref !== undefined && child.href === activeHref;
 
                           return (
                             <li key={child.id} className="w-full">
@@ -284,11 +443,13 @@ export function SideMenu({
                                 href={child.href}
                                 onClick={onNavigate}
                                 linkComponent={LinkImpl}
+                                aria-current={childActive ? "page" : undefined}
                                 className={cn(
                                   "min-h-[35px] px-2",
                                   "transition-colors duration-150",
                                   "hover:bg-white/10 active:bg-white/15",
-                                  "active:scale-[0.99]"
+                                  "active:scale-[0.99]",
+                                  childActive && "bg-white/10"
                                 )}
                               >
                                 <div className="flex items-center gap-2">

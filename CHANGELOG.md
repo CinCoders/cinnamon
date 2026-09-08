@@ -61,8 +61,14 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 - **`CinnamonIconId`** — type-safe icon ID registry; components accept `iconId` as an alternative to `iconUrl` or `IconComponent`, ensuring identical rendering in both client and server paths.
 
+#### SideMenu
+
+- **Animated accent rail** — the open drawer now draws a vertical accent line with a rounded connector that tracks the active item, plus a dashed grey rail that follows the row under hover/keyboard focus. Ported from the internal `HookSidebar` prototype. Motion uses spring physics and honours `prefers-reduced-motion`.
+- **`activeHref?: string` prop** on `SideMenu` (and forwarded from `Navbar` as `activeHref`) — the current route's href. The library stays router-agnostic: the consumer passes `usePathname()` (Next.js) or `useLocation().pathname` (react-router). When it matches an item's `href`, the accent rail highlights that row and sets `aria-current="page"`. Nested `children` rows are matched too.
+
 #### Package
 
+- **`motion`** (Framer Motion, `^13`) added to `dependencies` — required by the new `SideMenu` accent rail. Externalized in both Vite lib builds, so it resolves from the consumer's tree.
 - **`sideEffects: ["**/*.css"]`** in `package.json` — enables correct tree-shaking of unused components.
 - **`prepublishonly: "npm run build:lib"`** — build is always up to date before publish.
 - **`react-oidc-context`** moved to `peerDependencies` (optional) — not forced on consumers using other OIDC providers or server-only auth.
@@ -101,6 +107,7 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`useNavbar()`**: `setSearchFuncion` typo corrected to `setSearchFunction`. `setSideMenuLinks` and `setSearchFunction` now have proper types (`SideMenuLink[]` and `(s: string) => void`) instead of `any`.
 - **`Navbar`**: `searchDropdownLabelsList` prop removed (was declared but never consumed). `IconComponent` prop now typed as `ComponentType<{ className?: string }>`.
 - **`Footer`**: hard-coded hex colors replaced with design token CSS vars (`bg-cinnamon-footer-bg`, `bg-cinnamon-footer-bar`). `phoneToTel()` helper moved to `src/lib/utils.ts`.
+- **`SideMenu`** — **BREAKING vs v1**: the component was rewritten. The public prop contract is unchanged (`links: SideMenuLink[]`, `top`, `visibility`, `setVisibility`, `linkComponent`), so v1 call sites compile as-is, but the rendering changed: the open drawer now carries an animated accent rail (see _Added_) and pulls in `motion` as a runtime dependency. Consumers that vendored their own copy of the v1 `SideMenu` styles, or relied on the exact prior DOM structure, must revalidate. New optional `activeHref` prop (see _Added_).
 - **`IconRenderer`**: `IconComponent` prop now typed as `ComponentType<{ className?: string }>` (was `any`).
 - **`ErrorScreen`**: `enum httpErrors` replaced with `const httpErrors as const` + type alias — no runtime JS emitted; same call-site syntax (`httpErrors.NOTFOUND_404`) preserved. Unknown error types now render a generic fallback instead of returning `null`.
 
@@ -225,7 +232,30 @@ export default async function ProtectedPage() {
 
 Context is now always provided. If you needed `createNavbarContext={false}` to avoid context overhead, the impact was minimal — `useMemo` ensures no unnecessary re-renders.
 
-### 7. Tailwind preflight conflict
+### 7. SideMenu — highlight the active route (optional)
+
+The rewritten `SideMenu` can highlight the current page in the drawer. Pass the
+current path down through `Navbar`:
+
+```tsx
+"use client";
+import { usePathname } from "next/navigation";
+
+<Navbar
+  sideMenuLinks={links}
+  activeHref={usePathname()}   // react-router: useLocation().pathname
+  ...
+/>
+```
+
+Without `activeHref` the drawer behaves as before (expandable groups, hover
+state), just with the new accent rail on hover/focus.
+
+`motion` is now a dependency of the library. With a normal install it is pulled
+in automatically; in a monorepo with hoisting disabled, add `motion` to the
+consumer's `package.json`.
+
+### 8. Tailwind preflight conflict
 
 If your consumer project runs its own Tailwind (v3 or v4), make sure the Cinnamon CSS import comes **after** your own base styles, or disable Tailwind's preflight in your app:
 

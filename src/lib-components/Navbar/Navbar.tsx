@@ -31,6 +31,8 @@ export interface NavbarProps {
   searchFunction?: (searchString: string) => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
+  /** href da rota atual, repassado ao SideMenu para destacar o item ativo. */
+  activeHref?: string;
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
@@ -55,6 +57,7 @@ export function Navbar(props: NavbarProps) {
     title = "",
     h1 = false,
     sideMenuLinks = [],
+    activeHref,
     isLandingPage = false,
     systemsList = [],
     currentSystemIconUrl,
@@ -291,6 +294,7 @@ export function Navbar(props: NavbarProps) {
             setVisibility={setSideMenuOpen}
             links={sideMenuLinks}
             linkComponent={linkComponent}
+            activeHref={activeHref}
           />
         ))}
     </div>
