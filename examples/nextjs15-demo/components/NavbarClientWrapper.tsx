@@ -20,6 +20,7 @@ const dot = (color: string) =>
   };
 
 const sidebar: SidebarData = {
+  appName: "Cinnamon Demo",
   navMain: [
     { id: "overview", title: "Overview", href: "/", iconId: "layout" },
     { id: "tasks", title: "Tasks", href: "#", iconId: "listChecks" },
@@ -74,7 +75,7 @@ const NextLinkAdapter: LinkComponent = ({ href, children, ...rest }) => (
 
 export function NavbarClientWrapper({
   session,
-  title = "Cinnamon v2 — Next 15 Demo",
+  title = "Início",
 }: NavbarClientWrapperProps) {
   // Real Keycloak auth object from react-oidc-context — same session the server validated.
   const auth = toOidcAuthLike(useAuth());

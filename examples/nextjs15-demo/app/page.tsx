@@ -205,7 +205,7 @@ export default async function HomePage() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <NavbarClientWrapper session={session} title="Cinnamon Demo — Home" />
+      <NavbarClientWrapper session={session} title="Início" />
 
       <main className="demo-container" style={{ flex: 1 }}>
         {/* Painel de Controle de Sessão (Client Component com Borda Azul) */}

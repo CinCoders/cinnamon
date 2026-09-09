@@ -237,7 +237,7 @@ export function Navbar(props: NavbarProps) {
                   <img
                     src={systemsMenuIcon}
                     alt="Systems Menu"
-                    className="h-7 w-7"
+                    className="h-[1.225rem] w-[1.225rem]"
                     style={{
                       filter:
                         "invert(18%) sepia(64%) saturate(3884%) hue-rotate(342deg) brightness(101%) contrast(98%)",

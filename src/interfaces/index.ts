@@ -72,6 +72,10 @@ export interface SidebarNavGroup {
  * aberta pelo botão de menu do Navbar.
  */
 export interface SidebarData {
+  /** Nome da aplicação, exibido no topo da sidebar. */
+  appName?: string;
+  /** Logo da aplicação, exibida ao lado do nome no topo da sidebar. */
+  appLogoSrc?: string;
   navMain: SidebarNavItem[];
   navGroups?: SidebarNavGroup[];
 }

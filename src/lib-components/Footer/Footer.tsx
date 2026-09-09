@@ -61,6 +61,8 @@ export interface FooterProps {
   /** Brand logo URL. Defaults to the CIn horizontal logo. */
   logoUrl?: string;
   logoAlt?: string;
+  /** Tailwind classes for the logo `<img>`. Sets its size. Falls back to the variant preset. */
+  logoClassName?: string;
   /** Short line under the logo. */
   description?: string;
   /** Address / email shown as discreet lines. Placement set by `contactPlacement`. */
@@ -92,6 +94,7 @@ type FooterPreset = Pick<
   FooterProps,
   | "logoUrl"
   | "logoAlt"
+  | "logoClassName"
   | "description"
   | "contact"
   | "contactPlacement"
@@ -105,7 +108,8 @@ const footer = tv({
     root: "w-full border-t border-border bg-background text-foreground",
     strip: "border-t border-border",
     bar: "mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-2 px-6 py-4 text-xs text-muted-foreground md:flex-row md:px-8",
-    grid: "mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-10 md:flex-row md:justify-between md:px-8",
+    grid: "mx-auto w-full max-w-5xl px-6 py-10 md:px-8",
+    gridRow: "flex flex-col gap-8 md:flex-row md:justify-between",
     brand: "flex max-w-sm flex-col gap-4",
     description: "text-pretty text-sm text-muted-foreground",
     socialRow: "flex items-center gap-3",
@@ -125,6 +129,7 @@ const footer = tv({
 const CINCODERS_PRESET: FooterPreset = {
   logoUrl: cincodersLogo,
   logoAlt: "CInCoders — Centro de Informática — UFPE",
+  logoClassName: "h-8 w-auto self-start",
   description: "Divisão de Desenvolvimento de Software do CIn - UFPE.",
   contact: {
     location: "Sala E126 — CInCoders",
@@ -133,7 +138,11 @@ const CINCODERS_PRESET: FooterPreset = {
   contactPlacement: "columns",
   support: null,
   socialLinks: [
-    { label: "Instagram", href: "https://instagram.com/cincoders", iconUrl: instagramIcon },
+    {
+      label: "Instagram",
+      href: "https://instagram.com/cincoders",
+      iconUrl: instagramIcon,
+    },
     {
       label: "LinkedIn",
       href: "https://linkedin.com/company/cincoders",
@@ -166,6 +175,7 @@ const CINCODERS_PRESET: FooterPreset = {
 const CIN_PRESET: FooterPreset = {
   logoUrl: cinLogo,
   logoAlt: "Centro de Informática — UFPE",
+  logoClassName: "h-24 w-auto self-start",
   description: "Centro de Informática — UFPE",
   contact: null,
   contactPlacement: "brand",
@@ -180,9 +190,17 @@ const CIN_PRESET: FooterPreset = {
     location: "Sala B011",
   },
   socialLinks: [
-    { label: "Instagram", href: "https://instagram.com/cinufpe", iconUrl: instagramIcon },
+    {
+      label: "Instagram",
+      href: "https://instagram.com/cinufpe",
+      iconUrl: instagramIcon,
+    },
     { label: "X", href: "https://x.com/cinufpe", iconUrl: xIcon },
-    { label: "LinkedIn", href: "https://linkedin.com/school/cinufpe", iconUrl: linkedinIcon },
+    {
+      label: "LinkedIn",
+      href: "https://linkedin.com/school/cinufpe",
+      iconUrl: linkedinIcon,
+    },
   ],
   linkColumns: [
     {
@@ -206,6 +224,7 @@ export function Footer({
   variant = "cincoders",
   logoUrl,
   logoAlt,
+  logoClassName,
   description,
   contact,
   contactPlacement,
@@ -220,6 +239,8 @@ export function Footer({
 
   const resolvedLogoUrl = logoUrl ?? preset.logoUrl;
   const resolvedLogoAlt = logoAlt ?? preset.logoAlt;
+  const resolvedLogoClassName =
+    logoClassName ?? preset.logoClassName ?? "h-24 w-auto self-start";
   const resolvedDescription = description ?? preset.description;
   const resolvedContact = contact === undefined ? preset.contact : contact;
   const resolvedPlacement =
@@ -253,51 +274,53 @@ export function Footer({
     <footer aria-label="Site footer" className={styles.root()}>
       {largeFooter && (
         <div className={styles.grid()}>
-          <div className={styles.brand()}>
-            <img
-              src={resolvedLogoUrl}
-              alt={resolvedLogoAlt}
-              className="h-24 w-auto self-start"
-            />
-            {resolvedDescription && (
-              <p className={styles.description()}>{resolvedDescription}</p>
-            )}
-            {socials.length > 0 && (
-              <ul className={styles.socialRow()} aria-label="Social links">
-                {socials.map((social) => (
-                  <li key={social.label}>
-                    <a
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.label}
-                      className={styles.socialLink()}
-                    >
-                      {social.iconUrl ? (
-                        <img
-                          src={social.iconUrl}
-                          alt=""
-                          aria-hidden
-                          className="size-4"
-                        />
-                      ) : social.icon ? (
-                        <social.icon className="size-4" />
-                      ) : null}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {resolvedPlacement === "brand" && contactBlock}
-          </div>
+          <div className={styles.gridRow()}>
+            <div className={styles.brand()}>
+              <img
+                src={resolvedLogoUrl}
+                alt={resolvedLogoAlt}
+                className={resolvedLogoClassName}
+              />
+              {resolvedDescription && (
+                <p className={styles.description()}>{resolvedDescription}</p>
+              )}
+              {socials.length > 0 && (
+                <ul className={styles.socialRow()} aria-label="Social links">
+                  {socials.map((social) => (
+                    <li key={social.label}>
+                      <a
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                        className={styles.socialLink()}
+                      >
+                        {social.iconUrl ? (
+                          <img
+                            src={social.iconUrl}
+                            alt=""
+                            aria-hidden
+                            className="size-4"
+                          />
+                        ) : social.icon ? (
+                          <social.icon className="size-4" />
+                        ) : null}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {resolvedPlacement === "brand" && contactBlock}
+            </div>
 
-          {(resolvedColumns?.length || resolvedPlacement === "columns") && (
-            <div className={styles.aside()}>
-              {resolvedColumns && resolvedColumns.length > 0 && (
+            {resolvedColumns && resolvedColumns.length > 0 && (
+              <div className={styles.aside()}>
                 <div className={styles.columns()}>
                   {resolvedColumns.map((column) => (
                     <nav key={column.title} aria-label={column.title}>
-                      <span className={styles.columnTitle()}>{column.title}</span>
+                      <span className={styles.columnTitle()}>
+                        {column.title}
+                      </span>
                       <div className={styles.columnLinks()}>
                         {column.links.map((item) => (
                           <a
@@ -314,8 +337,13 @@ export function Footer({
                     </nav>
                   ))}
                 </div>
-              )}
-              {resolvedPlacement === "columns" && contactBlock}
+              </div>
+            )}
+          </div>
+
+          {resolvedPlacement === "columns" && contactBlock && (
+            <div className="mt-2 [&>div]:flex-row [&>div]:flex-wrap [&>div]:gap-x-6">
+              {contactBlock}
             </div>
           )}
         </div>
@@ -383,8 +411,12 @@ export function Footer({
           </span>
 
           <span className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-            <span>CInnamon v{__CINNAMON_VERSION__}</span>
-            {appVersion && <span>v{appVersion}</span>}
+            <span className="text-cinnamon-primary">
+              CInnamon v{__CINNAMON_VERSION__}
+            </span>
+            {appVersion && (
+              <span className="text-foreground">v{appVersion}</span>
+            )}
           </span>
 
           <span className="inline-flex items-center gap-1">
@@ -395,12 +427,7 @@ export function Footer({
               className="inline-flex items-center gap-1 hover:text-foreground"
             >
               Made with
-              <img
-                src={cnmHeartIcon}
-                alt=""
-                aria-hidden
-                className="size-4"
-              />
+              <img src={cnmHeartIcon} alt="" aria-hidden className="size-4" />
             </a>
             by
             <a

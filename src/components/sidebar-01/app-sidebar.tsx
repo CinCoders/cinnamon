@@ -28,6 +28,22 @@ export function AppSidebar({
         className,
       )}
     >
+      {(data.appName || data.appLogoSrc) && (
+        <div className="flex items-center gap-2 px-4 py-4">
+          {data.appLogoSrc && (
+            <img
+              src={data.appLogoSrc}
+              alt=""
+              className="h-8 w-8 shrink-0 object-contain"
+            />
+          )}
+          {data.appName && (
+            <span className="truncate text-lg font-semibold text-cinnamon-dark">
+              {data.appName}
+            </span>
+          )}
+        </div>
+      )}
       <NavMain
         items={data.navMain}
         linkComponent={linkComponent}

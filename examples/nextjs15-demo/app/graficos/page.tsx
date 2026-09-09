@@ -58,7 +58,7 @@ export default async function GraficosPage() {
       }}
       footer={{}}
       // Navbar client com o auth real do Keycloak (o PageServer padrão não tem OidcAuthLike no server).
-      components={{ navbar: <NavbarClientWrapper session={session} title="Cinnamon Demo — Gráficos & Métricas" /> }}
+      components={{ navbar: <NavbarClientWrapper session={session} title="Gráficos & Métricas" /> }}
     >
       <SessionPanel roles={session.roles ?? []} userName={session.user?.name} />
 

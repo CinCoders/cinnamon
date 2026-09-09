@@ -62,7 +62,7 @@ export default async function InterativoPage() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <NavbarClientWrapper session={session} title="Cinnamon Demo — Componentes Interativos" />
+      <NavbarClientWrapper session={session} title="Componentes Interativos" />
 
       <main className="demo-container" style={{ flex: 1 }}>
         <SessionPanel roles={session.roles ?? []} userName={session.user?.name} />
@@ -83,7 +83,7 @@ export default async function InterativoPage() {
         </ServerBoundary>
       </main>
 
-      <div style={{ border: "2px solid #3b82f6", borderRadius: "8px", margin: "1rem" }}>
+      <div style={{ borderTop: "2px solid #3b82f6" }}>
         <div style={{ background: "#2563eb", color: "#ffffff", padding: "2px 10px", fontSize: "10px", fontWeight: 700 }}>
           🔵 CLIENT COMPONENT: Cinnamon Footer
         </div>
