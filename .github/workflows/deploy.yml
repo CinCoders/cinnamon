@@ -1,21 +1,76 @@
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+# Publishes the package to npm when a release tag is pushed.
+#
+# Authentication is OIDC trusted publishing, not a token: npm classic tokens
+# were permanently revoked on 2025-12-09. For this to work the package must
+# have this repository and workflow registered as a trusted publisher at
+# https://www.npmjs.com/package/@cincoders/cinnamon/access
+#
+# For more information see:
+# https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 name: Deploy and publish
-run-name: Deploy and publish Cinnamon into npm
+run-name: Publish ${{ github.ref_name }} to npm
+
 on:
   push:
     tags:
-      - '**'
+      - 'version/v*'
+
+env:
+  # Major version that owns the npm "latest" dist-tag. Every other major is
+  # published as "v<major>-latest" instead, so releasing a fix on one line
+  # never moves "latest" onto the other. Change this to 2 when v2 goes GA;
+  # v1 then keeps receiving fixes under "v1-latest".
+  LATEST_MAJOR: '1'
+
 jobs:
   build-publish-npm:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      # Required for OIDC trusted publishing.
+      id-token: write
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org/
+
+      # Node 24 ships npm 11.17, which already satisfies the >= 11.5.1 that
+      # trusted publishing needs. Pinning latest keeps it true if that changes.
+      - name: Ensure npm supports trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Resolve version and dist-tag from the tag
+        id: release
+        run: |
+          set -euo pipefail
+
+          tag_version="${GITHUB_REF_NAME#version/v}"
+          pkg_version="$(node -p "require('./package.json').version")"
+
+          if [ "$tag_version" != "$pkg_version" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} expects version ${tag_version}, but package.json says ${pkg_version}."
+            exit 1
+          fi
+
+          major="${tag_version%%.*}"
+          if [ "$major" = "${LATEST_MAJOR}" ]; then
+            dist_tag='latest'
+          else
+            dist_tag="v${major}-latest"
+          fi
+
+          echo "version=${tag_version}" >> "$GITHUB_OUTPUT"
+          echo "dist_tag=${dist_tag}" >> "$GITHUB_OUTPUT"
+          echo "Publishing ${pkg_version} under dist-tag '${dist_tag}'."
+
       - run: npm ci
+
       - run: npm run build-lib
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+      - name: Publish
+        run: npm publish --provenance --tag '${{ steps.release.outputs.dist_tag }}'

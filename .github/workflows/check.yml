@@ -1,0 +1,39 @@
+# Type-checks and builds every pull request.
+#
+# build-lib alone is not enough to catch type errors: @rollup/plugin-typescript
+# reports them as warnings and still emits a bundle, so a broken type check can
+# sit unnoticed behind a green build. tsc --noEmit is what actually fails.
+name: Check
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  push:
+    branches:
+      - develop
+
+jobs:
+  check:
+    name: Type check and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit -p tsconfig.json
+
+      - name: Build library
+        run: npm run build-lib
+
+      - name: Audit dependencies reaching consumers
+        run: npm audit --omit=dev --audit-level=high
