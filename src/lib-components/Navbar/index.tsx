@@ -92,6 +92,11 @@ export const Navbar = ({
     load();
   }, [auth]);
 
+  // Falls back to the username when the name is missing or empty, so a
+  // nullish name never reaches a string access.
+  const displayName = profile.name || profile.username || '';
+  const avatarInitial = displayName.charAt(0) || '-';
+
   const [anchorUserEl, setAnchorUserEl] = useState<null | HTMLElement>(null);
   const [anchorSystemsEl, setAnchorSystemsEl] = useState<null | HTMLElement>(
     null
@@ -190,9 +195,9 @@ export const Navbar = ({
                     onClick={handleUserMenu}
                     color='inherit'
                   >
-                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0]}>
-  {profile.name[0]?.charAt(0) ?? profile.username?.charAt(0) ?? ''}
-</Avatar>
+                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={displayName || '-'}>
+                      {avatarInitial}
+                    </Avatar>
                   </IconButton>
                 </>
               )}
@@ -307,8 +312,8 @@ export const Navbar = ({
                     onClick={handleUserMenu}
                     color='inherit'
                   >
-                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={profile.name[0]}>
-                      {profile.name[0].charAt(0)}
+                    <Avatar sx={{ bgcolor: '#db1e2f' }} alt={displayName || '-'}>
+                      {avatarInitial}
                     </Avatar>
                   </IconButton>
                 )}
