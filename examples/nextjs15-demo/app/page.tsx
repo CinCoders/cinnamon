@@ -259,12 +259,7 @@ export default async function HomePage() {
         </ClientBoundary>
       </main>
 
-      <div style={{ border: "2px solid #3b82f6", borderRadius: "8px", margin: "1rem" }}>
-        <div style={{ background: "#2563eb", color: "#ffffff", padding: "2px 10px", fontSize: "10px", fontWeight: 700 }}>
-          🔵 CLIENT COMPONENT: Cinnamon Footer
-        </div>
-        <Footer appVersion="0.1.0" />
-      </div>
+      <Footer appVersion="0.1.0" />
     </div>
   );
 }

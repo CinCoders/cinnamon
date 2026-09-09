@@ -17,7 +17,7 @@ export interface SideMenuProps {
   data: SidebarData;
   top: string; // ex: "64px"
   visibility?: boolean;
-  setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  setVisibility: (open: boolean) => void;
   linkComponent?: LinkComponent;
   /**
    * href da rota atual. A lib é agnóstica de router: o consumidor passa
@@ -86,6 +86,7 @@ export function SideMenu({
     <Sheet open={visibility} onOpenChange={setVisibility} modal={false}>
       <SheetContent
         side="left"
+        showCloseButton={false}
         style={{ top: topValue, height: `calc(100dvh - ${topValue})` }}
         className="z-40 w-64 max-w-64 gap-0 p-0"
         overlayClassName="z-40"

@@ -117,6 +117,20 @@ export function Navbar(props: NavbarProps) {
   );
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
+  // O SideMenu é um Sheet não-modal: um pointerdown fora dele dispara
+  // `onOpenChange(false)` (outside-press). Como o próprio botão hambúrguer
+  // fica fora do Sheet, clicá-lo enquanto aberto fecha via outside-press e,
+  // no pointerup seguinte, o onClick reabriria. Ignoramos o toggle do botão
+  // por uma janela curta após o Sheet ter se fechado sozinho.
+  const lastSideMenuCloseRef = React.useRef(0);
+  const toggleSideMenu = React.useCallback(() => {
+    if (Date.now() - lastSideMenuCloseRef.current < 300) return;
+    setSideMenuOpen((v) => !v);
+  }, []);
+  const handleSideMenuOpenChange = React.useCallback((open: boolean) => {
+    if (!open) lastSideMenuCloseRef.current = Date.now();
+    setSideMenuOpen(open);
+  }, []);
   const [searchString, setSearchString] = React.useState("");
 
   const [userOpen, setUserOpen] = React.useState(false);
@@ -174,13 +188,10 @@ export function Navbar(props: NavbarProps) {
   return (
     <div className="w-full">
       <header className="cinnamon-navbar-inner relative sticky top-0 z-50 w-full bg-white shadow-md">
-        <div className="flex h-16 items-center px-4">
-          <div className="ml-5 flex items-center gap-2">
+        <div className="flex h-16 items-center px-3">
+          <div className="flex items-center gap-2">
             {!isLandingPage && hasSidebar && (
-              <HamburgerButton
-                isOpen={sideMenuOpen}
-                onClick={() => setSideMenuOpen((v) => !v)}
-              />
+              <HamburgerButton isOpen={sideMenuOpen} onClick={toggleSideMenu} />
             )}
 
             {!isLandingPage && currentSystemIconUrl && (
@@ -196,7 +207,7 @@ export function Navbar(props: NavbarProps) {
             </div>
           </div>
 
-          <div className="flex flex-1 justify-end pr-8">
+          <div className="flex flex-1 justify-end pr-4">
             {haveSearchBar && (
               <input
                 className="h-[2.7rem] w-[25vw] max-w-[30rem] rounded-[10px] bg-[#f2f2f2] pl-8 pr-8 outline-none"
@@ -209,7 +220,7 @@ export function Navbar(props: NavbarProps) {
 
           <div
             className={cn(
-              "mr-5 flex items-center gap-3",
+              "flex items-center gap-3",
               haveSearchBar ? "ml-4" : "ml-auto",
             )}
           >
@@ -297,7 +308,7 @@ export function Navbar(props: NavbarProps) {
             <SideMenu
               visibility={sideMenuOpen}
               top="64px"
-              setVisibility={setSideMenuOpen}
+              setVisibility={handleSideMenuOpenChange}
               data={sidebar!}
               linkComponent={linkComponent}
               activeHref={activeHref}

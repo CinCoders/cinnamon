@@ -128,8 +128,6 @@ export function NavbarClientWrapper({
         sidebar={sidebar}
         activeHref={pathname}
         systemsList={systemsList}
-        haveSearchBar={true}
-        searchFunction={(q) => console.log("[Demo Navbar] Pesquisando:", q)}
       />
     </div>
   );
