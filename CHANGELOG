@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Navbar] Hamburger button keeps a visible focus ring for keyboard navigation
 - [IconRender] Icon centering
 - [dependencies] Fix dependency vulnerabilities
+- [dependencies] Move postcss and @rollup/plugin-url to devDependencies, so build tooling is no longer installed by consumers
 
 ### Added
 
