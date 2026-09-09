@@ -43,14 +43,17 @@ export const UserPopup = (props: UserPopupProps) => {
     logoutMethod ? logoutMethod() : auth?.signoutRedirect();
   }
 
+  // Falls back to the username when the name is missing or empty, so a
+  // nullish name never reaches a string access.
+  const displayName = user.name || user.username || '';
+  const avatarInitial = displayName.charAt(0) || '-';
+
   return (
     <ScopedCssBaseline>
       <UserPopUp>
     <UserPopUpContainer>
-      <StyledAvatar alt={user.name ?? user.name[0] ?? '' }>
-        {user.name ? user.name[0] : '-'}
-      </StyledAvatar>
-      <UserName>{user.name ? user.name : '-'}</UserName>
+      <StyledAvatar alt={displayName || '-'}>{avatarInitial}</StyledAvatar>
+      <UserName>{displayName || '-'}</UserName>
       <EmailContainer>
         <IconGreen />
         <p>{user.email}</p>
