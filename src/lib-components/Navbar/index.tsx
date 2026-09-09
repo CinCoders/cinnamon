@@ -17,6 +17,7 @@ import {
   RightContainer,
   SystemsButton,
   Logo,
+  StyledLogoLink,
   StyledUserMenu,
   StyledSystemMenu,
   TitleContainer,
@@ -37,7 +38,6 @@ export interface NavbarProps {
   title?: string;
   h1?: boolean;
   searchFunction?: (searchString: string) => void;
-  searchDropdownLabelsList?: string[];
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
@@ -145,9 +145,9 @@ export const Navbar = ({
           <StyledAppBar>
             <StyledToolbar>
               {logoSrc && (
-                <a href={logoRedirectUrl}>
+                <StyledLogoLink href={logoRedirectUrl}>
                   <Logo src={logoSrc} alt='Logo da Instituição' />
-                </a>
+                </StyledLogoLink>
               )}
               <TitleContainer>
                 {h1 ? (
@@ -297,9 +297,9 @@ export const Navbar = ({
                   </>
                 )}
                 {logoSrc && (
-                  <a href={logoRedirectUrl}>
+                  <StyledLogoLink href={logoRedirectUrl}>
                     <Logo src={logoSrc} alt='Logo da Instituição' />
-                  </a>
+                  </StyledLogoLink>
                 )}
                 {hiddenUser ? (
                   <span></span>

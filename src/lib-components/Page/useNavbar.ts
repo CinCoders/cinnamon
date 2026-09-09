@@ -13,7 +13,6 @@ export class NavbarContextValue implements NavbarProps {
   title?: string;
   h1?: boolean;
   searchFunction?: (searchString: string) => void;
-  searchDropdownLabelsList?: string[];
   logoutFunction?: () => void;
   user?: User;
   sideMenuLinks?: SideMenuLink[];
@@ -36,7 +35,6 @@ export class NavbarContextValue implements NavbarProps {
     this.title = navbarProps.title;
     this.h1 = navbarProps.h1;
     this.searchFunction = navbarProps.searchFunction;
-    this.searchDropdownLabelsList = navbarProps.searchDropdownLabelsList;
     this.logoutFunction = navbarProps.logoutFunction;
     this.user = navbarProps.user;
     this.sideMenuLinks = navbarProps.sideMenuLinks;
