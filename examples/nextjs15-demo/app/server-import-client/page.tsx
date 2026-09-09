@@ -45,7 +45,7 @@ export default function ServerImportClientPage() {
       <main style={{ padding: "1rem 2rem" }}>
         <p>Conteúdo renderizado no servidor, componentes client carregados corretamente.</p>
       </main>
-      <Footer largeFooter={false} copyrightText="CInCoders — Cinnamon v2 Library Review" />
+      <Footer largeFooter={false} />
     </div>
   );
 }

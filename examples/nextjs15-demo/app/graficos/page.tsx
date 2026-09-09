@@ -56,7 +56,7 @@ export default async function GraficosPage() {
         permittedRoles: ["admin"],
         onUnauthenticated: () => redirect("/login"),
       }}
-      footer={{ copyrightText: "CinCoders — Cinnamon v2 Library Review" }}
+      footer={{}}
       // Navbar client com o auth real do Keycloak (o PageServer padrão não tem OidcAuthLike no server).
       components={{ navbar: <NavbarClientWrapper session={session} title="Cinnamon Demo — Gráficos & Métricas" /> }}
     >

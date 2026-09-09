@@ -87,28 +87,7 @@ export default async function InterativoPage() {
         <div style={{ background: "#2563eb", color: "#ffffff", padding: "2px 10px", fontSize: "10px", fontWeight: 700 }}>
           🔵 CLIENT COMPONENT: Cinnamon Footer
         </div>
-        <Footer
-          description="Centro de Informática — UFPE"
-          copyrightText="CInCoders — Cinnamon v2 Library Review"
-          appVersion="0.1.0"
-          linkColumns={[
-            {
-              title: "Sistema",
-              links: [
-                { label: "Início", href: "/" },
-                { label: "Interativo", href: "/interativo" },
-                { label: "Gráficos", href: "/graficos" },
-              ],
-            },
-            {
-              title: "Recursos",
-              links: [
-                { label: "Documentação", href: "https://cincoders.cin.ufpe.br/" },
-                { label: "Suporte", href: "https://helpdesk.cin.ufpe.br/" },
-              ],
-            },
-          ]}
-        />
+        <Footer variant="cin" appVersion="0.1.0" />
       </div>
     </div>
   );
