@@ -46,9 +46,11 @@ export type { SearchInputProps } from "./lib-components/SearchInput/SearchInput"
 export type { NavbarProps } from "./lib-components/Navbar/Navbar";
 export type {
   FooterProps,
+  FooterVariant,
   FooterLink,
   FooterLinkColumn,
   FooterSocialLink,
+  FooterContact,
   FooterSupport,
 } from "./lib-components/Footer/Footer";
 

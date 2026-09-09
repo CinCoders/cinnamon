@@ -13,10 +13,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** CIn internal-app defaults: CIn logo + technical-support block. */
-export const Default: Story = {};
+/** Default variant: CInCoders. Site + socials in the social row, contact under the logo. */
+export const CInCoders: Story = {};
 
-export const WithColumnsAndSocials: Story = {
+/** CIn variant: CIn socials, "Recursos" column, low-emphasis support strip. */
+export const CIn: Story = {
+  args: { variant: "cin" },
+};
+
+/** Contact address/email moved below the right-aligned columns. */
+export const ContactUnderColumns: Story = {
+  args: { contactPlacement: "columns" },
+};
+
+export const CustomColumns: Story = {
   args: {
     linkColumns: [
       {
@@ -27,34 +37,12 @@ export const WithColumnsAndSocials: Story = {
           { label: "Docs", href: "#docs" },
         ],
       },
-      {
-        title: "Legal",
-        links: [
-          { label: "Privacy policy", href: "#privacy" },
-          { label: "Terms", href: "#terms" },
-        ],
-      },
     ],
-    socialLinks: [
-      { label: "GitHub", href: "https://github.com/cincoders" },
-      { label: "Instagram", href: "https://instagram.com" },
-    ],
-  },
-};
-
-export const CustomSupport: Story = {
-  args: {
-    description: "Sistema de Ranqueamento de Produtividade",
-    support: {
-      title: "Fale Conosco",
-      telephone: "(81) 3333-4444",
-      email: "prorank@cin.ufpe.br",
-    },
   },
 };
 
 export const NoSupport: Story = {
-  args: { support: null },
+  args: { variant: "cin", support: null },
 };
 
 export const Compact: Story = {
