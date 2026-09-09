@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-09-09
+
+### Fixed
+
+- [Navbar] Avatar and user name no longer break when the name is missing, falling back to the username
+- [Navbar] Logo alignment
+- [Navbar] Hamburger button keeps a visible focus ring for keyboard navigation
+- [IconRender] Icon centering
+- [dependencies] Fix dependency vulnerabilities
+
+### Added
+
+- [Stories] ErrorScreen story
+- [Stories] Navbar controls for logoSrc, logoRedirectUrl and currentSystemIconUrl
+
+### Removed
+
+- [Navbar] Unused prop searchDropdownLabelsList
+
 ## [1.4.0] - 2026-02-12
 
 ### Added
