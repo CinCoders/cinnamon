@@ -14,10 +14,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /** Default variant: CInCoders. Site + socials in the social row, contact under the logo. */
-export const CInCoders: Story = {};
+export const CInCoders: Story = { name: "CInCoders" };
 
 /** CIn variant: CIn socials, "Recursos" column, low-emphasis support strip. */
 export const CIn: Story = {
+  name: "CIn",
   args: { variant: "cin" },
 };
 
