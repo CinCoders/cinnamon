@@ -11,6 +11,16 @@ const external = [
   "react/jsx-dev-runtime",
   "motion",
   "motion/react",
+  // Every runtime dependency resolves from the consumer's node_modules. Without
+  // this the build vendors ~3 MB of these packages into dist/, and a second copy
+  // of @base-ui/react in a consumer breaks its context providers.
+  "@base-ui/react",
+  /^@base-ui\/react\//,
+  "@hugeicons/react",
+  "@hugeicons/core-free-icons",
+  "clsx",
+  "tailwind-merge",
+  "tailwind-variants",
 ];
 
 export default defineConfig({
