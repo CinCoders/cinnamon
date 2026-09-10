@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -90,23 +90,20 @@ export function Dialog({
       onOpenChange={(open) => setVisibility(open)}
     >
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay
+        <DialogPrimitive.Backdrop
           className={cn(
-            "fixed inset-0 z-50 bg-black/50",
-            "data-[state=open]:animate-in data-[state=closed]:animate-out",
-            "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
+            "fixed inset-0 z-50 bg-black/50 transition-opacity duration-150",
+            "data-starting-style:opacity-0 data-ending-style:opacity-0"
           )}
         />
 
-        <DialogPrimitive.Content
-          onEscapeKeyDown={onHide}
-          onPointerDownOutside={onHide}
+        <DialogPrimitive.Popup
           className={cn(
             "fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
             "overflow-hidden rounded-md border border-border bg-background shadow-lg",
-            "data-[state=open]:animate-in data-[state=closed]:animate-out",
-            "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
-            "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
+            "transition-[transform,scale,opacity] duration-150",
+            "data-starting-style:scale-95 data-starting-style:opacity-0",
+            "data-ending-style:scale-95 data-ending-style:opacity-0"
           )}
         >
           {/* header bar */}
@@ -127,11 +124,13 @@ export function Dialog({
                 {children}
               </DialogPrimitive.Description>
             ) : (
-              <DialogPrimitive.Description asChild>
-                <div className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {children}
-                </div>
-              </DialogPrimitive.Description>
+              <DialogPrimitive.Description
+                render={
+                  <div className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {children}
+                  </div>
+                }
+              />
             )}
           </div>
 
@@ -170,7 +169,7 @@ export function Dialog({
               </>
             )}
           </div>
-        </DialogPrimitive.Content>
+        </DialogPrimitive.Popup>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );

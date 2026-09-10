@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import * as Accordion from "@radix-ui/react-accordion";
+import { Accordion } from "@base-ui/react/accordion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DefaultAnchor } from "@/lib/DefaultAnchor";
@@ -73,10 +73,7 @@ export function UserPopup(props: UserPopupProps) {
         {/* Positions */}
         {user?.positions?.length ? (
           <div className="w-full pb-2">
-            <Accordion.Root
-              type="multiple"
-              className="w-full"
-            >
+            <Accordion.Root className="w-full">
               {user.positions.map((position) => {
                 const hasRoles = !!position.roles?.length;
 
@@ -88,7 +85,7 @@ export function UserPopup(props: UserPopupProps) {
                           className={cn(
                             "flex w-full items-center justify-between px-4 py-3 text-left text-sm",
                             "text-foreground",
-                            "[&[data-state=open]>span:last-child]:rotate-180",
+                            "[&[data-panel-open]>span:last-child]:rotate-180",
                             hasRoles ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
                           )}
                         >
@@ -100,7 +97,7 @@ export function UserPopup(props: UserPopupProps) {
                       </Accordion.Header>
 
                       {hasRoles && (
-                        <Accordion.Content className="overflow-hidden px-0 pb-2">
+                        <Accordion.Panel className="overflow-hidden px-0 pb-2">
                           <div className="px-4">
                             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                               <div className="font-semibold text-foreground">Função</div>
@@ -114,7 +111,7 @@ export function UserPopup(props: UserPopupProps) {
                               ))}
                             </div>
                           </div>
-                        </Accordion.Content>
+                        </Accordion.Panel>
                       )}
                     </Accordion.Item>
                   </div>
