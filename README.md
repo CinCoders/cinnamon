@@ -1,6 +1,6 @@
 # Cinnamon
 
-`@cincoders/cinnamon` is a React component library from CInCoders focused on standardized application layout, navigation, and authentication-aware page composition. v2 replaces the legacy MUI + styled-components stack with TailwindCSS v4, Radix UI primitives, and first-class support for Next.js 15 App Router (React Server Components).
+`@cincoders/cinnamon` is a React component library from CInCoders focused on standardized application layout, navigation, and authentication-aware page composition. v2 replaces the legacy MUI + styled-components stack with TailwindCSS v4, Base UI primitives, and first-class support for Next.js 15 App Router (React Server Components).
 
 ## Table of Contents
 
@@ -357,10 +357,18 @@ To ensure the same icon renders in both client and server paths, use `iconId` in
 import type { CinnamonIconId } from "@cincoders/cinnamon";
 
 // In System / SideMenuLink / Navbar props:
-{ iconId: "cincoders" } // type-checked against CinnamonIconId
+{ iconId: "home" } // type-checked against CinnamonIconId
 ```
 
-Using `iconId` renders the official Cinnamon SVG registry — no URL or external asset needed. `iconUrl` and `IconComponent` remain supported as alternatives.
+`iconId` renders from the curated icon registry (Hugeicons-backed) — no URL or external asset needed. `iconUrl` and `IconComponent` remain supported as alternatives, and the `<Icon />` component renders whichever of the three is given.
+
+Need an icon outside the curated set? The `@cincoders/cinnamon/icons` entry re-exports the full `@hugeicons/core-free-icons` set plus the `HugeiconsIcon` renderer, tree-shaken to what you import:
+
+```tsx
+import { Rocket01Icon, HugeiconsIcon } from "@cincoders/cinnamon/icons";
+
+<HugeiconsIcon icon={Rocket01Icon} strokeWidth={2} />
+```
 
 ---
 
@@ -439,7 +447,7 @@ Available as Tailwind utilities (`bg-cinnamon-primary`, `text-cinnamon-dark`, et
 | `ErrorScreen` | Full-page error display for 404 / 501 / 503 states |
 | `httpErrors` | Const object of error type keys (`httpErrors.NOTFOUND_404`, etc.) |
 | `ImageInput` | Image file upload with preview, keyboard + touch accessible |
-| `IconRenderer` | Renders an icon from `iconUrl`, `IconComponent`, or `iconId` |
+| `Icon` | Renders an icon from `iconUrl`, `IconComponent`, or `iconId` |
 | `ForbiddenPage` | 403 forbidden page with user email display and logout button |
 | `ToastContainer` | Toast notification container |
 | `toast` | Imperative toast trigger |
@@ -550,7 +558,7 @@ The v2 library has been exercised in two real projects:
 | Branch | Description |
 |---|---|
 | `main` | Legacy MUI + styled-components implementation (read-only reference) |
-| `v2` | Current: TailwindCSS v4 + Radix UI + RSC support |
+| `v2` | Current: TailwindCSS v4 + Base UI + RSC support |
 
 ---
 

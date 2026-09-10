@@ -45,19 +45,23 @@ npm run typecheck           # tsc --noEmit in the consumer context
 
 ## Architecture
 
-### Two Entry Points
+### Entry Points
 
-The library exposes two separate entry points, each with its own Vite output:
+The library exposes three entry points, each with its own Vite output:
 
-| Entry | Import path | Contains |
-|---|---|---|
-| Client | `@cincoders/cinnamon` | All `"use client"` components, hooks |
-| Server | `@cincoders/cinnamon/server` | RSC-safe components (no browser APIs) |
+| Entry | Import path | Vite config | Contains |
+|---|---|---|---|
+| Client | `@cincoders/cinnamon` | `vite.lib.config.ts` | All `"use client"` components, hooks |
+| Server | `@cincoders/cinnamon/server` | `vite.server.config.ts` | RSC-safe components (no browser APIs) |
+| Icons | `@cincoders/cinnamon/icons` | `vite.icons.config.ts` | `Icon`, the typed registry, and the full `@hugeicons/core-free-icons` set re-exported |
 
 `src/index.ts` → client entry  
-`src/entry-server.ts` → server entry
+`src/entry-server.ts` → server entry  
+`src/entry-icons.ts` → icons entry
 
 **Rule**: Never import server-only components in `src/index.ts`. Never use browser globals (`window`, `document`, `navigator`) in any file exported from `src/entry-server.ts`.
+
+The icons entry keeps `@hugeicons/react` and `@hugeicons/core-free-icons` **external** (see its config) so the ~4000-icon set tree-shakes from the consumer's `node_modules` instead of being copied into `dist`.
 
 ### RSC Boundary Preservation
 
@@ -122,6 +126,9 @@ type CinnamonSession = {
 src/
   index.ts                    ← client entry (all "use client" exports)
   entry-server.ts             ← server entry (RSC-safe exports only)
+  entry-icons.ts              ← icons entry (Icon + full hugeicons re-export)
+  icons/
+    index.tsx                 ← typed icon registry (CinnamonIconId, Icon renderer, resolveCinnamonIcon)
   auth/
     types.ts                  ← CinnamonSession, OidcAuthLike, CinnamonUser
     hasAccess.ts              ← role authorization logic
@@ -139,7 +146,7 @@ src/
     ErrorScreen/
     ForbiddenPage/
     Footer/
-    IconRender/
+    IconRender/                ← `Icon` (renders iconUrl | IconComponent | iconId)
     ImageInput/
     Navbar/
     Page/
@@ -150,10 +157,10 @@ src/
     PageWithAuth/
     RequireAuth/
   components/
-    ui/                       ← Radix UI + shadcn/ui primitives
+    ui/                       ← Base UI primitives (shadcn-style wrappers)
     Toast/
   assets/
-    icons/                    ← SVG icon registry (CinnamonIconId)
+    icons/ footer/ logos/     ← static SVG/PNG assets (error screens, brand marks)
 ```
 
 ---
@@ -174,9 +181,9 @@ Auth components are sensitive and need careful validation with the teams that co
 ### RSC Build Config
 
 Do not modify:
-- `vite.lib.config.ts` — `preserveModules`, `rollup-preserve-directives`, externals list
+- `vite.lib.config.ts`, `vite.server.config.ts`, `vite.icons.config.ts` — `preserveModules`, `rollup-preserve-directives`, externals lists. The icons config additionally externalizes the hugeicons packages on purpose.
 - `tsconfig.lib.json` — paths used by `tsc-alias`
-- `package.json` → `exports` map — the two-entry structure is intentional
+- `package.json` → `exports` map — the three-entry structure (`.`, `./server`, `./icons`) is intentional
 
 ### Demo Secrets
 
@@ -191,6 +198,67 @@ Do not modify:
 - Tokens go in `@theme inline` inside `src/styles/globals.css` — not in `tailwind.config.js` (v3 pattern, not applicable here).
 - Use token utility classes (`bg-cinnamon-primary`) — never hard-coded hex strings in components.
 - Arbitrary values (`bg-[#db1e2f]`) are forbidden for design tokens; they're allowed only for truly one-off values.
+
+### Component Variants (tailwind-variants)
+
+`tailwind-variants` (`tv`) is the **only** variant library. `class-variance-authority` was removed — do not reintroduce it. `tv` has `tailwind-merge` built in, so a `tv()` call already resolves Tailwind conflicts; passing its result through `cn()` again is redundant.
+
+**When to reach for `tv`:** a component with more than one visual axis (`variant`, `size`, `tone`, …), or one whose consumer-facing `className` must be able to override base utilities. A component with a single static class list does not need `tv` — a plain string with `cn(className)` for the override slot is fine.
+
+**Shape:**
+
+```ts
+import { tv, type VariantProps } from "tailwind-variants";
+
+const button = tv({
+  base: "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors",
+  variants: {
+    variant: {
+      default: "bg-primary text-primary-foreground hover:opacity-90",
+      outline: "border border-border bg-background hover:bg-muted",
+    },
+    size: {
+      default: "h-10 px-4 py-2",
+      sm: "h-9 px-3",
+    },
+  },
+  defaultVariants: { variant: "default", size: "default" },
+});
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof button> {}
+```
+
+**Rules:**
+
+- Name the config after the component in lowercase (`button`, `inputGroupAddon`). Export it only if a sibling component composes it; keep it module-local otherwise.
+- Derive the prop type with `VariantProps<typeof x>` — never restate the union by hand.
+- Every variant key gets a `defaultVariants` entry, so the prop is optional at the call site.
+- Pass the consumer `className` as the last argument to the config call: `button({ variant, size, className })`. Do **not** wrap it in `cn()`.
+- Use `slots` when one component owns several elements (root + header + body). One `tv` config with `slots` beats several loose configs.
+- Only token utilities inside variant values — same rule as everywhere else, no raw hex, no arbitrary values for design tokens.
+- Compound rules (a class that applies only for a specific `variant` + `size` pair) go in `compoundVariants`, not in ad-hoc ternaries at the call site.
+
+### Icons
+
+`@hugeicons/*` is the **only** icon library. `lucide-react` and `@tabler/icons-react` were removed — do not reintroduce them. Hugeicons ships icon *data* (`IconSvgElement`), not components; render it with `<HugeiconsIcon icon={SomeIcon} strokeWidth={2} />`.
+
+Three ways to use icons, in order of preference:
+
+1. **`iconId` on a domain prop** — `SidebarNavItem`, `System`, `Link` etc. accept `iconId?: CinnamonIconId`, a key of the curated registry in `src/icons/index.tsx`. Typed, autocompleted, and pulls no icon package into the consumer. Add a new semantic id by adding one entry to `iconRegistry`.
+2. **`<Icon />`** (`src/lib-components/IconRender`) — renders whichever of `iconUrl` / `IconComponent` / `iconId` is provided, in that precedence. This is what the shell components use internally.
+3. **`@cincoders/cinnamon/icons`** — for a consumer that needs an arbitrary hugeicon: `import { SomeIcon, HugeiconsIcon } from "@cincoders/cinnamon/icons"`. Tree-shakes to the single icon.
+
+Inside `components/ui/*`, import the specific `...Icon` data objects from `@hugeicons/core-free-icons` directly and render with `HugeiconsIcon` — matching the existing `select.tsx` / `sheet.tsx` pattern.
+
+### Headless Primitives
+
+`@base-ui/react` is the **only** headless-primitive library. `@radix-ui/*` was removed — do not reintroduce it. Base UI differences to keep in mind:
+
+- Composition is the `render` prop (a `ReactElement` or render function), not Radix's `asChild` + `Slot`. `Button` keeps an `asChild` prop for call-site familiarity but implements it with `useRender` internally.
+- Parts are namespaced: `import { Dialog } from "@base-ui/react/dialog"` then `<Dialog.Root>`, `<Dialog.Popup>` (not `Content`), `<Dialog.Backdrop>` (not `Overlay`).
+- State attributes are `data-panel-open`, `data-starting-style`, `data-ending-style` — not Radix's `data-state="open|closed"`. Enter/exit animation hooks off `data-starting-style` / `data-ending-style`.
 
 ### TypeScript
 

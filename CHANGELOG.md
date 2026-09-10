@@ -10,7 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Summary
 
-v2 is a full rewrite of the library's foundation. The styling stack (MUI + styled-components) was replaced with TailwindCSS v4 + Radix UI, the build was restructured to support React Server Components (RSC), and the auth model was decoupled from any specific provider. All existing components were migrated, and new server-first variants were added for Next.js App Router consumers.
+v2 is a full rewrite of the library's foundation. The styling stack (MUI + styled-components) was replaced with TailwindCSS v4 + Base UI, the build was restructured to support React Server Components (RSC) with three entry points (client / server / icons), and the auth model was decoupled from any specific provider. All existing components were migrated, and new server-first variants were added for Next.js App Router consumers.
 
 ---
 
@@ -59,7 +59,9 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 #### Icon Registry
 
-- **`CinnamonIconId`** — type-safe icon ID registry; components accept `iconId` as an alternative to `iconUrl` or `IconComponent`, ensuring identical rendering in both client and server paths.
+- **`CinnamonIconId`** — type-safe icon ID registry; components accept `iconId` as an alternative to `iconUrl` or `IconComponent`, ensuring identical rendering in both client and server paths. Backed by `@hugeicons/core-free-icons` data.
+- **`Icon`** — renders whichever of `iconUrl` / `IconComponent` / `iconId` is provided, in that precedence. This is the renamed `IconRenderer`.
+- **`@cincoders/cinnamon/icons`** — third subpath entry. Re-exports `Icon`, the typed registry (`resolveCinnamonIcon`, `getAvailableIconIds`, `CinnamonIconId`), `HugeiconsIcon`, and the full `@hugeicons/core-free-icons` set (`export *`, tree-shakeable, `sideEffects: false`). Hugeicons packages are kept external in `vite.icons.config.ts` so the icon set tree-shakes from the consumer's `node_modules`.
 
 #### SideMenu
 
@@ -68,7 +70,8 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 #### Package
 
-- **`motion`** (Framer Motion, `^13`) added to `dependencies` — required by the new `SideMenu` accent rail. Externalized in both Vite lib builds, so it resolves from the consumer's tree.
+- **`motion`** (Framer Motion, `^13`) added to `dependencies` — required by the new `SideMenu` accent rail. Externalized in all three Vite builds, so it resolves from the consumer's tree.
+- **`dependencies` reduced to 7** — `@base-ui/react`, `@hugeicons/core-free-icons`, `@hugeicons/react`, `clsx`, `motion`, `tailwind-merge`, `tailwind-variants`. `tailwindcss` and `tw-animate-css` are `devDependencies` only (the CSS is precompiled to `dist/cinnamon.css`). Every runtime dependency is externalized in the Vite lib / server / icons builds, so `dist/` no longer vendors any `node_modules` (was ~456 files / ~3 MB).
 - **`sideEffects: ["**/*.css"]`** in `package.json` — enables correct tree-shaking of unused components.
 - **`prepublishonly: "npm run build:lib"`** — build is always up to date before publish.
 - **`react-oidc-context`** moved to `peerDependencies` (optional) — not forced on consumers using other OIDC providers or server-only auth.
@@ -84,15 +87,17 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 #### Styling Stack
 
-- **MUI + styled-components → TailwindCSS v4 + Radix UI primitives.** All components rebuilt from scratch. No MUI or styled-components packages are present in v2.
+- **MUI + styled-components → TailwindCSS v4 + Base UI primitives.** All components rebuilt from scratch. No MUI or styled-components packages are present in v2.
 - Tailwind v4's `@theme inline` replaces `tailwind.config.js` for color token configuration.
+- **`class-variance-authority` → `tailwind-variants`.** `tv()` is now the only variant library; it has `tailwind-merge` built in, so a `tv()` result is not re-wrapped in `cn()`.
 
 #### Build System
 
 - **Vite in library mode** replaces any previous bundling setup.
-- Two separate bundles:
+- Three separate bundles, one Vite config each:
   - `dist/index.js` — client entry (all `"use client"` components).
   - `dist/server/entry-server.js` — server entry (RSC-safe, no browser APIs).
+  - `dist/icons/entry-icons.js` — icons entry (`Icon`, the typed registry, and the full `@hugeicons/core-free-icons` re-export; hugeicons kept external).
 - `tsc-alias` post-processes `.d.ts` files to rewrite `@/` path aliases, ensuring consumers receive clean type declarations.
 
 #### Auth
@@ -108,7 +113,7 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`Navbar`**: `searchDropdownLabelsList` prop removed (was declared but never consumed). `IconComponent` prop now typed as `ComponentType<{ className?: string }>`.
 - **`Footer`**: hard-coded hex colors replaced with design token CSS vars (`bg-cinnamon-footer-bg`, `bg-cinnamon-footer-bar`). `phoneToTel()` helper moved to `src/lib/utils.ts`.
 - **`SideMenu`** — **BREAKING vs v1**: the component was rewritten. The public prop contract is unchanged (`links: SideMenuLink[]`, `top`, `visibility`, `setVisibility`, `linkComponent`), so v1 call sites compile as-is, but the rendering changed: the open drawer now carries an animated accent rail (see _Added_) and pulls in `motion` as a runtime dependency. Consumers that vendored their own copy of the v1 `SideMenu` styles, or relied on the exact prior DOM structure, must revalidate. New optional `activeHref` prop (see _Added_).
-- **`IconRenderer`**: `IconComponent` prop now typed as `ComponentType<{ className?: string }>` (was `any`).
+- **`IconRenderer` → `Icon`** — **BREAKING**: the component `IconRenderer` and its `IconRendererProps` type were renamed to `Icon` / `IconProps`. `IconComponent` prop now typed as `ComponentType<{ className?: string }>` (was `any`).
 - **`ErrorScreen`**: `enum httpErrors` replaced with `const httpErrors as const` + type alias — no runtime JS emitted; same call-site syntax (`httpErrors.NOTFOUND_404`) preserved. Unknown error types now render a generic fallback instead of returning `null`.
 
 #### Package
@@ -121,7 +126,7 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 #### Accessibility (a11y)
 
-- **`Dialog` — WCAG 2.1 SC 2.1.2 (No Keyboard Trap)**: `onEscapeKeyDown` and `onPointerDownOutside` were calling `e.preventDefault()`, trapping keyboard users inside the modal indefinitely. Both now correctly call `onHide()`.
+- **`Dialog` — WCAG 2.1 SC 2.1.2 (No Keyboard Trap)**: the Radix `onEscapeKeyDown` / `onPointerDownOutside` handlers were calling `e.preventDefault()`, trapping keyboard users inside the modal indefinitely. After the Base UI migration those handlers are gone entirely: Base UI's `Dialog` closes on Escape and outside-press by default and reports the change through `onOpenChange`, which is wired to `onHide()`.
 - **`ImageInput` — keyboard and touch access**: the upload overlay was shown only on `mouseenter`, making upload impossible for keyboard and touch users. The overlay is now always in the DOM (visibility controlled via CSS opacity); the `<input>` uses `sr-only` instead of `hidden` so it participates in the tab order; `onFocus`/`onBlur` on the fieldset show/hide the overlay for keyboard users; the `<label>` has `tabIndex={0}` for direct activation.
 
 #### Bugs
@@ -138,8 +143,14 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 ### Removed
 
-- **MUI (Material UI)** — all components fully migrated to TailwindCSS + Radix UI.
+- **MUI (Material UI)** — all components fully migrated to TailwindCSS + Base UI.
 - **styled-components** — replaced by TailwindCSS utility classes and CSS variables.
+- **`@radix-ui/react-{accordion,dialog,slot,tooltip}`** — migrated to `@base-ui/react`. Radix's `asChild` + `Slot` is replaced by Base UI's `render` prop (`Button` keeps an `asChild` prop implemented via `useRender`); parts are renamed (`Content` → `Popup`, `Overlay` → `Backdrop`, `Accordion.Content` → `Accordion.Panel`); state attributes changed (`data-state="open"` → `data-panel-open` / `data-starting-style` / `data-ending-style`).
+- **`class-variance-authority`** — migrated to `tailwind-variants`.
+- **`lucide-react`, `@tabler/icons-react`** — migrated to `@hugeicons/*`. The semantic `iconId` values (`"home"`, `"users"`, …) are unchanged; only the backing icon set changed.
+- **`cmdk`, `cn`, `shadcn`** — no longer used. `shadcn` (the CLI) had been wrongly listed in `dependencies` and pulled a large install tree.
+- **8 unused `src/components/ui/*` primitives** — `command`, `dropdown-menu`, `sidebar`, `avatar`, `input-group`, `textarea`, `skeleton`, `dialog`. Never exported; restore any with `npx shadcn add` if needed.
+- **`@import "shadcn/tailwind.css"`** from `globals.css` — dead after removing the `shadcn` package, and redundant with `@import "tailwindcss"`.
 - **`createNavbarContext` prop** from `PageProps` and `PageWithAuthProps` — context is always provided; the flag was a source of subtle state desync.
 - **`searchDropdownLabelsList` prop** from `NavbarProps` — was declared but never used internally.
 - **`RequireAuthServer` from the main client entry** — moved exclusively to the server entry.
@@ -223,7 +234,22 @@ export default async function ProtectedPage() {
 + const { setSearchFunction } = useNavbar();
 ```
 
-### 6. `Page` — remove `createNavbarContext`
+### 6. Rename `IconRenderer` → `Icon`
+
+```diff
+- import { IconRenderer, type IconRendererProps } from "@cincoders/cinnamon";
++ import { Icon, type IconProps } from "@cincoders/cinnamon";
+
+- <IconRenderer iconId="home" />
++ <Icon iconId="home" />
+```
+
+The semantic `iconId` values are unchanged. The backing icon set moved from
+`lucide-react` to `@hugeicons/*`, so the rendered glyphs differ slightly. If you
+passed a `lucide-react` component through `IconComponent`, swap it for a
+Hugeicons one, an `iconId`, or an `iconUrl`.
+
+### 7. `Page` — remove `createNavbarContext`
 
 ```diff
 - <Page createNavbarContext={false} ...>
@@ -232,7 +258,7 @@ export default async function ProtectedPage() {
 
 Context is now always provided. If you needed `createNavbarContext={false}` to avoid context overhead, the impact was minimal — `useMemo` ensures no unnecessary re-renders.
 
-### 7. SideMenu — highlight the active route (optional)
+### 8. SideMenu — highlight the active route (optional)
 
 The rewritten `SideMenu` can highlight the current page in the drawer. Pass the
 current path down through `Navbar`:
@@ -255,7 +281,7 @@ state), just with the new accent rail on hover/focus.
 in automatically; in a monorepo with hoisting disabled, add `motion` to the
 consumer's `package.json`.
 
-### 8. Tailwind preflight conflict
+### 9. Tailwind preflight conflict
 
 If your consumer project runs its own Tailwind (v3 or v4), make sure the Cinnamon CSS import comes **after** your own base styles, or disable Tailwind's preflight in your app:
 
