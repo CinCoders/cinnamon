@@ -27,13 +27,18 @@
       "import": "./dist/server/entry-server.js",
       "default": "./dist/server/entry-server.js"
     },
+    "./icons": {
+      "types": "./dist/entry-icons.d.ts",
+      "import": "./dist/icons/entry-icons.js",
+      "default": "./dist/icons/entry-icons.js"
+    },
     "./cinnamon.css": "./dist/cinnamon.css"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run --config vitest.config.ts",
-    "build:lib:js": "vite build -c vite.lib.config.ts && vite build -c vite.server.config.ts",
+    "build:lib:js": "vite build -c vite.lib.config.ts && vite build -c vite.server.config.ts && vite build -c vite.icons.config.ts",
     "build:lib:types": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:lib:css": "node ./scripts/build-standalone-css.mjs",
     "build:lib": "npm run build:lib:js && npm run build:lib:types && npm run build:lib:css",
@@ -63,22 +68,10 @@
     "@base-ui/react": "^1.8.0",
     "@hugeicons/core-free-icons": "^4.3.2",
     "@hugeicons/react": "^1.1.10",
-    "@radix-ui/react-accordion": "^1.2.12",
-    "@radix-ui/react-dialog": "^1.1.15",
-    "@radix-ui/react-slot": "^1.2.4",
-    "@radix-ui/react-tooltip": "^1.2.8",
-    "@tabler/icons-react": "^3.46.0",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "^1.1.1",
-    "cn": "^0.2.6",
-    "lucide-react": "^0.562.0",
     "motion": "^13.2.0",
-    "shadcn": "^4.21.0",
     "tailwind-merge": "^3.4.0",
-    "tailwind-variants": "^3.3.1",
-    "tailwindcss": "^4.1.18",
-    "tw-animate-css": "^1.4.0"
+    "tailwind-variants": "^3.3.1"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
@@ -120,7 +113,9 @@
     "react-dom": "^18.3.1",
     "rollup-preserve-directives": "^1.1.3",
     "storybook": "^10.1.11",
+    "tailwindcss": "^4.1.18",
     "tsc-alias": "^1.8.17",
+    "tw-animate-css": "^1.4.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
