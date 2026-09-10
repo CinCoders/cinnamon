@@ -1,7 +1,7 @@
 "use client";
 
 import type { System, LinkComponent } from "@/interfaces";
-import { IconRenderer } from "@/lib-components/IconRender";
+import { Icon } from "@/lib-components/IconRender";
 import { DefaultAnchor } from "@/lib/DefaultAnchor";
 
 import {
@@ -29,17 +29,19 @@ export function SystemsPopup({ systemsList = [], linkComponent }: SystemsPopupPr
               className="group flex h-24 cursor-pointer flex-col items-center justify-center gap-2 rounded-md p-2 no-underline transition hover:bg-[#E6E6E6]"
             >
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center justify-center">
-                    <IconRenderer
-                      iconUrl={system.iconUrl}
-                      alt={system.title}
-                      IconComponent={system.IconComponent}
-                      iconId={system.iconId}
-                      className="h-10 w-10 text-cinnamon-primary transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                </TooltipTrigger>
+                <TooltipTrigger
+                  render={
+                    <div className="flex items-center justify-center">
+                      <Icon
+                        iconUrl={system.iconUrl}
+                        alt={system.title}
+                        IconComponent={system.IconComponent}
+                        iconId={system.iconId}
+                        className="h-10 w-10 text-cinnamon-primary transition-transform group-hover:scale-105"
+                      />
+                    </div>
+                  }
+                />
                 <TooltipContent side="top">
                   {system.description}
                 </TooltipContent>

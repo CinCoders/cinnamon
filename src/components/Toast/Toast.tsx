@@ -2,7 +2,13 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { AlertCircle, CheckCircle, Info, X, XCircle } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  Alert02Icon,
+  CheckmarkCircle02Icon,
+  InformationCircleIcon,
+  Cancel01Icon,
+} from "@hugeicons/core-free-icons";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 export type ToastType = "success" | "error" | "info" | "warning" | "default";
@@ -91,11 +97,11 @@ export const toast: ToastFn = Object.assign(
 // --- presentation ---------------------------------------------------------
 
 const icons: Record<ToastType, React.ReactNode> = {
-  default: <Info className="h-5 w-5 text-slate-500" />,
-  error: <XCircle className="h-5 w-5 text-red-500" />,
-  info: <Info className="h-5 w-5 text-blue-500" />,
-  success: <CheckCircle className="h-5 w-5 text-emerald-500" />,
-  warning: <AlertCircle className="h-5 w-5 text-amber-500" />,
+  default: <HugeiconsIcon icon={InformationCircleIcon} className="h-5 w-5 text-slate-500" />,
+  error: <HugeiconsIcon icon={Cancel01Icon} className="h-5 w-5 text-red-500" />,
+  info: <HugeiconsIcon icon={InformationCircleIcon} className="h-5 w-5 text-blue-500" />,
+  success: <HugeiconsIcon icon={CheckmarkCircle02Icon} className="h-5 w-5 text-emerald-500" />,
+  warning: <HugeiconsIcon icon={Alert02Icon} className="h-5 w-5 text-amber-500" />,
 };
 
 const tone: Record<ToastType, string> = {
@@ -154,7 +160,7 @@ function ToastRow({
         aria-label="Fechar notificação"
         className="flex-shrink-0 cursor-pointer rounded-full p-1 text-foreground transition-colors hover:bg-black/5 dark:hover:bg-white/10"
       >
-        <X className="h-4 w-4" />
+        <HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" />
       </button>
     </motion.div>
   );

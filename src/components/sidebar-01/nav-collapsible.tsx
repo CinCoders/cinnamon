@@ -1,6 +1,7 @@
 'use client';
 
-import { ChevronDown } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowDown01Icon } from '@hugeicons/core-free-icons';
 import {
   Collapsible,
   CollapsibleContent,
@@ -29,7 +30,7 @@ export function NavGroup({
     >
       <CollapsibleTrigger className="flex h-8 items-center gap-1 rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
         {group.label}
-        <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-open/collapsible:rotate-180" />
+        <HugeiconsIcon icon={ArrowDown01Icon} strokeWidth={2} className="ml-auto h-4 w-4 transition-transform group-data-open/collapsible:rotate-180" />
       </CollapsibleTrigger>
       <CollapsibleContent className="flex flex-col gap-px pt-px">
         {group.items.map((item) => (

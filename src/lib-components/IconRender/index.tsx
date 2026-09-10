@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
 import { resolveCinnamonIcon, type CinnamonIconId } from "@/icons";
 
-export interface IconRendererProps {
+export interface IconProps {
   iconUrl?: string;
   alt?: string;
   IconComponent?: ComponentType<{ className?: string }>;
@@ -11,14 +11,19 @@ export interface IconRendererProps {
   sizeRem?: number; // opcional, default ~2.35
 }
 
-export function IconRenderer({
+/**
+ * Renderiza um ícone a partir de uma das três fontes suportadas, nesta ordem
+ * de precedência: `iconUrl` (imagem), `IconComponent` (componente do consumidor),
+ * `iconId` (chave do registry da lib).
+ */
+export function Icon({
   iconUrl,
   alt = "",
   IconComponent,
   iconId,
   className,
   sizeRem = 2.35,
-}: IconRendererProps) {
+}: IconProps) {
   const size = `${sizeRem}rem`;
   const RegistryIcon = resolveCinnamonIcon(iconId);
 

@@ -25,5 +25,5 @@ export type {
 // Icon library (RSC-safe).
 export { resolveCinnamonIcon, getAvailableIconIds } from "./icons";
 export type { CinnamonIconId } from "./icons";
-export { IconRenderer } from "./lib-components/IconRender";
-export type { IconRendererProps } from "./lib-components/IconRender";
+export { Icon } from "./lib-components/IconRender";
+export type { IconProps } from "./lib-components/IconRender";

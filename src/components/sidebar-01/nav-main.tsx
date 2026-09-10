@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { IconRenderer } from '@/lib-components/IconRender';
+import { Icon } from '@/lib-components/IconRender';
 import type { LinkComponent, SidebarNavItem } from '@/interfaces';
 
 export interface NavItemsProps {
@@ -33,7 +33,7 @@ export function NavItemRow({
   const content = (
     <>
       {(item.IconComponent || item.iconId) && (
-        <IconRenderer
+        <Icon
           IconComponent={item.IconComponent}
           iconId={item.iconId}
           className="h-4 w-4 shrink-0"

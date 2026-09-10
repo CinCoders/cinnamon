@@ -1,16 +1,13 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Home, FileText, Settings, Users } from "lucide-react";
 import { SideMenu, type SideMenuProps } from "@/components/SideMenu/SideMenu";
 import { Button } from "@/components/ui/button";
 import type { SidebarData } from "@/interfaces";
 
-const iconClass = "h-4 w-4 text-primary";
-
 const storyData: SidebarData = {
   navMain: [
-    { id: 0, title: "Home", href: "/home", IconComponent: () => <Home className={iconClass} /> },
-    { id: 5, title: "Settings", href: "/settings", IconComponent: () => <Settings className={iconClass} /> },
+    { id: 0, title: "Home", href: "/home", iconId: "home" },
+    { id: 5, title: "Settings", href: "/settings", iconId: "settings" },
   ],
   navGroups: [
     {
@@ -18,8 +15,8 @@ const storyData: SidebarData = {
       label: "Admin",
       defaultOpen: true,
       items: [
-        { id: 1, title: "Users", href: "/users", IconComponent: () => <Users className={iconClass} /> },
-        { id: 2, title: "Reports", href: "/reports", IconComponent: () => <FileText className={iconClass} /> },
+        { id: 1, title: "Users", href: "/users", iconId: "users" },
+        { id: 2, title: "Reports", href: "/reports", iconId: "file" },
       ],
     },
   ],

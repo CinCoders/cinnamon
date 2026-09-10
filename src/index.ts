@@ -75,12 +75,12 @@ export type {
 } from "./interfaces";
 
 // Icon library — resolve a `CinnamonIconId` string to a component without
-// pulling an icon package into the consumer. `IconRenderer` renders any of the
+// pulling an icon package into the consumer. `Icon` renders any of the
 // supported icon sources (`iconId`, `IconComponent`, or `iconUrl`).
 export {
   resolveCinnamonIcon,
   getAvailableIconIds,
 } from "./icons";
 export type { CinnamonIconId } from "./icons";
-export { IconRenderer } from "./lib-components/IconRender";
-export type { IconRendererProps } from "./lib-components/IconRender";
+export { Icon } from "./lib-components/IconRender";
+export type { IconProps } from "./lib-components/IconRender";

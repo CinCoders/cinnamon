@@ -9,8 +9,24 @@ import linkedinIconRaw from "@/assets/footer/linkedin.svg?raw";
 import xIconRaw from "@/assets/footer/x.svg?raw";
 import cinLogoRaw from "@/assets/logos/logo-cin-horizontal.svg?raw";
 import cincodersLogoRaw from "@/assets/logos/logo-cincoders.svg?raw";
-import { Github, Globe, Gitlab, Mail, MapPin, Phone } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  GithubIcon,
+  GitlabIcon,
+  GlobalIcon,
+  Mail01Icon,
+  Location01Icon,
+  TelephoneIcon,
+} from "@hugeicons/core-free-icons";
 import { phoneToTel, svgDataUri } from "@/lib/utils";
+
+type IconProps = { className?: string; "aria-hidden"?: boolean };
+const Github = (p: IconProps) => <HugeiconsIcon icon={GithubIcon} strokeWidth={2} {...p} />;
+const Gitlab = (p: IconProps) => <HugeiconsIcon icon={GitlabIcon} strokeWidth={2} {...p} />;
+const Globe = (p: IconProps) => <HugeiconsIcon icon={GlobalIcon} strokeWidth={2} {...p} />;
+const Mail = (p: IconProps) => <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} {...p} />;
+const MapPin = (p: IconProps) => <HugeiconsIcon icon={Location01Icon} strokeWidth={2} {...p} />;
+const Phone = (p: IconProps) => <HugeiconsIcon icon={TelephoneIcon} strokeWidth={2} {...p} />;
 
 const cinLogo = svgDataUri(cinLogoRaw);
 const cincodersLogo = svgDataUri(cincodersLogoRaw);
@@ -33,7 +49,7 @@ export interface FooterSocialLink {
   href: string;
   /** SVG/PNG URL for the icon. Rendered at 16×16. */
   iconUrl?: string;
-  /** Lucide-style icon component. Used when no `iconUrl` is given. */
+  /** Icon component. Used when no `iconUrl` is given. */
   icon?: ComponentType<{ className?: string }>;
 }
 

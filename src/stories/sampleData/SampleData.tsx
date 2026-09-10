@@ -1,26 +1,9 @@
-import {
-  Home,
-  FileText,
-  Calendar,
-  Users,
-  LayoutDashboard,
-  UserCog,
-  UserSearch,
-  GraduationCap,
-  ClipboardCheck,
-  UserCheck,
-  Printer,
-  Landmark,
-} from "lucide-react";
-
 import type { SidebarData, System, User } from "@/interfaces";
-
-const iconClass = "h-7 w-7 text-primary"; // ajusta se quiser
 
 export const testSidebar: SidebarData = {
   navMain: [
-    { id: 0, title: "Home", href: "#", IconComponent: () => <Home className={iconClass} /> },
-    { id: 1, title: "Contact", href: "#", IconComponent: () => <FileText className={iconClass} /> },
+    { id: 0, title: "Home", href: "#", iconId: "home" },
+    { id: 1, title: "Contact", href: "#", iconId: "file" },
   ],
   navGroups: [
     {
@@ -62,61 +45,61 @@ export const testUser: User = {
 export const testSystems: System[] = [
   {
     title: "Dashboard",
-    IconComponent: LayoutDashboard,
+    iconId: "layout",
     description: "SIPAC Process Management System",
     href: "#",
   },
   {
     title: "User Management",
-    IconComponent: UserCog,
+    iconId: "userCog",
     description: "User Management System",
     href: "#",
   },
   {
     title: "Human Resources",
-    IconComponent: Users,
+    iconId: "users",
     description: "Human Resources Management System",
     href: "#",
   },
   {
     title: "Allocation",
-    IconComponent: Calendar,
+    iconId: "calendar",
     description: "Course Scheduling and Planning System",
     href: "#",
   },
   {
     title: "Graduate Selection",
-    IconComponent: UserCheck,
+    iconId: "userCheck",
     description: "Graduate Admissions System",
     href: "#",
   },
   {
     title: "Input Analysis",
-    IconComponent: UserSearch,
+    iconId: "userSearch",
     description: "Badge-based Input Analysis System",
     href: "#",
   },
   {
     title: "FrequenCIn",
-    IconComponent: ClipboardCheck,
+    iconId: "clipboard",
     description: "Student Attendance System",
     href: "#",
   },
   {
     title: "Prints",
-    IconComponent: Printer,
+    iconId: "printer",
     description: "Balance and Print Log Inquiry System",
     href: "#",
   },
   {
     title: "Research System",
-    IconComponent: Landmark,
+    iconId: "landmark",
     description: "Research Indicators Survey and Analysis System",
     href: "#",
   },
   {
     title: "SGA",
-    IconComponent: GraduationCap,
+    iconId: "graduation",
     description: "Selection Demand Data Survey and Analysis System.",
     href: "#",
   },

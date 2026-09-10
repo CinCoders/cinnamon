@@ -8,7 +8,7 @@ import { SideMenu } from "@/components/SideMenu/SideMenu";
 import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
 import { SystemsPopup } from "@/components/SystemsPopup/SystemsPopup";
-import { IconRenderer } from "@/lib-components/IconRender";
+import { Icon } from "@/lib-components/IconRender";
 import {
   hasAccess,
   sessionFromOidcAuth,
@@ -195,7 +195,7 @@ export function Navbar(props: NavbarProps) {
             )}
 
             {!isLandingPage && currentSystemIconUrl && (
-              <IconRenderer iconUrl={currentSystemIconUrl} />
+              <Icon iconUrl={currentSystemIconUrl} />
             )}
 
             <div className="ml-2 text-cinnamon-dark whitespace-nowrap">
