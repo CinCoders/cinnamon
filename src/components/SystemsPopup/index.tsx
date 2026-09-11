@@ -29,13 +29,11 @@ export const SystemsPopup = ({ systemsList = [] }: SystemsPopupProps) => {
                 className='system-item'
               >
                 <Tooltip title={system.description} arrow>
-                  <>
-                    <IconRenderer
-                      iconUrl={system.iconUrl}
-                      alt={system.title}
-                      IconComponent={system.IconComponent}
-                    />
-                  </>
+                  <IconRenderer
+                    iconUrl={system.iconUrl}
+                    alt={system.title}
+                    IconComponent={system.IconComponent}
+                  />
                 </Tooltip>
                 <SystemTitle>{system.title}</SystemTitle>
               </SystemItem>

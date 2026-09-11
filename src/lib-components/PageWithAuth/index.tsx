@@ -19,7 +19,7 @@ export function PageWithAuth({
   createNavbarContext = true,
   components,
   children
-}: PageWithAuthProps) {
+}: Readonly<PageWithAuthProps>) {
   const { auth, permittedRoles } = authProps;
   return (
     <RequireAuth auth={auth} permittedRoles={permittedRoles} publicURL={authProps.publicURL}>

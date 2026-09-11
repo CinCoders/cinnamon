@@ -1,7 +1,6 @@
 import {
   ToastContainer as ToastifyContainer,
-  ToastContainerProps as ToastProps,
-  toast
+  ToastContainerProps as ToastProps
 } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastDiv } from './style';
@@ -24,4 +23,4 @@ export const ToastContainer = ({
   );
 };
 
-export { toast };
+export { toast } from 'react-toastify';

@@ -46,11 +46,13 @@ const Template: StoryFn<UserPopupStory> = ({ user }) => {
       <Dialog
         type='information'
         title='Logout Method '
-        children='This is a mocked logout. The logout method prop is a method that apply your custom logout to the system.'
         acceptLabel='Understood'
         visibility={visibility}
         setVisibility={setVisibility}
-      />
+      >
+        This is a mocked logout. The logout method prop is a method that apply
+        your custom logout to the system.
+      </Dialog>
       <UserPopup
         logoutMethod={() => {
           setVisibility(true);

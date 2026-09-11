@@ -101,7 +101,7 @@ export const Footer = ({
                   style={{ color: 'white', zIndex: 3 }}
                 >{`${signatureText}`}</a>
               ) : (
-                <a> {`${signatureText}`}</a>
+                <span> {`${signatureText}`}</span>
               )}
             </SignatureText>
           ) : (

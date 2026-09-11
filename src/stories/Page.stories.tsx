@@ -111,7 +111,7 @@ const Template: StoryFn<StoryPageProps> = (args) => {
         <Page
           navbar={{
             isLandingPage: args.isLandingPage,
-            haveSearchBar: args.haveSearchBar ? true : false,
+            haveSearchBar: Boolean(args.haveSearchBar),
             hiddenUser: args.hiddenUser,
             user: args.hiddenUser ? undefined : args.user,
             h1: args.h1,

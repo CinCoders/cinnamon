@@ -10,7 +10,7 @@ export function IconRenderer({
   iconUrl,
   alt,
   IconComponent
-}: IconRendererProps) {
+}: Readonly<IconRendererProps>) {
   return (
     <div style={{ color: 'white', display:'flex', justifyContent: 'center' }}>
       {iconUrl && (
