@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "storybook": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "storybook/SKILL.md",
+      "computedHash": "560d4c5443255951fa76259c22e6ba41a43335efc921d5dac4f5450f65d8ef24"
+    }
+  }
+}
