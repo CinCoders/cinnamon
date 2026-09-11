@@ -1,0 +1,145 @@
+# Publishes the package to npm when a release tag is pushed.
+#
+# Authentication is OIDC trusted publishing, not a token: npm classic tokens
+# were permanently revoked on 2025-12-09. The package already has this
+# repository, this workflow filename and the npm-publish environment
+# registered as a trusted publisher, so this file must keep all three.
+name: Deploy and publish
+run-name: Publish ${{ github.ref_name }} to npm
+
+on:
+  push:
+    tags:
+      - 'version/v*'
+
+env:
+  # Major version that owns the npm "latest" dist-tag. Every other major is
+  # published as "v<major>-latest" instead, so releasing on one line never
+  # moves "latest" onto the other. While this is 1, a 2.x tag publishes as
+  # "v2-latest" and nobody upgrades into v2 by accident. Change it to 2 on
+  # both branches when v2 becomes the version new consumers should get.
+  LATEST_MAJOR: '1'
+
+  # Branch that release commits must be on. v2 is an orphan branch, so its
+  # tags are not reachable from main; this is what makes the ancestry check
+  # below meaningful here.
+  RELEASE_BRANCH: v2
+
+jobs:
+  build-publish-npm:
+    runs-on: ubuntu-latest
+
+    # Gates publishing behind a reviewer. Pushing a tag is enough to reach
+    # this workflow, so without an environment anyone with write access could
+    # publish to npm. The name is part of the OIDC claim and must match the
+    # trusted publisher registered on npm exactly.
+    environment: npm-publish
+
+    permissions:
+      # Needed to create the GitHub release at the end of the job.
+      contents: write
+      # Required for OIDC trusted publishing.
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Needed by the ancestry check below.
+          fetch-depth: 0
+
+      # A tag name says nothing about the commit it points at: anyone able to
+      # push can tag an arbitrary commit with a name matching version/v*.
+      - name: Refuse to publish a commit that is not on the release branch
+        run: |
+          set -euo pipefail
+
+          git fetch --no-tags origin "${RELEASE_BRANCH}"
+
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" "origin/${RELEASE_BRANCH}"; then
+            echo "::error::${GITHUB_REF_NAME} points at ${GITHUB_SHA}, which is not an ancestor of ${RELEASE_BRANCH}. Release tags must be created on a commit that has been merged into ${RELEASE_BRANCH}."
+            exit 1
+          fi
+
+          echo "${GITHUB_SHA} is on ${RELEASE_BRANCH}."
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+
+      # Trusted publishing needs npm >= 11.5.1, and Node 24 ships 11.17.
+      # Asserting that rather than installing npm keeps an unpinned package,
+      # and its install scripts, out of the one job that holds a publishing
+      # token.
+      - name: Verify npm supports trusted publishing
+        run: |
+          set -euo pipefail
+
+          required=11.5.1
+          current="$(npm --version)"
+
+          if [ "$(printf '%s\n%s\n' "$required" "$current" | sort -V | head -n 1)" != "$required" ]; then
+            echo "::error::npm ${current} is older than ${required}, which trusted publishing requires."
+            exit 1
+          fi
+
+          echo "npm ${current} supports trusted publishing."
+
+      - name: Resolve version and dist-tag from the tag
+        id: release
+        run: |
+          set -euo pipefail
+
+          tag_version="${GITHUB_REF_NAME#version/v}"
+          pkg_version="$(node -p "require('./package.json').version")"
+
+          if [ "$tag_version" != "$pkg_version" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} expects version ${tag_version}, but package.json says ${pkg_version}."
+            exit 1
+          fi
+
+          major="${tag_version%%.*}"
+          if [ "$major" = "${LATEST_MAJOR}" ]; then
+            dist_tag='latest'
+          else
+            dist_tag="v${major}-latest"
+          fi
+
+          echo "version=${tag_version}" >> "$GITHUB_OUTPUT"
+          echo "dist_tag=${dist_tag}" >> "$GITHUB_OUTPUT"
+          echo "Publishing ${pkg_version} under dist-tag '${dist_tag}'."
+
+      - run: npm ci --ignore-scripts
+
+      - run: npm run build:lib
+
+      - name: Publish
+        run: npm publish --provenance --tag '${{ steps.release.outputs.dist_tag }}'
+
+      # The CHANGELOG section for this version on top, then the pull requests
+      # GitHub generates. A version with no CHANGELOG section still gets a
+      # release, with the generated half only.
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          notes="$(awk -v v="## [${VERSION}]" \
+            'index($0, v) == 1 { found = 1; next }
+             found && /^## \[/ { exit }
+             found { print }' CHANGELOG.md)"
+
+          if [ -z "${notes//[[:space:]]/}" ]; then
+            echo "::warning::No CHANGELOG.md section for ${VERSION}; publishing generated notes only."
+            notes=''
+          fi
+
+          jq -n \
+            --arg tag "${GITHUB_REF_NAME}" \
+            --arg name "v${VERSION}" \
+            --arg body "${notes}" \
+            '{tag_name: $tag, name: $name, body: $body,
+              draft: false, prerelease: false, generate_release_notes: true}' \
+            | gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" --input -

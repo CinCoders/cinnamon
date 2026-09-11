@@ -1,0 +1,83 @@
+# Type-checks, tests and builds every pull request, and reports on the
+# dependencies that reach consumers.
+name: Check
+
+on:
+  pull_request:
+    branches:
+      - v2
+  push:
+    branches:
+      - v2
+
+jobs:
+  check:
+    name: Type check, test and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # --ignore-scripts keeps dependency lifecycle scripts from running on
+      # every pull request.
+      - run: npm ci --ignore-scripts
+
+      # tsconfig.json is a solution file with "files": [], so pointing tsc at
+      # it would check nothing. tsconfig.app.json is the one that covers src.
+      - name: Type check
+        run: ./node_modules/.bin/tsc --noEmit -p tsconfig.app.json
+
+      - name: Test
+        run: npm test
+
+      - name: Build library
+        run: npm run build:lib
+
+  audit:
+    name: Audit dependencies reaching consumers
+    runs-on: ubuntu-latest
+
+    # Advisory, not a gate. This queries the npm registry at run time, so an
+    # advisory disclosed today would otherwise turn every open pull request
+    # red, including ones that touch no dependency at all. The result is
+    # written to the job summary; read it there rather than relying on the
+    # check colour.
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # npm audit resolves the tree from package-lock.json, so there is no
+      # need to install anything first.
+      - name: Audit
+        run: |
+          set +e
+          report="$(npm audit --omit=dev --audit-level=high 2>&1)"
+          code=$?
+          {
+            echo '## Dependencies reaching consumers'
+            echo
+            echo 'Scope: `npm audit --omit=dev --audit-level=high` — what a consumer'
+            echo 'of this package installs, ignoring the dev toolchain.'
+            echo
+            if [ $code -eq 0 ]; then
+              echo 'No high or critical advisories.'
+            else
+              echo 'Found something worth a look:'
+              echo
+              echo '```'
+              echo "$report"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "$report"
+          exit $code
