@@ -100,6 +100,11 @@ export interface FooterProps {
   linkColumns?: FooterLinkColumn[];
   /** Social row under the brand block. */
   socialLinks?: FooterSocialLink[];
+  /**
+   * Line in the bottom bar, rendered after the copyright symbol and the
+   * current year. Pass `null` to hide it; omit for the default.
+   */
+  copyrightText?: string | null;
   /** Consuming app version, shown next to the Cinnamon version. */
   appVersion?: string;
   /** Render the brand/support area. When false, only the bottom bar shows. */
@@ -247,6 +252,7 @@ export function Footer({
   support,
   linkColumns,
   socialLinks,
+  copyrightText = "CIn UFPE | Todos os direitos reservados",
   appVersion,
   largeFooter = true,
 }: FooterProps) {
@@ -422,9 +428,11 @@ export function Footer({
 
       <div className={styles.strip()}>
         <div className={styles.bar()}>
-          <span>
-            © {new Date().getFullYear()} CIn UFPE | Todos os direitos reservados
-          </span>
+          {copyrightText !== null && (
+            <span>
+              © {new Date().getFullYear()} {copyrightText}
+            </span>
+          )}
 
           <span className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <span className="text-cinnamon-primary">

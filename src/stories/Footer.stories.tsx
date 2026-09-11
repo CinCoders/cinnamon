@@ -46,6 +46,11 @@ export const NoSupport: Story = {
   args: { variant: "cin", support: null },
 };
 
+/** The bottom-bar line is configurable. Pass `null` to drop it entirely. */
+export const CustomCopyright: Story = {
+  args: { copyrightText: "Centro de Informatica | All rights reserved" },
+};
+
 export const Compact: Story = {
   args: { largeFooter: false },
 };
