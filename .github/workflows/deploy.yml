@@ -40,6 +40,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Needed by the ancestry check below, which has to see main.
+          fetch-depth: 0
+
+      # A tag name says nothing about the commit it points at: anyone able to
+      # push can tag an arbitrary commit on any branch with a name matching
+      # version/v*. Publishing only what already reached main closes that,
+      # without relying on the reviewer noticing.
+      - name: Refuse to publish a commit that is not on main
+        run: |
+          set -euo pipefail
+
+          git fetch --no-tags origin main
+
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/main; then
+            echo "::error::${GITHUB_REF_NAME} points at ${GITHUB_SHA}, which is not an ancestor of main. Release tags must be created on a commit that has been merged into main."
+            exit 1
+          fi
+
+          echo "${GITHUB_SHA} is on main."
 
       - uses: actions/setup-node@v4
         with:
