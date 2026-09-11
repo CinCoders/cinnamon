@@ -26,6 +26,13 @@ jobs:
   build-publish-npm:
     runs-on: ubuntu-latest
 
+    # Gates publishing behind a reviewer. Pushing a tag is enough to reach this
+    # workflow, so without an environment anyone with write access to the
+    # repository could publish to npm, regardless of who owns the package
+    # there. The environment name is part of the OIDC claim, so it must match
+    # the trusted publisher registered on npm exactly.
+    environment: npm-publish
+
     permissions:
       contents: read
       # Required for OIDC trusted publishing.
