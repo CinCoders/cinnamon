@@ -48,7 +48,7 @@ export const NoSupport: Story = {
 
 /** The bottom-bar line is configurable. Pass `null` to drop it entirely. */
 export const CustomCopyright: Story = {
-  args: { copyrightText: "Centro de Informatica | All rights reserved" },
+  args: { copyrightText: "CIn UFPE | All rights reserved" },
 };
 
 export const Compact: Story = {
