@@ -32,3 +32,10 @@ storybook-static
 
 PLANO_FINAL_MIGRACAO_CINNAMON.md
 .originkit/
+
+
+# Agents
+
+.agents/skills/*
+.claude/skills/*
+.handoff
