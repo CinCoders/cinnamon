@@ -66,10 +66,24 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
 
-      # Node 24 ships npm 11.17, which already satisfies the >= 11.5.1 that
-      # trusted publishing needs. Pinning latest keeps it true if that changes.
-      - name: Ensure npm supports trusted publishing
-        run: npm install -g npm@latest
+      # Trusted publishing needs npm >= 11.5.1, and Node 24 ships 11.17.
+      # Asserting that rather than installing npm keeps an unpinned package,
+      # and its install scripts, out of the one job that holds a publishing
+      # token. If a runner image ever ships something older, this fails here
+      # with a clear message instead of failing later on authentication.
+      - name: Verify npm supports trusted publishing
+        run: |
+          set -euo pipefail
+
+          required=11.5.1
+          current="$(npm --version)"
+
+          if [ "$(printf '%s\n%s\n' "$required" "$current" | sort -V | head -n 1)" != "$required" ]; then
+            echo "::error::npm ${current} is older than ${required}, which trusted publishing requires."
+            exit 1
+          fi
+
+          echo "npm ${current} supports trusted publishing."
 
       - name: Resolve version and dist-tag from the tag
         id: release
@@ -95,7 +109,7 @@ jobs:
           echo "dist_tag=${dist_tag}" >> "$GITHUB_OUTPUT"
           echo "Publishing ${pkg_version} under dist-tag '${dist_tag}'."
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - run: npm run build-lib
 
