@@ -28,10 +28,16 @@ jobs:
           node-version: 24
           cache: npm
 
-      - run: npm ci
+      # --ignore-scripts keeps dependency lifecycle scripts from running on
+      # every pull request. Nothing in this repository needs them: the four
+      # packages that declare install scripts are already blocked by npm's
+      # own default, and the build succeeds without them.
+      - run: npm ci --ignore-scripts
 
       - name: Type check
-        run: npx tsc --noEmit -p tsconfig.json
+        # The local binary, not npx: npx would fetch and execute a package
+        # on demand if the dependency were ever missing.
+        run: ./node_modules/.bin/tsc --noEmit -p tsconfig.json
 
       - name: Build library
         run: npm run build-lib
