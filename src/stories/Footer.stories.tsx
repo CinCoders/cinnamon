@@ -7,6 +7,7 @@ const meta = {
   parameters: { docs: { page: null }, layout: "fullscreen" },
   args: {
     appVersion: "2.2.2",
+    copyrightText: "CIn UFPE | Todos os direitos reservados",
   },
 } satisfies Meta<typeof Footer>;
 

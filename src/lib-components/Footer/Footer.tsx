@@ -102,9 +102,9 @@ export interface FooterProps {
   socialLinks?: FooterSocialLink[];
   /**
    * Line in the bottom bar, rendered after the copyright symbol and the
-   * current year. Pass `null` to hide it; omit for the default.
+   * current year. The line is omitted when this is absent.
    */
-  copyrightText?: string | null;
+  copyrightText?: string;
   /** Consuming app version, shown next to the Cinnamon version. */
   appVersion?: string;
   /** Render the brand/support area. When false, only the bottom bar shows. */
@@ -252,7 +252,7 @@ export function Footer({
   support,
   linkColumns,
   socialLinks,
-  copyrightText = "CIn UFPE | Todos os direitos reservados",
+  copyrightText,
   appVersion,
   largeFooter = true,
 }: FooterProps) {
@@ -428,7 +428,7 @@ export function Footer({
 
       <div className={styles.strip()}>
         <div className={styles.bar()}>
-          {copyrightText !== null && (
+          {copyrightText && (
             <span>
               © {new Date().getFullYear()} {copyrightText}
             </span>
