@@ -12,7 +12,7 @@ export function IconRenderer({
   IconComponent
 }: IconRendererProps) {
   return (
-    <div style={{ color: 'white', justifyContent: 'center' }}>
+    <div style={{ color: 'white', display:'flex', justifyContent: 'center' }}>
       {iconUrl && (
         <img
           style={{ width: '2.35rem', height: '2.35rem', marginLeft: '1.7rem' }}

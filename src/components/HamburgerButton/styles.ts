@@ -41,6 +41,13 @@ export const Hamburger = styled.button<{ isOpen: boolean }>`
 
   position: relative;
   top: 50%;
+
+  /* Hides the outline for pointer interaction while keeping the focus ring
+     for keyboard navigation. */
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
   &:hover {
     ${(props) => {
       if (!props.isOpen) {

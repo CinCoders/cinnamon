@@ -142,3 +142,9 @@ export const StyledSystemMenu = styled(Menu)`
     padding-bottom: 0px;
   }
 `;
+
+export const StyledLogoLink = styled.a`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+`;
