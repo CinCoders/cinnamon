@@ -46,7 +46,7 @@ export default function ServerImportClientPage() {
         </section>
       </main>
 
-      <Footer largeFooter={false} />
+      <Footer largeFooter={false} copyrightText="CIn UFPE | Todos os direitos reservados" />
     </div>
   );
 }

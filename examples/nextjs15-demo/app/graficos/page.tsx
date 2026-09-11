@@ -56,7 +56,7 @@ export default async function GraficosPage() {
         permittedRoles: ["admin"],
         onUnauthenticated: () => redirect("/login"),
       }}
-      footer={{}}
+      footer={{ copyrightText: "CIn UFPE | Todos os direitos reservados" }}
       // Navbar client com o auth real do Keycloak (o PageServer padrão não tem OidcAuthLike no server).
       components={{ navbar: <NavbarClientWrapper session={session} title="Gráficos & Métricas" /> }}
     >

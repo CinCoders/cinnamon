@@ -7,6 +7,7 @@ const meta = {
   parameters: { docs: { page: null }, layout: "fullscreen" },
   args: {
     appVersion: "2.2.2",
+    copyrightText: "CIn UFPE | Todos os direitos reservados",
   },
 } satisfies Meta<typeof Footer>;
 
@@ -44,6 +45,11 @@ export const CustomColumns: Story = {
 
 export const NoSupport: Story = {
   args: { variant: "cin", support: null },
+};
+
+/** The bottom-bar line is configurable. Pass `null` to drop it entirely. */
+export const CustomCopyright: Story = {
+  args: { copyrightText: "CIn UFPE | All rights reserved" },
 };
 
 export const Compact: Story = {

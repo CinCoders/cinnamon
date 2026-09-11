@@ -76,7 +76,7 @@ const meta: Meta<PageStoryArgs> = {
     footerSupportTitle: "Suporte Técnico",
     footerTelephone: "(81) 2126-8430",
     footerEmail: "helpdesk@cin.ufpe.br",
-    footerCopyrightText: "CIn UFPE | All rights reserved",
+    footerCopyrightText: "CIn UFPE | Todos os direitos reservados",
     footerAppVersion: "1.4.0",
   },
 };

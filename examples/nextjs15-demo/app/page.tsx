@@ -259,7 +259,7 @@ export default async function HomePage() {
         </ClientBoundary>
       </main>
 
-      <Footer appVersion="0.1.0" />
+      <Footer appVersion="0.1.0" copyrightText="CIn UFPE | Todos os direitos reservados" />
     </div>
   );
 }
