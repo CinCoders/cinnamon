@@ -34,7 +34,8 @@ jobs:
     environment: npm-publish
 
     permissions:
-      contents: read
+      # Needed to create the GitHub release at the end of the job.
+      contents: write
       # Required for OIDC trusted publishing.
       id-token: write
 
@@ -115,3 +116,33 @@ jobs:
 
       - name: Publish
         run: npm publish --provenance --tag '${{ steps.release.outputs.dist_tag }}'
+
+      # Releases up to 1.5.0 were written by hand with the same two parts, so
+      # this keeps the shape the repository already had: the CHANGELOG section
+      # for this version on top, then the pull requests GitHub generates. A
+      # version with no CHANGELOG section still gets a release, with the
+      # generated half only.
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          notes="$(awk -v v="## [${VERSION}]" \
+            'index($0, v) == 1 { found = 1; next }
+             found && /^## \[/ { exit }
+             found { print }' CHANGELOG)"
+
+          if [ -z "${notes//[[:space:]]/}" ]; then
+            echo "::warning::No CHANGELOG section for ${VERSION}; publishing generated notes only."
+            notes=''
+          fi
+
+          jq -n \
+            --arg tag "${GITHUB_REF_NAME}" \
+            --arg name "v${VERSION}" \
+            --arg body "${notes}" \
+            '{tag_name: $tag, name: $name, body: $body,
+              draft: false, prerelease: false, generate_release_notes: true}' \
+            | gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" --input -
