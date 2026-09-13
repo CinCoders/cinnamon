@@ -1,6 +1,18 @@
 {
   "version": 1,
   "skills": {
+    "fumadocs-component-docs": {
+      "source": "theorcdev/8bitcn-ui",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/fumadocs-component-docs/SKILL.md",
+      "computedHash": "8befadc63bd40f7d955d5e3c8484095eab59cd8fece3bb3d3e3cc4754a0b563d"
+    },
+    "fumadocs-mdx-structure": {
+      "source": "theorcdev/8bitcn-ui",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/fumadocs-mdx-structure/SKILL.md",
+      "computedHash": "b390c16c1316f3f97a94155c8b9c4fb81ef62026978d6d45f806642edcd6f212"
+    },
     "storybook": {
       "source": "mindrally/skills",
       "sourceType": "github",
