@@ -115,6 +115,7 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`SideMenu`** — **BREAKING vs v1**: the component was rewritten. The public prop contract is unchanged (`links: SideMenuLink[]`, `top`, `visibility`, `setVisibility`, `linkComponent`), so v1 call sites compile as-is, but the rendering changed: the open drawer now carries an animated accent rail (see _Added_) and pulls in `motion` as a runtime dependency. Consumers that vendored their own copy of the v1 `SideMenu` styles, or relied on the exact prior DOM structure, must revalidate. New optional `activeHref` prop (see _Added_).
 - **`IconRenderer` → `Icon`** — **BREAKING**: the component `IconRenderer` and its `IconRendererProps` type were renamed to `Icon` / `IconProps`. `IconComponent` prop now typed as `ComponentType<{ className?: string }>` (was `any`).
 - **`ErrorScreen`**: `enum httpErrors` replaced with `const httpErrors as const` + type alias — no runtime JS emitted; same call-site syntax (`httpErrors.NOTFOUND_404`) preserved. Unknown error types now render a generic fallback instead of returning `null`.
+- **`SearchInput`**: `value` is now optional. When omitted, the component manages its own state internally (seeded from the new optional `defaultValue` prop), so consumers no longer need to create a `useState` for the common case. Passing `value` still opts into fully controlled mode, unchanged from before — existing call sites keep working as-is.
 
 #### Package
 
