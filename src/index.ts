@@ -43,6 +43,9 @@ export {
 export { SearchInput } from "./lib-components/SearchInput/SearchInput";
 export type { SearchInputProps } from "./lib-components/SearchInput/SearchInput";
 
+export { Text } from "./lib-components/Text/Text";
+export type { TextProps } from "./lib-components/Text/Text";
+
 export type { NavbarProps } from "./lib-components/Navbar/Navbar";
 export type {
   FooterProps,

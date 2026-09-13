@@ -63,6 +63,10 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`Icon`** — renders whichever of `iconUrl` / `IconComponent` / `iconId` is provided, in that precedence. This is the renamed `IconRenderer`.
 - **`@cincoders/cinnamon/icons`** — third subpath entry. Re-exports `Icon`, the typed registry (`resolveCinnamonIcon`, `getAvailableIconIds`, `CinnamonIconId`), `HugeiconsIcon`, and the full `@hugeicons/core-free-icons` set (`export *`, tree-shakeable, `sideEffects: false`). Hugeicons packages are kept external in `vite.icons.config.ts` so the icon set tree-shakes from the consumer's `node_modules`.
 
+#### Text
+
+- **`Text`** — new typography component with `variant: "title" | "subtitle" | "description"`, replacing hand-rolled heading/paragraph className strings at call sites. Each variant maps to a semantic tag (`h1`/`h2`/`p`, overridable via `as`) and uses design token colors (`text-cinnamon-dark`).
+
 #### SideMenu
 
 - **Animated accent rail** — the open drawer now draws a vertical accent line with a rounded connector that tracks the active item, plus a dashed grey rail that follows the row under hover/keyboard focus. Ported from the internal `HookSidebar` prototype. Motion uses spring physics and honours `prefers-reduced-motion`.
