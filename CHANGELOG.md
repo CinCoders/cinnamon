@@ -114,9 +114,9 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`Page`**: `createNavbarContext` prop removed — context is always provided. `ResizeObserver` replaces `window.addEventListener("resize")` for accurate shell measurement.
 - **`PageWithAuth`**: `createNavbarContext` prop removed (cascading from `Page`).
 - **`useNavbar()`**: `setSearchFuncion` typo corrected to `setSearchFunction`. `setSideMenuLinks` and `setSearchFunction` now have proper types (`SideMenuLink[]` and `(s: string) => void`) instead of `any`.
-- **`Navbar`**: `searchDropdownLabelsList` prop removed (was declared but never consumed). `IconComponent` prop now typed as `ComponentType<{ className?: string }>`.
+- **`Navbar`** — **BREAKING vs v1**: `sideMenuLinks: SideMenuLink[]` replaced by `sidebar?: SidebarData` (see the migration guide). `IconComponent` removed; the current system icon is set with `currentSystemIconUrl` only. `logoutFunction` removed; the user popup signs out through `auth.signoutRedirect`. `searchDropdownLabelsList` removed (was declared but never consumed).
 - **`Footer`**: hard-coded hex colors replaced with design token CSS vars (`bg-cinnamon-footer-bg`, `bg-cinnamon-footer-bar`). `phoneToTel()` helper moved to `src/lib/utils.ts`. `copyrightText` is a prop again, with v1's semantics: the bottom-bar line renders when it is passed and is omitted when it is not. The rewrite had hard-coded the string, which the README already documented as configurable.
-- **`SideMenu`** — **BREAKING vs v1**: the component was rewritten. The public prop contract is unchanged (`links: SideMenuLink[]`, `top`, `visibility`, `setVisibility`, `linkComponent`), so v1 call sites compile as-is, but the rendering changed: the open drawer now carries an animated accent rail (see _Added_) and pulls in `motion` as a runtime dependency. Consumers that vendored their own copy of the v1 `SideMenu` styles, or relied on the exact prior DOM structure, must revalidate. New optional `activeHref` prop (see _Added_).
+- **`SideMenu`** — **BREAKING vs v1**: the component was rewritten. `links: SideMenuLink[]` was replaced by `data: SidebarData`, and `SideMenuLink` is no longer exported, so v1 call sites do not compile until migrated (see the migration guide). `top`, `visibility`, `setVisibility` and `linkComponent` are unchanged. The rendering changed too: the open drawer now carries an animated accent rail (see _Added_) and pulls in `motion` as a runtime dependency. Consumers that vendored their own copy of the v1 `SideMenu` styles, or relied on the exact prior DOM structure, must revalidate. New optional `activeHref` prop (see _Added_).
 - **`IconRenderer` → `Icon`** — **BREAKING**: the component `IconRenderer` and its `IconRendererProps` type were renamed to `Icon` / `IconProps`. `IconComponent` prop now typed as `ComponentType<{ className?: string }>` (was `any`).
 - **`ErrorScreen`**: `enum httpErrors` replaced with `const httpErrors as const` + type alias — no runtime JS emitted; same call-site syntax (`httpErrors.NOTFOUND_404`) preserved. Unknown error types now render a generic fallback instead of returning `null`.
 - **`SearchInput`**: `value` is now optional. When omitted, the component manages its own state internally (seeded from the new optional `defaultValue` prop), so consumers no longer need to create a `useState` for the common case. Passing `value` still opts into fully controlled mode, unchanged from before — existing call sites keep working as-is.
@@ -254,7 +254,38 @@ The semantic `iconId` values are unchanged. The backing icon set moved from
 passed a `lucide-react` component through `IconComponent`, swap it for a
 Hugeicons one, an `iconId`, or an `iconUrl`.
 
-### 7. `Page` — remove `createNavbarContext`
+### 7. Sidebar links → `SidebarData`
+
+`Navbar`'s `sideMenuLinks` and `SideMenu`'s `links` both take a `SidebarData`
+object now, under the names `sidebar` and `data`. Top-level links go in
+`navMain`; a v1 link with `children` becomes an entry in `navGroups`.
+
+```diff
+- const links: SideMenuLink[] = [
+-   { id: 1, title: "Home", href: "/", IconComponent: HomeIcon },
+-   { id: 2, title: "Reports", children: [
+-     { id: 3, title: "Monthly", href: "/reports/monthly" },
+-   ] },
+- ];
+- <Navbar sideMenuLinks={links} ... />
++ const sidebar: SidebarData = {
++   navMain: [{ id: 1, title: "Home", href: "/", IconComponent: HomeIcon }],
++   navGroups: [{ id: 2, label: "Reports", items: [
++     { id: 3, title: "Monthly", href: "/reports/monthly" },
++   ] }],
++ };
++ <Navbar sidebar={sidebar} ... />
+```
+
+Three things have no direct equivalent:
+
+- **`iconUrl`** on a link. Sidebar items take `IconComponent` or `iconId`.
+- **An `href` on a link that has `children`.** A group is a collapsible label,
+  not a link; add the parent route as the first item of the group instead.
+- **`SideMenuLink`** as a type. Use `SidebarData`, `SidebarNavItem` and
+  `SidebarNavGroup`.
+
+### 8. `Page` — remove `createNavbarContext`
 
 ```diff
 - <Page createNavbarContext={false} ...>
@@ -263,7 +294,7 @@ Hugeicons one, an `iconId`, or an `iconUrl`.
 
 Context is now always provided. If you needed `createNavbarContext={false}` to avoid context overhead, the impact was minimal — `useMemo` ensures no unnecessary re-renders.
 
-### 8. SideMenu — highlight the active route (optional)
+### 9. SideMenu — highlight the active route (optional)
 
 The rewritten `SideMenu` can highlight the current page in the drawer. Pass the
 current path down through `Navbar`:
@@ -273,7 +304,7 @@ current path down through `Navbar`:
 import { usePathname } from "next/navigation";
 
 <Navbar
-  sideMenuLinks={links}
+  sidebar={sidebar}
   activeHref={usePathname()}   // react-router: useLocation().pathname
   ...
 />
@@ -286,7 +317,7 @@ state), just with the new accent rail on hover/focus.
 in automatically; in a monorepo with hoisting disabled, add `motion` to the
 consumer's `package.json`.
 
-### 9. Tailwind preflight conflict
+### 10. Tailwind preflight conflict
 
 If your consumer project runs its own Tailwind (v3 or v4), make sure the Cinnamon CSS import comes **after** your own base styles, or disable Tailwind's preflight in your app:
 
