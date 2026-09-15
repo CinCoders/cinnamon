@@ -25,6 +25,7 @@ type PageStoryArgs = {
   footerSupportTitle: string;
   footerTelephone: string;
   footerEmail: string;
+  footerCopyrightText: string;
   footerAppVersion: string;
 };
 
@@ -54,6 +55,7 @@ const meta: Meta<PageStoryArgs> = {
     footerSupportTitle: { control: "text", table: { category: "Footer" } },
     footerTelephone: { control: "text", table: { category: "Footer" } },
     footerEmail: { control: "text", table: { category: "Footer" } },
+    footerCopyrightText: { control: "text", table: { category: "Footer" } },
     footerAppVersion: { control: "text", table: { category: "Footer" } },
   },
 
@@ -74,6 +76,7 @@ const meta: Meta<PageStoryArgs> = {
     footerSupportTitle: "Suporte Técnico",
     footerTelephone: "(81) 2126-8430",
     footerEmail: "helpdesk@cin.ufpe.br",
+    footerCopyrightText: "CIn UFPE | All rights reserved",
     footerAppVersion: "1.4.0",
   },
 };
@@ -101,6 +104,7 @@ export const Default: Story = {
           telephone: args.footerTelephone,
           email: args.footerEmail,
         },
+        copyrightText: args.footerCopyrightText,
         appVersion: args.footerAppVersion,
       }}
       centralized={args.centralized}
