@@ -39,3 +39,5 @@ PLANO_FINAL_MIGRACAO_CINNAMON.md
 .agents/skills/*
 .claude/skills/*
 .handoff
+skills-lock.json
+.worktrees/

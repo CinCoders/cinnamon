@@ -4,10 +4,20 @@ import { Search01Icon } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 import { Input, type InputProps } from "@/components/ui/input";
 
-export type SearchInputProps = Omit<InputProps, "type">;
+export interface SearchInputProps extends Omit<InputProps, "type"> {
+  defaultValue?: string;
+}
 
 export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, placeholder = "Buscar…", ...props }, ref) => {
+  ({ className, placeholder = "Buscar…", value, defaultValue, onChange, ...props }, ref) => {
+    const [internalValue, setInternalValue] = React.useState(defaultValue ?? "");
+    const isControlled = value !== undefined;
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!isControlled) setInternalValue(e.target.value);
+      onChange?.(e);
+    };
+
     return (
       <div className="relative w-full">
         <HugeiconsIcon
@@ -21,6 +31,8 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           type="search"
           placeholder={placeholder}
           className={cn("pl-9", className)}
+          value={isControlled ? value : internalValue}
+          onChange={handleChange}
           {...props}
         />
       </div>
