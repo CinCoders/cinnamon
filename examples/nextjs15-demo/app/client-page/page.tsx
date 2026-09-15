@@ -36,7 +36,7 @@ export default function ClientPage() {
           },
         ],
       }}
-      footer={{}}
+      footer={{ copyrightText: "CIn UFPE | Todos os direitos reservados" }}
     >
       <div style={{ padding: "1rem 2rem", background: "#eff6ff", borderBottom: "1px solid #bfdbfe" }}>
         <h1 style={{ fontFamily: "system-ui, sans-serif" }}>
