@@ -121,15 +121,18 @@ export function UserPopup(props: UserPopupProps) {
           </div>
         ) : null}
 
-        {/* Logout */}
-        <Button
-          variant="outline"
-          className="mb-4 h-8 w-40 rounded-full"
-          onClick={logoutFunction}
-          type="button"
-        >
-          Sair
-        </Button>
+        {/* Logout. Hidden when neither logoutMethod nor auth.signoutRedirect
+            is available, since the button would otherwise do nothing. */}
+        {logoutMethod || auth?.signoutRedirect ? (
+          <Button
+            variant="outline"
+            className="mb-4 h-8 w-40 rounded-full"
+            onClick={logoutFunction}
+            type="button"
+          >
+            Sair
+          </Button>
+        ) : null}
       </div>
     </div>
   );
