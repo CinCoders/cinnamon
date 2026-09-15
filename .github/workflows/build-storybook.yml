@@ -1,0 +1,34 @@
+# Builds Storybook to prove it still compiles. It deliberately does not
+# deploy.
+#
+# GitHub Pages serves one site per repository, and the workflow on main
+# publishes v1's Storybook there. If this branch deployed as well, whichever
+# ran last would replace the other. When v2 becomes the mainline, add the
+# upload-pages-artifact and deploy-pages steps here and drop them from the
+# workflow on the v1 branch.
+name: Build StoryBook
+
+on:
+  pull_request:
+    branches:
+      - v2
+  push:
+    branches:
+      - v2
+
+jobs:
+  build_storybook:
+    name: Storybook Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci --ignore-scripts
+
+      - run: npm run build-storybook
