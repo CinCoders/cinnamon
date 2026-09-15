@@ -24,6 +24,7 @@
   "registries": {
     "@smoothui": "https://smoothui.dev/r/{name}.json",
     "@blocks-so": "https://blocks.so/r/{name}.json",
-    "@efferd": "https://efferd.com/r/{name}.json"
+    "@efferd": "https://efferd.com/r/{name}.json",
+    "@coss": "https://coss.com/ui/r/{name}.json"
   }
 }

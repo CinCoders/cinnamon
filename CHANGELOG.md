@@ -63,6 +63,10 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`Icon`** — renders whichever of `iconUrl` / `IconComponent` / `iconId` is provided, in that precedence. This is the renamed `IconRenderer`.
 - **`@cincoders/cinnamon/icons`** — third subpath entry. Re-exports `Icon`, the typed registry (`resolveCinnamonIcon`, `getAvailableIconIds`, `CinnamonIconId`), `HugeiconsIcon`, and the full `@hugeicons/core-free-icons` set (`export *`, tree-shakeable, `sideEffects: false`). Hugeicons packages are kept external in `vite.icons.config.ts` so the icon set tree-shakes from the consumer's `node_modules`.
 
+#### Text
+
+- **`Text`** — new typography component with `variant: "title" | "subtitle" | "description"`, replacing hand-rolled heading/paragraph className strings at call sites. Each variant maps to a semantic tag (`h1`/`h2`/`p`, overridable via `as`) and uses design token colors (`text-cinnamon-dark`).
+
 #### SideMenu
 
 - **Animated accent rail** — the open drawer now draws a vertical accent line with a rounded connector that tracks the active item, plus a dashed grey rail that follows the row under hover/keyboard focus. Ported from the internal `HookSidebar` prototype. Motion uses spring physics and honours `prefers-reduced-motion`.
@@ -111,10 +115,11 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 - **`PageWithAuth`**: `createNavbarContext` prop removed (cascading from `Page`).
 - **`useNavbar()`**: `setSearchFuncion` typo corrected to `setSearchFunction`. `setSideMenuLinks` and `setSearchFunction` now have proper types (`SideMenuLink[]` and `(s: string) => void`) instead of `any`.
 - **`Navbar`**: `searchDropdownLabelsList` prop removed (was declared but never consumed). `IconComponent` prop now typed as `ComponentType<{ className?: string }>`.
-- **`Footer`**: hard-coded hex colors replaced with design token CSS vars (`bg-cinnamon-footer-bg`, `bg-cinnamon-footer-bar`). `phoneToTel()` helper moved to `src/lib/utils.ts`.
+- **`Footer`**: hard-coded hex colors replaced with design token CSS vars (`bg-cinnamon-footer-bg`, `bg-cinnamon-footer-bar`). `phoneToTel()` helper moved to `src/lib/utils.ts`. `copyrightText` is a prop again, with v1's semantics: the bottom-bar line renders when it is passed and is omitted when it is not. The rewrite had hard-coded the string, which the README already documented as configurable.
 - **`SideMenu`** — **BREAKING vs v1**: the component was rewritten. The public prop contract is unchanged (`links: SideMenuLink[]`, `top`, `visibility`, `setVisibility`, `linkComponent`), so v1 call sites compile as-is, but the rendering changed: the open drawer now carries an animated accent rail (see _Added_) and pulls in `motion` as a runtime dependency. Consumers that vendored their own copy of the v1 `SideMenu` styles, or relied on the exact prior DOM structure, must revalidate. New optional `activeHref` prop (see _Added_).
 - **`IconRenderer` → `Icon`** — **BREAKING**: the component `IconRenderer` and its `IconRendererProps` type were renamed to `Icon` / `IconProps`. `IconComponent` prop now typed as `ComponentType<{ className?: string }>` (was `any`).
 - **`ErrorScreen`**: `enum httpErrors` replaced with `const httpErrors as const` + type alias — no runtime JS emitted; same call-site syntax (`httpErrors.NOTFOUND_404`) preserved. Unknown error types now render a generic fallback instead of returning `null`.
+- **`SearchInput`**: `value` is now optional. When omitted, the component manages its own state internally (seeded from the new optional `defaultValue` prop), so consumers no longer need to create a `useState` for the common case. Passing `value` still opts into fully controlled mode, unchanged from before — existing call sites keep working as-is.
 
 #### Package
 
