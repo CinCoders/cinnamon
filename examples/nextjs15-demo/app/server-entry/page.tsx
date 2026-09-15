@@ -41,7 +41,7 @@ export default async function ServerEntryPage() {
             onUnauthenticated: () => redirect("/login"),
           }}
           navbar={{ title: "Área autenticada (server)", hiddenUser: true }}
-          footer={{}}
+          footer={{ copyrightText: "CIn UFPE | Todos os direitos reservados" }}
         >
           <p style={{ padding: "1rem" }}>
             Conteúdo renderizado no servidor para usuário autenticado. <RenderProbe label="conteúdo" />
@@ -58,7 +58,7 @@ export default async function ServerEntryPage() {
             onUnauthenticated: () => redirect("/login"),
           }}
           navbar={{ title: "Área admin (server)", hiddenUser: true }}
-          footer={{}}
+          footer={{ copyrightText: "CIn UFPE | Todos os direitos reservados" }}
         >
           <p style={{ padding: "1rem" }}>Visível apenas para admin.</p>
         </PageWithAuthServer>
