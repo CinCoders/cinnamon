@@ -67,6 +67,10 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 
 - **`Text`** — new typography component with `variant: "title" | "subtitle" | "description"`, replacing hand-rolled heading/paragraph className strings at call sites. Each variant maps to a semantic tag (`h1`/`h2`/`p`, overridable via `as`) and uses design token colors (`text-cinnamon-dark`).
 
+#### RoleSwitch
+
+- **`RoleSwitch`** — renders different content depending on the signed-in user's roles. `cases` are evaluated in order and the first whose `roles` match the session is rendered (`'*'` matches any authenticated user); `fallback` renders when none match. Accepts either a `CinnamonSession` or an `OidcAuthLike` as `auth`, using the same `hasAccess` check as the rest of the auth model.
+
 #### SideMenu
 
 - **Animated accent rail** — the open drawer now draws a vertical accent line with a rounded connector that tracks the active item, plus a dashed grey rail that follows the row under hover/keyboard focus. Ported from the internal `HookSidebar` prototype. Motion uses spring physics and honours `prefers-reduced-motion`.
