@@ -18,9 +18,9 @@ on:
 env:
   # Major version that owns the npm "latest" dist-tag. Every other major is
   # published as "v<major>-latest" instead, so releasing a fix on one line
-  # never moves "latest" onto the other. Change this to 2 when v2 goes GA;
-  # v1 then keeps receiving fixes under "v1-latest".
-  LATEST_MAJOR: '1'
+  # never moves "latest" onto the other. v2 owns "latest", so a 1.x fix from
+  # this branch publishes under "v1-latest". Must match the value on v2.
+  LATEST_MAJOR: '2'
 
 jobs:
   build-publish-npm:
