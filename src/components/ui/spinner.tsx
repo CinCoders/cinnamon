@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 export function Spinner({
   className,
   ...props
-}: React.ComponentProps<typeof HugeiconsIcon>): React.ReactElement {
+}: Omit<React.ComponentProps<typeof HugeiconsIcon>, "icon">): React.ReactElement {
   return (
     <HugeiconsIcon
       aria-label="Loading"
