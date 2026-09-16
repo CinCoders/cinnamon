@@ -2,22 +2,118 @@
 
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import {
+  Csv01Icon,
+  Upload04Icon,
+  HtmlFileIcon,
+  Image01Icon,
+  PdfIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type React from "react";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
+import {
+  exportElementToPng,
+  exportTableToCsv,
+  exportTableToHtml,
+  exportTableToPdf,
+  type TableExportData,
+} from "@/lib/tableExport";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export type TableVariant = "default" | "card";
 
 export type TableProps = React.ComponentProps<"table"> & {
   variant?: TableVariant;
   render?: useRender.ComponentProps<"div">["render"];
+  /** Shows the "Exportar" button above the table (CSV, HTML, PDF, PNG). */
+  exportEnabled?: boolean;
+  /** Data to export as CSV/HTML/PDF. Required when `exportEnabled` is true. */
+  exportData?: TableExportData | (() => TableExportData);
+  /** Base filename (without extension) used for exported files. */
+  exportFileName?: string;
 };
+
+function TableExportMenu({
+  exportData,
+  exportFileName = "table",
+  containerRef,
+}: {
+  exportData?: TableExportData | (() => TableExportData);
+  exportFileName?: string;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}): React.ReactElement {
+  const getExportData = (): TableExportData =>
+    typeof exportData === "function" ? exportData() : (exportData ?? { headers: [], rows: [] });
+
+  return (
+    <div className="flex items-center justify-end gap-1 px-1 pt-1">
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              aria-label="Exportar"
+              className="bg-[#1E4A9C] text-white hover:opacity-90"
+              size="sm"
+            >
+              <HugeiconsIcon icon={Upload04Icon} size={18} strokeWidth={2} />
+              Exportar
+            </Button>
+          }
+        />
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            onClick={() => exportTableToCsv(getExportData(), `${exportFileName}.csv`)}
+          >
+            <HugeiconsIcon icon={Csv01Icon} strokeWidth={2} />
+            CSV
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => exportTableToHtml(getExportData(), `${exportFileName}.html`)}
+          >
+            <HugeiconsIcon icon={HtmlFileIcon} strokeWidth={2} />
+            HTML
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => exportTableToPdf(getExportData(), `${exportFileName}.pdf`)}
+          >
+            <HugeiconsIcon icon={PdfIcon} strokeWidth={2} />
+            PDF
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              if (containerRef.current) {
+                exportElementToPng(containerRef.current, `${exportFileName}.png`);
+              }
+            }}
+          >
+            <HugeiconsIcon icon={Image01Icon} strokeWidth={2} />
+            PNG
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
 
 export function Table({
   className,
   variant = "default",
   render,
+  exportEnabled = false,
+  exportData,
+  exportFileName,
   ...props
 }: TableProps): React.ReactElement {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const defaultProps = {
     children: (
       <table
@@ -29,16 +125,31 @@ export function Table({
         {...props}
       />
     ),
-    className: "relative w-full overflow-x-auto",
+    className:
+      "relative w-full overflow-x-auto [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border",
     "data-slot": "table-container",
     "data-variant": variant,
+    ref: containerRef,
   };
 
-  return useRender({
+  const table = useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(defaultProps, {}),
     render,
   });
+
+  if (!exportEnabled) return table;
+
+  return (
+    <div data-slot="table-export-wrapper">
+      <TableExportMenu
+        containerRef={containerRef}
+        exportData={exportData}
+        exportFileName={exportFileName}
+      />
+      {table}
+    </div>
+  );
 }
 
 export function TableHeader({
@@ -131,6 +242,38 @@ export function TableCell({
       data-slot="table-cell"
       {...props}
     />
+  );
+}
+
+export type TableMessageRowProps = React.ComponentProps<"tr"> & {
+  /** Number of columns in the table, so the message cell spans the full width. */
+  colSpan: number;
+};
+
+/**
+ * Drop-in replacement for the `<TableRow>`s inside `<TableBody>` for
+ * loading/empty/error states — keeps the header and table chrome mounted
+ * while showing a single centered message instead of data rows.
+ */
+export function TableMessageRow({
+  colSpan,
+  className,
+  children,
+  ...props
+}: TableMessageRowProps): React.ReactElement {
+  return (
+    <tr data-slot="table-message-row" {...props}>
+      <td
+        colSpan={colSpan}
+        className={cn(
+          "h-24 whitespace-normal p-2.5 text-center align-middle text-muted-foreground leading-none",
+          className,
+        )}
+        data-slot="table-cell"
+      >
+        {children}
+      </td>
+    </tr>
   );
 }
 

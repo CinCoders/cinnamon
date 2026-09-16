@@ -54,6 +54,19 @@ export type { TextProps } from "./lib-components/Text/Text";
 export { RoleSwitch } from "./lib-components/RoleSwitch/RoleSwitch";
 export type { RoleSwitchProps, RoleSwitchCase } from "./lib-components/RoleSwitch/RoleSwitch";
 
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+  TableMessageRow,
+} from "./components/ui/table";
+export type { TableProps, TableVariant, TableMessageRowProps } from "./components/ui/table";
+
 export type { NavbarProps } from "./lib-components/Navbar/Navbar";
 export type {
   FooterProps,

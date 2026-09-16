@@ -72,7 +72,7 @@
     "@tanstack/react-table": "^9.2.4",
     "clsx": "^2.1.1",
     "html-to-image": "^1.11.11",
-    "jspdf": "^3.0.1",
+    "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "motion": "^13.2.0",
     "tailwind-merge": "^3.4.0",
