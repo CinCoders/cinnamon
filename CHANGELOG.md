@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
-## [2.0.0] — in progress
+## [2.0.0] — 2026-09-16
 
 ### Summary
 
@@ -66,6 +66,10 @@ v2 is a full rewrite of the library's foundation. The styling stack (MUI + style
 #### Text
 
 - **`Text`** — new typography component with `variant: "title" | "subtitle" | "description"`, replacing hand-rolled heading/paragraph className strings at call sites. Each variant maps to a semantic tag (`h1`/`h2`/`p`, overridable via `as`) and uses design token colors (`text-cinnamon-dark`).
+
+#### RoleSwitch
+
+- **`RoleSwitch`** — renders different content depending on the signed-in user's roles. `cases` are evaluated in order and the first whose `roles` match the session is rendered (`'*'` matches any authenticated user); `fallback` renders when none match. Accepts either a `CinnamonSession` or an `OidcAuthLike` as `auth`, using the same `hasAccess` check as the rest of the auth model.
 
 #### SideMenu
 

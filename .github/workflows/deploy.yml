@@ -15,10 +15,10 @@ on:
 env:
   # Major version that owns the npm "latest" dist-tag. Every other major is
   # published as "v<major>-latest" instead, so releasing on one line never
-  # moves "latest" onto the other. While this is 1, a 2.x tag publishes as
-  # "v2-latest" and nobody upgrades into v2 by accident. Change it to 2 on
-  # both branches when v2 becomes the version new consumers should get.
-  LATEST_MAJOR: '1'
+  # moves "latest" onto the other. v2 owns "latest": a 2.x tag becomes what
+  # "npm i @cincoders/cinnamon" installs, and 1.x fixes publish under
+  # "v1-latest". Must match the value on the v1 branch.
+  LATEST_MAJOR: '2'
 
   # Branch that release commits must be on. v2 is an orphan branch, so its
   # tags are not reachable from main; this is what makes the ancestry check
