@@ -4,6 +4,7 @@ import * as React from "react";
 import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
 import type { User, SidebarData, System, LinkComponent } from "@/interfaces";
+import type { CinnamonIconId } from "@/icons";
 import { SideMenu } from "@/components/SideMenu/SideMenu";
 import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
@@ -28,6 +29,8 @@ export interface NavbarProps {
   hiddenUser?: boolean;
   title?: string;
   h1?: boolean;
+  /** Ícone do registry da lib, exibido ao lado do nome da aplicação. */
+  titleIconId?: CinnamonIconId;
   searchFunction?: (searchString: string) => void;
   user?: User;
   /** Conteúdo da sidebar. Quando presente, o botão de menu aparece no Navbar. */
@@ -57,6 +60,7 @@ export function Navbar(props: NavbarProps) {
     user = { name: "-", email: "-" },
     title = "",
     h1 = false,
+    titleIconId,
     sidebar,
     activeHref,
     isLandingPage = false,
@@ -117,18 +121,10 @@ export function Navbar(props: NavbarProps) {
   );
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
-  // O SideMenu é um Sheet não-modal: um pointerdown fora dele dispara
-  // `onOpenChange(false)` (outside-press). Como o próprio botão hambúrguer
-  // fica fora do Sheet, clicá-lo enquanto aberto fecha via outside-press e,
-  // no pointerup seguinte, o onClick reabriria. Ignoramos o toggle do botão
-  // por uma janela curta após o Sheet ter se fechado sozinho.
-  const lastSideMenuCloseRef = React.useRef(0);
   const toggleSideMenu = React.useCallback(() => {
-    if (Date.now() - lastSideMenuCloseRef.current < 300) return;
     setSideMenuOpen((v) => !v);
   }, []);
   const handleSideMenuOpenChange = React.useCallback((open: boolean) => {
-    if (!open) lastSideMenuCloseRef.current = Date.now();
     setSideMenuOpen(open);
   }, []);
   const [searchString, setSearchString] = React.useState("");
@@ -198,7 +194,10 @@ export function Navbar(props: NavbarProps) {
               <Icon iconUrl={currentSystemIconUrl} />
             )}
 
-            <div className="ml-2 text-cinnamon-dark whitespace-nowrap">
+            <div className="ml-2 flex items-center gap-2 text-cinnamon-dark whitespace-nowrap">
+              {titleIconId && (
+                <Icon iconId={titleIconId} className="h-5 w-5 shrink-0" />
+              )}
               {h1 ? (
                 <span className="text-2xl font-semibold">{title}</span>
               ) : (
@@ -307,7 +306,6 @@ export function Navbar(props: NavbarProps) {
           hasSidebar && (
             <SideMenu
               visibility={sideMenuOpen}
-              top="64px"
               setVisibility={handleSideMenuOpenChange}
               data={sidebar!}
               linkComponent={linkComponent}
