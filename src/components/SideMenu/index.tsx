@@ -38,7 +38,7 @@ function SideMenuIcon({ iconUrl, title, IconComponent }: any) {
   );
 }
 
-function NewTabLinkWithoutChild(props: { link: SideMenuLink }) {
+function NewTabLinkWithoutChild(props: Readonly<{ link: SideMenuLink }>) {
   const { link } = props;
   return (
     <>
@@ -74,7 +74,7 @@ function NewTabLinkDiv({
   toggleDrawer,
   child,
   children
-}: NewTabLinkDivProps) {
+}: Readonly<NewTabLinkDivProps>) {
   useEffect(() => {
     if (!link && !child) {
       throw new Error('No child or link passed to newTabLinkDiv component');
@@ -135,7 +135,7 @@ export function SideMenu({
   top,
   visibility = false,
   setVisibility
-}: SideMenuProps) {
+}: Readonly<SideMenuProps>) {
   const [showChildrenLinks, setShowChildrenLinks] = useState<boolean[]>([]);
   const { pathname } = useLocation();
 

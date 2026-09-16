@@ -38,7 +38,7 @@ export function Page({
   haveToast = false,
   components,
   createNavbarContext = true
-}: PageProps) {
+}: Readonly<PageProps>) {
   const navbarRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
 

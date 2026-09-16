@@ -56,7 +56,7 @@ export const ImageInput = ({
         onMouseLeave={() => setShowImageInput(false)}
       >
         <StyledImage
-          src={imageSource ? imageSource : blankAvatar}
+          src={imageSource || blankAvatar}
           alt='User Picture'
         />
         <input

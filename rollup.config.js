@@ -15,9 +15,21 @@ const globals = {
   jquery: '$'
 };
 
+// MUI ships 'use client' directives for React Server Components. Rollup drops
+// them when bundling and warns once per file, which buries every other warning
+// under roughly 360 lines of noise. Nothing here can act on them, so they are
+// dropped and everything else is still reported.
+const onwarn = (warning, warn) => {
+  if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+    return;
+  }
+  warn(warning);
+};
+
 export default [
   {
     input: './src/index.ts',
+    onwarn,
     output: [
       {
         file: packageJson.main,
