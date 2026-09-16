@@ -39,6 +39,11 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  SimpleSelect,
+} from "./components/ui/select";
+export type {
+  SimpleSelectItem,
+  SimpleSelectProps,
 } from "./components/ui/select";
 export { SearchInput } from "./lib-components/SearchInput/SearchInput";
 export type { SearchInputProps } from "./lib-components/SearchInput/SearchInput";

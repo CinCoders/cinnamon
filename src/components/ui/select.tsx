@@ -4,7 +4,49 @@ import { cn } from "@/lib/utils"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { UnfoldMoreIcon, Tick02Icon, ArrowUp01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons"
 
-const Select = SelectPrimitive.Root
+/**
+ * Maps item value -> label so a bare `<SelectValue />` can show the label
+ * instead of the raw value without the consumer having to pass `items` to
+ * `<Select>` (base-ui only resolves labels automatically when `items` is set).
+ * Populated by `SelectItem` as items mount.
+ */
+const SelectLabelMapContext = React.createContext<Map<unknown, React.ReactNode> | null>(null)
+
+/**
+ * `SelectContent`'s items only mount once the popup opens, so a label map
+ * populated on `SelectItem` mount would still show the raw value on first
+ * paint. Walk the static children tree instead — it exists synchronously
+ * on every render, regardless of the popup's mounted state.
+ */
+function collectSelectItemLabels(
+  children: React.ReactNode,
+  map: Map<unknown, React.ReactNode>,
+): void {
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) return
+    if (child.type === SelectItem) {
+      const props = child.props as SelectPrimitive.Item.Props
+      map.set(props.value, props.children)
+      return
+    }
+    const nested = (child.props as { children?: React.ReactNode } | undefined)?.children
+    if (nested) collectSelectItemLabels(nested, map)
+  })
+}
+
+function Select(props: SelectPrimitive.Root.Props<any>) {
+  const labelMap = React.useMemo(() => {
+    const map = new Map<unknown, React.ReactNode>()
+    collectSelectItemLabels(props.children, map)
+    return map
+  }, [props.children])
+
+  return (
+    <SelectLabelMapContext.Provider value={labelMap}>
+      <SelectPrimitive.Root {...props} />
+    </SelectLabelMapContext.Provider>
+  )
+}
 
 function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (
@@ -16,13 +58,17 @@ function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   )
 }
 
-function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+function SelectValue({ className, children, ...props }: SelectPrimitive.Value.Props) {
+  const labelMap = React.useContext(SelectLabelMapContext)
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
       className={cn("flex flex-1 text-left", className)}
       {...props}
-    />
+    >
+      {children ??
+        ((value: unknown): React.ReactNode => labelMap?.get(value) ?? (value as React.ReactNode))}
+    </SelectPrimitive.Value>
   )
 }
 
@@ -186,6 +232,42 @@ function SelectScrollDownButton({
   )
 }
 
+export interface SimpleSelectItem {
+  value: string
+  label: React.ReactNode
+}
+
+export interface SimpleSelectProps
+  extends Omit<SelectPrimitive.Root.Props<string>, "items" | "children"> {
+  items: SimpleSelectItem[]
+  placeholder?: React.ReactNode
+  className?: string
+  size?: "sm" | "default"
+}
+
+function SimpleSelect({
+  items,
+  placeholder,
+  className,
+  size,
+  ...props
+}: SimpleSelectProps) {
+  return (
+    <Select items={items} {...props}>
+      <SelectTrigger className={className} size={size}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {items.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export {
   Select,
   SelectContent,
@@ -197,4 +279,5 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  SimpleSelect,
 }
