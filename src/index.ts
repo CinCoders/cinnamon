@@ -67,6 +67,15 @@ export {
 } from "./components/ui/table";
 export type { TableProps, TableVariant, TableMessageRowProps } from "./components/ui/table";
 
+export {
+  Frame,
+  FramePanel,
+  FrameHeader,
+  FrameTitle,
+  FrameDescription,
+  FrameFooter,
+} from "./components/ui/frame";
+
 export type { NavbarProps } from "./lib-components/Navbar/Navbar";
 export type {
   FooterProps,

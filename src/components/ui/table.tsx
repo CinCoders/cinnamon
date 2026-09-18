@@ -141,7 +141,7 @@ export function Table({
   if (!exportEnabled) return table;
 
   return (
-    <div data-slot="table-export-wrapper">
+    <div data-slot="table-export-wrapper" className="w-full">
       <TableExportMenu
         containerRef={containerRef}
         exportData={exportData}
