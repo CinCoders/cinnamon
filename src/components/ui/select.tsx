@@ -34,7 +34,7 @@ function collectSelectItemLabels(
   })
 }
 
-function Select(props: SelectPrimitive.Root.Props<any>) {
+function Select<Value>(props: SelectPrimitive.Root.Props<Value>) {
   const labelMap = React.useMemo(() => {
     const map = new Map<unknown, React.ReactNode>()
     collectSelectItemLabels(props.children, map)

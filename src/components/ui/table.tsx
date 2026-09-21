@@ -125,12 +125,12 @@ export function Table({
       "relative w-full overflow-x-auto [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border",
     "data-slot": "table-container",
     "data-variant": variant,
-    ref: containerRef,
   };
 
   const table = useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(defaultProps, {}),
+    ref: containerRef,
     render,
   });
 
