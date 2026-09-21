@@ -46,9 +46,9 @@ function TableExportMenu({
   exportFileName = "table",
   containerRef,
 }: {
-  exportData?: TableExportData | (() => TableExportData);
-  exportFileName?: string;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  readonly exportData?: TableExportData | (() => TableExportData);
+  readonly exportFileName?: string;
+  readonly containerRef: React.RefObject<HTMLDivElement | null>;
 }): React.ReactElement {
   const getExportData = (): TableExportData =>
     typeof exportData === "function" ? exportData() : (exportData ?? { headers: [], rows: [] });
@@ -275,9 +275,9 @@ export function TableMessageRow({
 
 export type TableSkeletonRowsProps = {
   /** Number of columns per row, so each row's skeleton bars match the real header. */
-  columns: number;
+  readonly columns: number;
   /** Number of skeleton rows to render. */
-  rows?: number;
+  readonly rows?: number;
 };
 
 /**
@@ -291,10 +291,10 @@ export function TableSkeletonRows({
 }: TableSkeletonRowsProps): React.ReactElement {
   return (
     <>
-      {Array.from({ length: rows }).map((_, rowIndex) => (
-        <TableRow key={rowIndex} data-slot="table-skeleton-row">
-          {Array.from({ length: columns }).map((_, columnIndex) => (
-            <TableCell key={columnIndex}>
+      {Array.from({ length: rows }, (_, rowIndex) => (
+        <TableRow key={`skeleton-row-${rowIndex}`} data-slot="table-skeleton-row">
+          {Array.from({ length: columns }, (_, columnIndex) => (
+            <TableCell key={`skeleton-cell-${columnIndex}`}>
               <div className="h-4 w-full animate-pulse rounded bg-muted" />
             </TableCell>
           ))}

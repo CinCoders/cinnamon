@@ -9,12 +9,12 @@ import { NavMain } from '@/components/sidebar-01/nav-main';
 import type { LinkComponent, SidebarData } from '@/interfaces';
 
 export interface AppSidebarProps {
-  data: SidebarData;
-  linkComponent: LinkComponent;
-  activeHref?: string;
-  onNavigate?: () => void;
-  onClose?: () => void;
-  className?: string;
+  readonly data: SidebarData;
+  readonly linkComponent: LinkComponent;
+  readonly activeHref?: string;
+  readonly onNavigate?: () => void;
+  readonly onClose?: () => void;
+  readonly className?: string;
 }
 
 export function AppSidebar({

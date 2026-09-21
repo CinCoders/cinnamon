@@ -312,7 +312,7 @@ export function Navbar(props: NavbarProps) {
             <SideMenu
               visibility={sideMenuOpen}
               setVisibility={handleSideMenuOpenChange}
-              data={{ appLogoSrc: logoSrc, ...sidebar! }}
+              data={{ ...sidebar!, appLogoSrc: sidebar!.appLogoSrc ?? logoSrc }}
               linkComponent={linkComponent}
               activeHref={activeHref}
             />

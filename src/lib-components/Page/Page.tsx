@@ -10,13 +10,13 @@ import { ToastContainer } from "@/components/Toast/Toast";
 import { ErrorBoundary, type ErrorBoundaryProps } from "@/lib-components/ErrorBoundary/ErrorBoundary";
 
 export interface PageProps {
-  navbar?: NavbarProps;
-  footer?: FooterProps;
-  children: React.ReactNode;
-  centralized?: boolean;
-  flexDirection?: "column" | "column-reverse" | "row";
-  haveToast?: boolean;
-  components?: {
+  readonly navbar?: NavbarProps;
+  readonly footer?: FooterProps;
+  readonly children: React.ReactNode;
+  readonly centralized?: boolean;
+  readonly flexDirection?: "column" | "column-reverse" | "row";
+  readonly haveToast?: boolean;
+  readonly components?: {
     navbar?: React.ReactNode;
     footer?: React.ReactNode;
     toastContainer?: React.ReactNode;
@@ -26,7 +26,7 @@ export interface PageProps {
    * Props forwarded to the ErrorBoundary wrapping `children`. Omit
    * `supportEmail` to hide the "Contact support" button.
    */
-  errorBoundaryProps?: Omit<ErrorBoundaryProps, "children">;
+  readonly errorBoundaryProps?: Omit<ErrorBoundaryProps, "children">;
 }
 
 export function Page({

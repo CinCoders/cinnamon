@@ -239,10 +239,10 @@ export interface SimpleSelectItem {
 
 export interface SimpleSelectProps
   extends Omit<SelectPrimitive.Root.Props<string>, "items" | "children"> {
-  items: SimpleSelectItem[]
-  placeholder?: React.ReactNode
-  className?: string
-  size?: "sm" | "default"
+  readonly items: SimpleSelectItem[]
+  readonly placeholder?: React.ReactNode
+  readonly className?: string
+  readonly size?: "sm" | "default"
 }
 
 function SimpleSelect({
