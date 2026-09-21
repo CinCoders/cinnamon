@@ -19,6 +19,13 @@ export type { ErrorScreenProps } from "./lib-components/ErrorScreen/ErrorScreen"
 export { ForbiddenPage } from "./lib-components/ForbiddenPage/ForbiddenPage";
 export type { ForbiddenPageProps } from "./lib-components/ForbiddenPage/ForbiddenPage";
 
+// Catches uncaught render errors so consumers don't fall back to a blank
+// page. `PageWithAuth` wraps its content with this by default (configurable
+// via `errorBoundaryProps`); exposed here for consumers who need it outside
+// of `PageWithAuth`, e.g. above their auth provider.
+export { ErrorBoundary, buildSupportMailto } from "./lib-components/ErrorBoundary/ErrorBoundary";
+export type { ErrorBoundaryProps } from "./lib-components/ErrorBoundary/ErrorBoundary";
+
 // Rendered by PageWithAuth — exposed so consumers can build/type the
 // `navbar` / `footer` props and fire toasts from their pages.
 export { Navbar } from "./lib-components/Navbar/Navbar";
