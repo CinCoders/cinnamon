@@ -27,7 +27,6 @@ const meta = {
   component: SideMenu,
   args: {
     data: storyData,
-    top: "64px",
     visibility: false,
     setVisibility: () => {},
     activeHref: "/users",

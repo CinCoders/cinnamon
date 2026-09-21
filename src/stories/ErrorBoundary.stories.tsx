@@ -21,7 +21,6 @@ const meta: Meta<typeof Page> = {
     footer: {
       description: "Centro de Informática — UFPE",
       support: { title: "Suporte Técnico", telephone: "(81) 2126-8430", email: "helpdesk@cin.ufpe.br" },
-      copyrightText: "CIn UFPE | All rights reserved",
       appVersion: "1.4.0",
     },
     errorBoundaryProps: {
