@@ -21,6 +21,14 @@ const external = [
   "clsx",
   "tailwind-merge",
   "tailwind-variants",
+  // Table (behind exportEnabled) pulls these in via src/lib/tableExport.ts.
+  // Same reasoning as above: keep them external so dist/ never vendors
+  // jspdf's and html-to-image's own dependency trees (~1.5 MB, incl.
+  // dompurify and core-js, invisible to a consumer's npm audit).
+  "jspdf",
+  "jspdf-autotable",
+  "html-to-image",
+  "@tanstack/react-table",
 ];
 
 export default defineConfig({
