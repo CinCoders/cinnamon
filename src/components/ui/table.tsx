@@ -216,7 +216,7 @@ export function TableHead({
   return (
     <th
       className={cn(
-        "h-10 whitespace-nowrap px-2.5 text-left align-middle font-medium text-muted-foreground leading-none has-[[role=checkbox]]:w-px last:has-[[role=checkbox]]:ps-0 first:has-[[role=checkbox]]:pe-0",
+        "h-10 whitespace-nowrap px-2.5 text-left align-middle font-medium text-muted-foreground leading-none in-data-[variant=card]:first:ps-4 in-data-[variant=card]:last:pe-4 has-[[role=checkbox]]:w-px last:has-[[role=checkbox]]:ps-0 first:has-[[role=checkbox]]:pe-0",
         className,
       )}
       data-slot="table-head"
@@ -232,7 +232,7 @@ export function TableCell({
   return (
     <td
       className={cn(
-        "whitespace-nowrap bg-clip-padding p-2.5 in-data-[slot=table-footer]:py-3.5 align-middle leading-none in-data-[variant=card]:first:ps-[calc(--spacing(2.5)-1px)] in-data-[variant=card]:last:pe-[calc(--spacing(2.5)-1px)] has-[[role=checkbox]]:w-px last:has-[[role=checkbox]]:ps-0 first:has-[[role=checkbox]]:pe-0",
+        "whitespace-nowrap bg-clip-padding p-2.5 in-data-[slot=table-footer]:py-3.5 align-middle leading-none in-data-[variant=card]:first:ps-4 in-data-[variant=card]:last:pe-4 has-[[role=checkbox]]:w-px last:has-[[role=checkbox]]:ps-0 first:has-[[role=checkbox]]:pe-0",
         className,
       )}
       data-slot="table-cell"
@@ -270,6 +270,37 @@ export function TableMessageRow({
         {children}
       </td>
     </tr>
+  );
+}
+
+export type TableSkeletonRowsProps = {
+  /** Number of columns per row, so each row's skeleton bars match the real header. */
+  columns: number;
+  /** Number of skeleton rows to render. */
+  rows?: number;
+};
+
+/**
+ * Drop-in replacement for the real `<TableRow>`s inside `<TableBody>` while
+ * data is loading — mirrors the row/cell layout so the skeleton doesn't
+ * jump when real rows arrive.
+ */
+export function TableSkeletonRows({
+  columns,
+  rows = 5,
+}: TableSkeletonRowsProps): React.ReactElement {
+  return (
+    <>
+      {Array.from({ length: rows }).map((_, rowIndex) => (
+        <TableRow key={rowIndex} data-slot="table-skeleton-row">
+          {Array.from({ length: columns }).map((_, columnIndex) => (
+            <TableCell key={columnIndex}>
+              <div className="h-4 w-full animate-pulse rounded bg-muted" />
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
   );
 }
 

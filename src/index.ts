@@ -71,8 +71,14 @@ export {
   TableCell,
   TableCaption,
   TableMessageRow,
+  TableSkeletonRows,
 } from "./components/ui/table";
-export type { TableProps, TableVariant, TableMessageRowProps } from "./components/ui/table";
+export type {
+  TableProps,
+  TableVariant,
+  TableMessageRowProps,
+  TableSkeletonRowsProps,
+} from "./components/ui/table";
 
 export {
   Frame,
