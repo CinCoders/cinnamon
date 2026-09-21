@@ -4,7 +4,49 @@ import { cn } from "@/lib/utils"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { UnfoldMoreIcon, Tick02Icon, ArrowUp01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons"
 
-const Select = SelectPrimitive.Root
+/**
+ * Maps item value -> label so a bare `<SelectValue />` can show the label
+ * instead of the raw value without the consumer having to pass `items` to
+ * `<Select>` (base-ui only resolves labels automatically when `items` is set).
+ * Populated by `SelectItem` as items mount.
+ */
+const SelectLabelMapContext = React.createContext<Map<unknown, React.ReactNode> | null>(null)
+
+/**
+ * `SelectContent`'s items only mount once the popup opens, so a label map
+ * populated on `SelectItem` mount would still show the raw value on first
+ * paint. Walk the static children tree instead — it exists synchronously
+ * on every render, regardless of the popup's mounted state.
+ */
+function collectSelectItemLabels(
+  children: React.ReactNode,
+  map: Map<unknown, React.ReactNode>,
+): void {
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) return
+    if (child.type === SelectItem) {
+      const props = child.props as SelectPrimitive.Item.Props
+      map.set(props.value, props.children)
+      return
+    }
+    const nested = (child.props as { children?: React.ReactNode } | undefined)?.children
+    if (nested) collectSelectItemLabels(nested, map)
+  })
+}
+
+function Select<Value>(props: SelectPrimitive.Root.Props<Value>) {
+  const labelMap = React.useMemo(() => {
+    const map = new Map<unknown, React.ReactNode>()
+    collectSelectItemLabels(props.children, map)
+    return map
+  }, [props.children])
+
+  return (
+    <SelectLabelMapContext.Provider value={labelMap}>
+      <SelectPrimitive.Root {...props} />
+    </SelectLabelMapContext.Provider>
+  )
+}
 
 function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (
@@ -16,13 +58,17 @@ function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   )
 }
 
-function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+function SelectValue({ className, children, ...props }: SelectPrimitive.Value.Props) {
+  const labelMap = React.useContext(SelectLabelMapContext)
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
-      className={cn("flex flex-1 text-left", className)}
+      className={cn("flex flex-1 text-left text-xs/relaxed", className)}
       {...props}
-    />
+    >
+      {children ??
+        ((value: unknown): React.ReactNode => labelMap?.get(value) ?? (value as React.ReactNode))}
+    </SelectPrimitive.Value>
   )
 }
 
@@ -39,7 +85,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-fit items-center justify-between gap-1.5 rounded-md border border-input bg-input/20 px-2 py-1.5 text-xs/relaxed whitespace-nowrap transition-colors outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-7 data-[size=sm]:h-6 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+        "flex w-fit cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-input/20 px-2 py-1.5 text-xs/relaxed whitespace-nowrap transition-colors outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-7 data-[size=sm]:h-6 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className
       )}
       {...props}
@@ -115,7 +161,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex min-h-7 w-full cursor-default items-center gap-2 rounded-md px-2 py-1 text-xs/relaxed outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "relative flex min-h-7 w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs/relaxed outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className
       )}
       {...props}
@@ -186,6 +232,42 @@ function SelectScrollDownButton({
   )
 }
 
+export interface SimpleSelectItem {
+  value: string
+  label: React.ReactNode
+}
+
+export interface SimpleSelectProps
+  extends Omit<SelectPrimitive.Root.Props<string>, "items" | "children"> {
+  readonly items: SimpleSelectItem[]
+  readonly placeholder?: React.ReactNode
+  readonly className?: string
+  readonly size?: "sm" | "default"
+}
+
+function SimpleSelect({
+  items,
+  placeholder,
+  className,
+  size,
+  ...props
+}: SimpleSelectProps) {
+  return (
+    <Select items={items} {...props}>
+      <SelectTrigger className={className} size={size}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {items.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export {
   Select,
   SelectContent,
@@ -197,4 +279,5 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  SimpleSelect,
 }

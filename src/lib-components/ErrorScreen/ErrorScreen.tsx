@@ -16,6 +16,7 @@ export const httpErrors = {
   COMINGSOON_501: "COMINGSOON_501",
   INACTIVE_503: "INACTIVE_503",
   MAINTENANCE_503: "MAINTENANCE_503",
+  SERVER_ERROR: "SERVER_ERROR",
 } as const;
 
 export type httpErrors = (typeof httpErrors)[keyof typeof httpErrors];
@@ -33,22 +34,28 @@ type ErrorScreenContent = {
 const errorMap: Record<httpErrors, ErrorScreenContent> = {
   [httpErrors.NOTFOUND_404]: {
     image: notFound404,
-    alt: "Imagem indicando erro 404 - pagina nao encontrada",
+    alt: "Imagem indicando erro 404 - conteúdo não encontrado",
+    message: "Não foi possível encontrar o que você procurava.",
   },
   [httpErrors.COMINGSOON_501]: {
     image: comingSoon501,
-    alt: "Imagem indicando erro 501 - pagina em construcao",
-    message: "Voce tentou acessar uma pagina ainda em construcao.",
+    alt: "Imagem indicando erro 501 - funcionalidade em construção",
+    message: "Você tentou acessar uma funcionalidade que ainda está em construção.",
   },
   [httpErrors.INACTIVE_503]: {
     image: inactive503,
-    alt: "Imagem indicando erro 503 - pagina inativa",
-    message: "A pagina que voce tentou acessar esta temporariamente inacessivel.",
+    alt: "Imagem indicando erro 503 - serviço temporariamente indisponível",
+    message: "Este serviço está temporariamente indisponível.",
   },
   [httpErrors.MAINTENANCE_503]: {
     image: maintenance503,
-    alt: "Imagem indicando erro 503 - manutencao",
-    message: "A pagina que voce tentou acessar esta em manutencao.",
+    alt: "Imagem indicando erro 503 - em manutenção",
+    message: "Este serviço está em manutenção no momento.",
+  },
+  [httpErrors.SERVER_ERROR]: {
+    image: inactive503,
+    alt: "Imagem indicando erro de comunicação com o servidor",
+    message: "Ocorreu um erro de comunicação com o servidor.",
   },
 };
 

@@ -31,6 +31,7 @@ export interface User {
 }
 
 export interface System {
+  /** Nome exibido no menu de aplicações. Recomendado até ~24 caracteres — títulos maiores são truncados com reticências. */
   title: string;
   iconUrl?: string;
   IconComponent?: ComponentType<SVGProps<SVGSVGElement>>;

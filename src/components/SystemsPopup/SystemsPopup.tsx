@@ -47,7 +47,10 @@ export function SystemsPopup({ systemsList = [], linkComponent }: SystemsPopupPr
                 </TooltipContent>
               </Tooltip>
 
-              <h3 className="m-0 text-center text-[10px] font-medium text-foreground">
+              <h3
+                className="m-0 line-clamp-2 w-full text-center text-[10px] font-medium break-words text-foreground"
+                title={system.title}
+              >
                 {system.title}
               </h3>
             </LinkImpl>

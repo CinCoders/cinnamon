@@ -7,19 +7,26 @@ import { Navbar } from "@/lib-components/Navbar/Navbar";
 import { Footer } from "@/lib-components/Footer/Footer";
 import { NavbarContext } from "./useNavbar";
 import { ToastContainer } from "@/components/Toast/Toast";
+import { ErrorBoundary, type ErrorBoundaryProps } from "@/lib-components/ErrorBoundary/ErrorBoundary";
 
 export interface PageProps {
-  navbar?: NavbarProps;
-  footer?: FooterProps;
-  children: React.ReactNode;
-  centralized?: boolean;
-  flexDirection?: "column" | "column-reverse" | "row";
-  haveToast?: boolean;
-  components?: {
+  readonly navbar?: NavbarProps;
+  readonly footer?: FooterProps;
+  readonly children: React.ReactNode;
+  readonly centralized?: boolean;
+  readonly flexDirection?: "column" | "column-reverse" | "row";
+  readonly haveToast?: boolean;
+  readonly components?: {
     navbar?: React.ReactNode;
     footer?: React.ReactNode;
     toastContainer?: React.ReactNode;
   };
+
+  /**
+   * Props forwarded to the ErrorBoundary wrapping `children`. Omit
+   * `supportEmail` to hide the "Contact support" button.
+   */
+  readonly errorBoundaryProps?: Omit<ErrorBoundaryProps, "children">;
 }
 
 export function Page({
@@ -30,6 +37,7 @@ export function Page({
   flexDirection = "column",
   haveToast = false,
   components,
+  errorBoundaryProps,
 }: PageProps) {
   const navbarRef = React.useRef<HTMLDivElement>(null);
   const footerRef = React.useRef<HTMLDivElement>(null);
@@ -91,7 +99,7 @@ export function Page({
             />
           ))}
 
-        {children}
+        <ErrorBoundary {...errorBoundaryProps}>{children}</ErrorBoundary>
       </main>
 
       <div ref={footerRef}>{components?.footer ?? cinnamonFooter}</div>

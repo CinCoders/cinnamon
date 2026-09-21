@@ -19,21 +19,10 @@ import {
   AirplaneTakeOffIcon,
   ArrowDown01Icon,
   ArrowUp01Icon,
-  Csv01Icon,
-  HtmlFileIcon,
-  Image01Icon,
-  PdfIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useRef } from "react";
 import { cn } from "@/lib/utils";
-import {
-  exportElementToPng,
-  exportTableToCsv,
-  exportTableToHtml,
-  exportTableToPdf,
-  type TableExportData,
-} from "@/lib/tableExport";
+import type { TableExportData } from "@/lib/tableExport";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -235,7 +224,6 @@ function toExportData(flights: Flight[]): TableExportData {
 
 export function FlightsDataTable() {
   const pageSize = 10;
-  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const table = useTable(
     {
@@ -263,51 +251,16 @@ export function FlightsDataTable() {
     }),
   );
 
-  const exportData = () => toExportData(flights);
-
   return (
     <Frame className="w-full">
-      <div className="flex items-center justify-end gap-1 px-1 pt-1">
-        <Button
-          aria-label="Export as CSV"
-          onClick={() => exportTableToCsv(exportData())}
-          size="icon-sm"
-          variant="outline"
-        >
-          <HugeiconsIcon icon={Csv01Icon} strokeWidth={2} />
-        </Button>
-        <Button
-          aria-label="Export as HTML"
-          onClick={() => exportTableToHtml(exportData())}
-          size="icon-sm"
-          variant="outline"
-        >
-          <HugeiconsIcon icon={HtmlFileIcon} strokeWidth={2} />
-        </Button>
-        <Button
-          aria-label="Export as PDF"
-          onClick={() => exportTableToPdf(exportData())}
-          size="icon-sm"
-          variant="outline"
-        >
-          <HugeiconsIcon icon={PdfIcon} strokeWidth={2} />
-        </Button>
-        <Button
-          aria-label="Export as PNG"
-          onClick={() => {
-            if (tableContainerRef.current) {
-              exportElementToPng(tableContainerRef.current);
-            }
-          }}
-          size="icon-sm"
-          variant="outline"
-        >
-          <HugeiconsIcon icon={Image01Icon} strokeWidth={2} />
-        </Button>
-      </div>
-      <div ref={tableContainerRef}>
-        <Table variant="card" className="table-fixed">
-          <TableHeader>
+      <Table
+        variant="card"
+        className="table-fixed"
+        exportEnabled
+        exportData={() => toExportData(flights)}
+        exportFileName="flights"
+      >
+        <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -389,8 +342,7 @@ export function FlightsDataTable() {
               </TableRow>
             )}
           </TableBody>
-        </Table>
-      </div>
+      </Table>
       <FrameFooter className="p-2">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 whitespace-nowrap">

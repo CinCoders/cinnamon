@@ -128,9 +128,9 @@ const footer = tv({
   slots: {
     root: "w-full border-t border-border bg-background text-foreground",
     strip: "border-t border-border",
-    bar: "mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-2 px-6 py-4 text-xs text-muted-foreground md:flex-row md:px-8",
-    grid: "mx-auto w-full max-w-5xl px-6 py-10 md:px-8",
-    gridRow: "flex flex-col gap-8 md:flex-row md:justify-between",
+    bar: "mx-auto flex w-full max-w-5xl flex-row flex-wrap items-center justify-between gap-2 px-6 py-4 text-xs text-muted-foreground md:px-8",
+    grid: "mx-auto w-full max-w-5xl px-6 pb-6 md:px-8",
+    gridRow: "cinnamon-footer-top flex flex-row justify-between gap-8",
     brand: "flex max-w-sm flex-col gap-4",
     description: "text-pretty text-sm text-muted-foreground",
     socialRow: "flex items-center gap-3",

@@ -104,7 +104,6 @@ export const Default: Story = {
           telephone: args.footerTelephone,
           email: args.footerEmail,
         },
-        copyrightText: args.footerCopyrightText,
         appVersion: args.footerAppVersion,
       }}
       centralized={args.centralized}

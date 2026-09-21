@@ -29,3 +29,27 @@ export const Ghost: Story = {
 export const Link: Story = {
   args: { variant: "link" },
 };
+
+export const Vermelho: Story = {
+  args: { variant: "vermelho" },
+};
+
+export const Bordo: Story = {
+  args: { variant: "bordo" },
+};
+
+export const Verde: Story = {
+  args: { variant: "verde" },
+};
+
+export const Azul: Story = {
+  args: { variant: "azul" },
+};
+
+export const Amarelo: Story = {
+  args: { variant: "amarelo" },
+};
+
+export const Neutro: Story = {
+  args: { variant: "neutro" },
+};

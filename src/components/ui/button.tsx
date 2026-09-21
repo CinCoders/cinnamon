@@ -11,6 +11,13 @@ const button = tv({
       outline: "border border-border bg-background hover:bg-muted",
       ghost: "hover:bg-muted",
       link: "text-primary underline-offset-4 hover:underline",
+      // Paleta do manual de marca do CIn (variantes 2026).
+      vermelho: "bg-[#CF2D3B] text-white hover:opacity-90",
+      bordo: "bg-[#751A2C] text-white hover:opacity-90",
+      verde: "bg-[#00965F] text-white hover:opacity-90",
+      azul: "bg-[#1E4A9C] text-white hover:opacity-90",
+      amarelo: "bg-[#F5A623] text-[#252525] hover:opacity-90",
+      neutro: "bg-[#555555] text-white hover:opacity-90",
     },
     size: {
       default: "h-10 px-4 py-2",
@@ -48,8 +55,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       render: renderProp,
       ref,
       props: {
-        className: button({ variant, size, className }),
         ...props,
+        className: button({ variant, size, className }),
         ...(asChild || render ? {} : { children }),
       },
     });
