@@ -6,6 +6,78 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.1.0] — 2026-09-21
+
+### Added
+
+- **`Table`** — the table primitives (`Table`, `TableHeader`, `TableBody`,
+  `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`) are now
+  exported from the main entry, along with two additions:
+  - **`exportEnabled`** — shows an "Exportar" button above the table (CSV,
+    HTML, PDF, PNG), backed by `src/lib/tableExport.ts`. `jspdf`,
+    `jspdf-autotable`, `html-to-image` and `@tanstack/react-table` were
+    already `dependencies`; they are kept external in the Vite lib build so
+    `dist/` does not vendor their own dependency trees.
+  - **`TableMessageRow`** — drop-in replacement for `TableRow`s inside
+    `TableBody` for loading/empty/error states, keeping header and chrome
+    mounted while showing one centered message.
+  - **`TableSkeletonRows`** — renders `rows` placeholder rows of `columns`
+    animated skeleton cells, for the loading state before data arrives.
+- **`SimpleSelect`** — a `Select`/`SelectTrigger`/`SelectContent`/`SelectItem`
+  composition collapsed into one component: pass `items` and `placeholder`.
+  `SelectValue` also resolves an item's label automatically from `items`
+  without the consumer wiring a render function.
+- **`ErrorBoundary`** — catches uncaught render errors anywhere in the tree
+  (which otherwise unmount the whole app) and renders the standard
+  `ErrorScreen` with a reload action and an optional "contact support"
+  `mailto:` link pre-filled with the error, app name/version, URL and
+  environment details. `Page` renders it around `children` by default.
+- **`Text`** — nine new semantic variants: `announce`, `tag`, `alarm`,
+  `headline`, `alert`, `murmur`, `emphasis`, `whisper`, `faint`.
+- **`Button`** — CIn brand color variants: `bordo`, `verde`, `azul`,
+  `amarelo`, `neutro`, `vermelho`.
+- **`Frame`** — layout primitive (`Frame`, `FramePanel`, `FrameHeader`,
+  `FrameTitle`, `FrameDescription`, `FrameFooter`) exported from the main
+  entry; see the `FramedTable` table example for usage.
+- **`Navbar`** — `titleIconId` prop renders a registry icon next to the app
+  name.
+
+### Changed
+
+- **`SideMenu`** (internal, used by `Navbar`) — the drawer is now `modal`,
+  overlaying the Navbar instead of appearing "attached" below it; a close
+  button was added to its header. The `top` prop (never part of the public
+  API) was removed along with the runtime measurement it drove.
+- **`Navbar`** — the avatar falls back to a generic user icon instead of an
+  empty circle when no name/username/email initial is available. The navbar
+  logo is now forwarded into the sidebar data automatically, so it no longer
+  needs to be configured twice.
+- Interactive elements without an explicit cursor (`Checkbox`,
+  `CollapsibleTrigger`, `DropdownMenuItem`, `SelectTrigger`, `SelectItem`)
+  now show `cursor-pointer`.
+
+### Fixed
+
+- **Fonts** — `cinnamon.css` no longer `@import`s Google Fonts directly. A
+  bundler concatenating it after a consumer's own `@import` (e.g. `@import
+  "tailwindcss"`) pushed the font `@import` past the first statement of the
+  merged file, which is invalid CSS and broke the consumer's build. The
+  fonts are now documented as a `<link>` tag for the consumer's HTML (see
+  README, "Fonts").
+- **Footer** — the top row's spacing was lost in consumer apps whose own
+  Tailwind cascade layers registered after Cinnamon's precompiled CSS. Moved
+  into the existing unlayered `cinnamon-footer-top` rule, which wins
+  regardless of layer order.
+- **Build** — `jspdf`, `jspdf-autotable`, `html-to-image` and
+  `@tanstack/react-table` were missing from the Vite lib build's `external`
+  list. Exporting `Table` made `tableExport.ts` reachable from the entry
+  graph, so the build vendored those three packages' own dependency trees
+  into `dist/node_modules/` (~1.5 MB across 17 transitive packages,
+  including `dompurify` and `core-js` — invisible to a consumer's `npm
+  audit`). Fixed before this version shipped.
+
+---
+
 ## [2.0.0] — 2026-09-16
 
 ### Summary
