@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { UserIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
 import type { User, SidebarData, System, LinkComponent } from "@/interfaces";
@@ -115,6 +117,13 @@ export function Navbar(props: NavbarProps) {
 
     return user;
   }, [auth, user]);
+
+  const avatarInitial = (
+    profile.name?.charAt(0) ??
+    profile.username?.charAt(0) ??
+    profile.email?.charAt(0) ??
+    ""
+  ).toUpperCase();
 
   const hasSidebar = Boolean(
     sidebar && (sidebar.navMain?.length || sidebar.navGroups?.length),
@@ -276,11 +285,7 @@ export function Navbar(props: NavbarProps) {
                   aria-label="Abrir menu do usuário"
                   onClick={() => setUserOpen((v) => !v)}
                 >
-                  {(
-                    profile.name?.charAt(0) ??
-                    profile.username?.charAt(0) ??
-                    ""
-                  ).toUpperCase()}
+                  {avatarInitial || <HugeiconsIcon icon={UserIcon} size={20} strokeWidth={2} />}
                 </button>
 
                 {userOpen && (
@@ -307,7 +312,7 @@ export function Navbar(props: NavbarProps) {
             <SideMenu
               visibility={sideMenuOpen}
               setVisibility={handleSideMenuOpenChange}
-              data={sidebar!}
+              data={{ appLogoSrc: logoSrc, ...sidebar! }}
               linkComponent={linkComponent}
               activeHref={activeHref}
             />
