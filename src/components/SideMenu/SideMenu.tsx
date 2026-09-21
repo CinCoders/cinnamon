@@ -39,7 +39,7 @@ export function SideMenu({
         side="left"
         showCloseButton={false}
         style={{ top: 0, height: "100dvh" }}
-        className="z-[60] w-64 max-w-64 gap-0 p-0"
+        className="z-[60] w-48 max-w-48 gap-0 p-0"
         overlayClassName="z-[60]"
       >
         <SheetHeader className="sr-only">

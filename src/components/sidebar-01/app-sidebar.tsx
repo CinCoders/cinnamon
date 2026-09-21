@@ -33,7 +33,7 @@ export function AppSidebar({
         className,
       )}
     >
-      <div className="flex items-center gap-2 px-4 py-4">
+      <div className="flex h-16 shrink-0 items-center gap-2 border-b border-border bg-white px-4 shadow-md">
         {(data.appName || data.appLogoSrc) && (
           <div className="flex min-w-0 flex-1 items-center gap-2">
             {data.appLogoSrc && (
