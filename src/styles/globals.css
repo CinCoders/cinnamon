@@ -1,5 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Audiowide&family=DM+Mono:wght@400;500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Hedvig+Letters+Serif:opsz@12..24&family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&family=Manrope:wght@400;500;600;700&family=Monda:wght@400;500;600;700&family=Outfit:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&family=Red+Hat+Display:wght@400;500;600;700&family=Rethink+Sans:wght@400;500;600;700&family=Tillana:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700&display=swap");
+/*
+ * As fontes do Google Fonts usadas pela lib NÃO são importadas aqui via
+ * @import url(...). Um app consumidor concatena este CSS com o seu próprio
+ * (`@import "@cincoders/cinnamon/cinnamon.css"` depois de `@import
+ * "tailwindcss"`), e o bundler expande esses @import na posição física da
+ * linha — nesse ponto o @import de fonte deixa de ser a primeira declaração
+ * do arquivo final, o que é inválido em CSS ("@import must precede all
+ * other statements") e quebra o build do consumidor.
+ *
+ * Em vez disso, o app consumidor deve carregar essas fontes via <link
+ * rel="stylesheet"> no seu index.html — ver README.md, seção "Fontes".
+ */
 @import "tailwindcss";
 @import "./originkit-section-themes.css";
 @import "./originkit-section-theme.css";

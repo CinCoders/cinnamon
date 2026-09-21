@@ -81,6 +81,23 @@ module.exports = {
 
 Without this precaution, your reset may override Cinnamon's utility classes (transforms, button appearance, etc.), causing the hamburger menu or popups to stop working.
 
+### Fonts
+
+Cinnamon's compiled CSS does **not** `@import` its Google Fonts — only declares `font-family` rules that reference them. If your app CSS combines multiple `@import`s in one file (e.g. `@import "tailwindcss";` followed by `@import "@cincoders/cinnamon/cinnamon.css";`), a bundled `@import url(fonts...)` from Cinnamon would land past the start of the merged file, which is invalid CSS (`@import must precede all other statements`) and breaks the build.
+
+Load the fonts yourself via a `<link>` tag in your app's `index.html` (or Next.js equivalent):
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Audiowide&family=DM+Mono:wght@400;500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Hedvig+Letters+Serif:opsz@12..24&family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&family=Manrope:wght@400;500;600;700&family=Monda:wght@400;500;600;700&family=Outfit:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&family=Red+Hat+Display:wght@400;500;600;700&family=Rethink+Sans:wght@400;500;600;700&family=Tillana:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+```
+
+Without this, text still renders (browser falls back to the `font-family` stack's next entry) — you just don't get Cinnamon's intended typefaces.
+
 ---
 
 ## Usage with React (SPA / Vite)
