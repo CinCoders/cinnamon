@@ -24,6 +24,7 @@
 }
 
 .cinnamon-footer-top {
+  padding-top: 2rem;
   row-gap: clamp(12px, 3vw, 32px);
 }
 
