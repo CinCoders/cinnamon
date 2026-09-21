@@ -58,11 +58,7 @@ function TableExportMenu({
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
-            <Button
-              aria-label="Exportar"
-              className="bg-[#1E4A9C] text-white hover:opacity-90"
-              size="sm"
-            >
+            <Button aria-label="Exportar" variant="azul" size="sm">
               <HugeiconsIcon icon={Upload04Icon} size={18} strokeWidth={2} />
               Exportar
             </Button>

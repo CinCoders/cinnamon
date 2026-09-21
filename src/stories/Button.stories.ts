@@ -30,6 +30,10 @@ export const Link: Story = {
   args: { variant: "link" },
 };
 
+export const Vermelho: Story = {
+  args: { variant: "vermelho" },
+};
+
 export const Bordo: Story = {
   args: { variant: "bordo" },
 };
