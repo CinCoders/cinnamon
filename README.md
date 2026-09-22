@@ -9,6 +9,7 @@
 - [Usage with React (SPA / Vite)](#usage-with-react-spa--vite)
   - [Layout without auth](#layout-without-auth)
   - [Navbar with systems menu](#navbar-with-systems-menu)
+  - [Navbar with notification bell](#navbar-with-notification-bell)
   - [Protected page with `PageWithAuth`](#protected-page-with-pagewithauth)
   - [Inline authorization](#inline-authorization)
 - [Usage with Next.js (App Router)](#usage-with-nextjs-app-router)
@@ -140,6 +141,44 @@ import { Page } from "@cincoders/cinnamon";
         iconId: "cincoders",
       },
     ],
+  }}
+  footer={{ copyrightText: "CInCoders" }}
+>
+  ...
+</Page>
+```
+
+### Navbar with notification bell
+
+The Navbar can show a bell with an unread-count badge and a popup listing
+items. The library does not fetch anything itself — the consuming app
+fetches from its own API and passes the ready list.
+
+```tsx
+import { Page } from "@cincoders/cinnamon";
+import type { NotificationItem } from "@cincoders/cinnamon";
+
+const notifications: NotificationItem[] = [
+  {
+    id: "1",
+    title: "Manutenção programada no estacionamento",
+    summary: "O estacionamento do bloco A ficará interditado na sexta-feira.",
+    read: false,
+    createdAt: "2026-09-22T09:00:00.000Z",
+    href: "/avisos/1",
+  },
+];
+
+<Page
+  navbar={{
+    title: "My App",
+    auth,
+    notifications, // omit (undefined) to hide the bell entirely; [] shows it empty
+    notificationsLoading: false,
+    notificationsUrl: "/avisos", // "ver todos" link
+    onNotificationsOpen: () => refetchNotifications(),
+    onNotificationMarkAsRead: (id) => markAsRead(id),
+    onNotificationDismiss: (id) => dismiss(id),
   }}
   footer={{ copyrightText: "CInCoders" }}
 >
@@ -479,6 +518,7 @@ Available as Tailwind utilities (`bg-cinnamon-primary`, `text-cinnamon-dark`, et
 | `User` | Legacy user shape (name, email, username, positions) |
 | `System` | System entry in the systems menu |
 | `SideMenuLink` | Navigation link in the side menu |
+| `NotificationItem` | Item shown in the Navbar's notification bell |
 | `Role`, `Position`, `Link`, `Option` | Supporting data interfaces |
 | `CinnamonIconId` | Union type of all valid icon registry IDs |
 | `AuthUtils` | Namespace re-export of auth helpers (compat) |

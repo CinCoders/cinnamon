@@ -1,4 +1,4 @@
-import type { SidebarData, System, User } from "@/interfaces";
+import type { NotificationItem, SidebarData, System, User } from "@/interfaces";
 
 export const testSidebar: SidebarData = {
   navMain: [
@@ -110,3 +110,29 @@ export function searchFunction(searchString: string) {
 }
 
 export const testInputLabels = ["Name", "CPF (National ID)", "Login"];
+
+export const testNotifications: NotificationItem[] = [
+  {
+    id: "1",
+    title: "Manutenção programada no estacionamento",
+    summary: "O estacionamento do bloco A ficará interditado na sexta-feira.",
+    read: false,
+    createdAt: "2026-09-22T09:00:00.000Z",
+    href: "#",
+  },
+  {
+    id: "2",
+    title: "Nova política de acesso aos laboratórios",
+    summary: "Confira as mudanças no horário de funcionamento.",
+    read: false,
+    createdAt: "2026-09-21T14:30:00.000Z",
+    href: "#",
+  },
+  {
+    id: "3",
+    title: "Pesquisa de clima organizacional",
+    read: true,
+    createdAt: "2026-09-18T11:00:00.000Z",
+    href: "#",
+  },
+];

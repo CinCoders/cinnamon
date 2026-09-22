@@ -170,7 +170,7 @@ const CINCODERS_PRESET: FooterPreset = {
       iconUrl: linkedinIcon,
     },
     { label: "GitHub", href: "https://github.com/CinCoders", icon: Github },
-    { label: "GitLab", href: "https://gitlab.com/cincoders", icon: Gitlab },
+    { label: "GitLab", href: "https://gitlab.cin.ufpe.br/cincoders", icon: Gitlab },
     { label: "Site", href: "https://cincoders.cin.ufpe.br", icon: Globe },
   ],
   linkColumns: [
@@ -179,7 +179,7 @@ const CINCODERS_PRESET: FooterPreset = {
       links: [
         { label: "Site", href: "https://cincoders.cin.ufpe.br" },
         { label: "GitHub", href: "https://github.com/CinCoders" },
-        { label: "GitLab", href: "https://gitlab.com/cincoders" },
+        { label: "GitLab", href: "https://gitlab.cin.ufpe.br/cincoders" },
       ],
     },
     {

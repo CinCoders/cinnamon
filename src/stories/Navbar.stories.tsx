@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Navbar } from "@/lib-components/Navbar/Navbar";
 import type { NavbarProps } from "@/lib-components/Navbar/Navbar";
-import { testSidebar, testSystems, testUser } from "./sampleData/SampleData";
+import { testNotifications, testSidebar, testSystems, testUser } from "./sampleData/SampleData";
 
 /**
  * Aqui criamos um tipo da STORY
@@ -10,6 +10,7 @@ import { testSidebar, testSystems, testUser } from "./sampleData/SampleData";
  */
 type NavbarStoryArgs = NavbarProps & {
   systemsListPopup: boolean; // só para controlar via Storybook
+  notificationsPopup: boolean; // idem, para notifications
 };
 
 const meta: Meta<NavbarStoryArgs> = {
@@ -26,9 +27,12 @@ const meta: Meta<NavbarStoryArgs> = {
     sidebar: testSidebar,
     title: "Cinnamon",
     systemsList: [],
+    accountManagementUrl: "#",
+    notificationsUrl: "#",
 
-    // 👇 propriedade exclusiva da story
+    // 👇 propriedades exclusivas da story
     systemsListPopup: true,
+    notificationsPopup: true,
   },
 
   argTypes: {
@@ -37,8 +41,14 @@ const meta: Meta<NavbarStoryArgs> = {
       description: "Mostra/oculta o popup de sistemas (injeta systemsList).",
       table: { category: "Story" },
     },
+    notificationsPopup: {
+      control: "boolean",
+      description: "Mostra/oculta o sino de avisos (injeta notifications). Deixar a prop `notifications` como `undefined` esconde o sino inteiro.",
+      table: { category: "Story" },
+    },
 
     systemsList: { control: false },
+    notifications: { control: false },
   },
 };
 
@@ -50,6 +60,7 @@ export const Default: Story = {
     <Navbar
       {...args}
       systemsList={args.systemsListPopup ? testSystems : []}
+      notifications={args.notificationsPopup ? testNotifications : undefined}
       user={args.hiddenUser ? undefined : args.user}
     />
   ),
