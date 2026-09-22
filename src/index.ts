@@ -118,6 +118,7 @@ export type {
   LinkComponent,
   Position,
   Role,
+  NotificationItem,
 } from "./interfaces";
 
 // Icon library — resolve a `CinnamonIconId` string to a component without

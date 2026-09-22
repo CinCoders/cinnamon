@@ -1,16 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { UserIcon } from "@hugeicons/core-free-icons";
+import { UserIcon, Notification03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
-import type { User, SidebarData, System, LinkComponent } from "@/interfaces";
+import type { User, SidebarData, System, NotificationItem, LinkComponent } from "@/interfaces";
 import type { CinnamonIconId } from "@/icons";
 import { SideMenu } from "@/components/SideMenu/SideMenu";
 import { HamburgerButton } from "@/components/HamburgerButton/HamburgerButton";
 import { UserPopup } from "@/components/UserPopup/UserPopup";
 import { SystemsPopup } from "@/components/SystemsPopup/SystemsPopup";
+import { NotificationsPopup } from "@/components/NotificationsPopup/NotificationsPopup";
 import { Icon } from "@/lib-components/IconRender";
 import {
   hasAccess,
@@ -46,6 +47,20 @@ export interface NavbarProps {
   accountManagementUrl?: string;
   /** Injeta um componente de link (ex: `next/link`) para navegação interna sem full reload. */
   linkComponent?: LinkComponent;
+  /**
+   * Avisos exibidos no sino do Navbar. A lib não busca esses dados — o
+   * consumidor busca na sua própria API (ex: Comunica) e repassa a lista
+   * pronta. Omitir a prop (`undefined`) esconde o sino; passar `[]` mostra
+   * o sino vazio.
+   */
+  notifications?: NotificationItem[];
+  notificationsLoading?: boolean;
+  /** Link "Ver todos", geralmente para o sistema de Avisos. */
+  notificationsUrl?: string;
+  /** Disparado quando o usuário abre o popup — gancho para buscar/atualizar a lista sob demanda. */
+  onNotificationsOpen?: () => void;
+  onNotificationMarkAsRead?: (id: string) => void;
+  onNotificationDismiss?: (id: string) => void;
 }
 
 export function Navbar(props: NavbarProps) {
@@ -71,6 +86,12 @@ export function Navbar(props: NavbarProps) {
     children,
     accountManagementUrl,
     linkComponent,
+    notifications,
+    notificationsLoading = false,
+    notificationsUrl,
+    onNotificationsOpen,
+    onNotificationMarkAsRead,
+    onNotificationDismiss,
   } = merged;
 
   const sessionFromUser = React.useMemo<CinnamonSession | null>(() => {
@@ -140,8 +161,23 @@ export function Navbar(props: NavbarProps) {
 
   const [userOpen, setUserOpen] = React.useState(false);
   const [systemsOpen, setSystemsOpen] = React.useState(false);
+  const [notificationsOpen, setNotificationsOpen] = React.useState(false);
   const userPopupRef = React.useRef<HTMLDivElement>(null);
   const systemsPopupRef = React.useRef<HTMLDivElement>(null);
+  const notificationsPopupRef = React.useRef<HTMLDivElement>(null);
+
+  const unreadNotificationsCount = React.useMemo(
+    () => notifications?.filter((notification) => !notification.read).length ?? 0,
+    [notifications],
+  );
+
+  const toggleNotifications = React.useCallback(() => {
+    setNotificationsOpen((open) => {
+      const next = !open;
+      if (next) onNotificationsOpen?.();
+      return next;
+    });
+  }, [onNotificationsOpen]);
 
   React.useEffect(() => {
     function handlePointerDown(event: MouseEvent | TouchEvent) {
@@ -162,15 +198,24 @@ export function Navbar(props: NavbarProps) {
       ) {
         setSystemsOpen(false);
       }
+
+      if (
+        notificationsOpen &&
+        notificationsPopupRef.current &&
+        !notificationsPopupRef.current.contains(target)
+      ) {
+        setNotificationsOpen(false);
+      }
     }
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
       if (userOpen) setUserOpen(false);
       if (systemsOpen) setSystemsOpen(false);
+      if (notificationsOpen) setNotificationsOpen(false);
     }
 
-    if (!userOpen && !systemsOpen) return;
+    if (!userOpen && !systemsOpen && !notificationsOpen) return;
 
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("touchstart", handlePointerDown);
@@ -181,7 +226,7 @@ export function Navbar(props: NavbarProps) {
       document.removeEventListener("touchstart", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [systemsOpen, userOpen]);
+  }, [systemsOpen, userOpen, notificationsOpen]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchString(e.target.value);
@@ -272,6 +317,44 @@ export function Navbar(props: NavbarProps) {
                   className="mx-3 w-full min-w-[60px] max-w-[120px]"
                 />
               </Link>
+            )}
+
+            {!isLandingPage && notifications !== undefined && (
+              <div className="relative" ref={notificationsPopupRef}>
+                <button
+                  type="button"
+                  className="relative flex h-10 w-10 items-center justify-center rounded-full cursor-pointer transition-shadow duration-150 hover:shadow-[0_0_14px_2px_rgba(0,0,0,0.22)] active:shadow-[0_0_16px_3px_rgba(0,0,0,0.28)] focus-visible:outline-none"
+                  aria-haspopup="menu"
+                  aria-expanded={notificationsOpen}
+                  aria-label="Abrir avisos"
+                  onClick={toggleNotifications}
+                >
+                  <HugeiconsIcon
+                    icon={Notification03Icon}
+                    size={22}
+                    strokeWidth={2}
+                    className="text-cinnamon-dark"
+                  />
+                  {unreadNotificationsCount > 0 && (
+                    <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-cinnamon-primary px-1 text-[10px] font-semibold leading-none text-white">
+                      {unreadNotificationsCount > 9 ? "9+" : unreadNotificationsCount}
+                    </span>
+                  )}
+                </button>
+
+                {notificationsOpen && (
+                  <div className="absolute right-0 top-12 z-[9999]">
+                    <NotificationsPopup
+                      notifications={notifications}
+                      loading={notificationsLoading}
+                      viewAllUrl={notificationsUrl}
+                      linkComponent={linkComponent}
+                      onMarkAsRead={onNotificationMarkAsRead}
+                      onDismiss={onNotificationDismiss}
+                    />
+                  </div>
+                )}
+              </div>
             )}
 
             {!hiddenUser && (

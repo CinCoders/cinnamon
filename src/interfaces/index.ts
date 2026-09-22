@@ -85,3 +85,18 @@ export interface Option {
   value: string;
   text: string;
 }
+
+/**
+ * Um aviso/notificação exibido no sino do Navbar. A lib não busca esses
+ * dados — o consumidor (app) busca da sua própria API (ex: Comunica) e
+ * repassa a lista pronta via `Navbar.notifications`.
+ */
+export interface NotificationItem {
+  id: string;
+  title: string;
+  summary?: string;
+  read: boolean;
+  createdAt: string;
+  /** Link para o detalhe do aviso (dentro do próprio app ou em outro sistema). */
+  href?: string;
+}
