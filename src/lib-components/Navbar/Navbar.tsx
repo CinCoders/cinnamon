@@ -32,32 +32,32 @@ export interface NavbarProps {
   hiddenUser?: boolean;
   title?: string;
   h1?: boolean;
-  /** Ícone do registry da lib, exibido ao lado do nome da aplicação. */
+  /** Icon from the lib's registry, shown next to the application name. */
   titleIconId?: CinnamonIconId;
   searchFunction?: (searchString: string) => void;
   user?: User;
-  /** Conteúdo da sidebar. Quando presente, o botão de menu aparece no Navbar. */
+  /** Sidebar content. When present, the menu button appears in the Navbar. */
   sidebar?: SidebarData;
-  /** href da rota atual, repassado ao SideMenu para destacar o item ativo. */
+  /** Current route's href, passed down to SideMenu to highlight the active item. */
   activeHref?: string;
   isLandingPage?: boolean;
   systemsList?: System[];
   currentSystemIconUrl?: string;
   children?: React.ReactNode;
   accountManagementUrl?: string;
-  /** Injeta um componente de link (ex: `next/link`) para navegação interna sem full reload. */
+  /** Injects a link component (e.g. `next/link`) for internal navigation without a full reload. */
   linkComponent?: LinkComponent;
   /**
-   * Avisos exibidos no sino do Navbar. A lib não busca esses dados — o
-   * consumidor busca na sua própria API (ex: Comunica) e repassa a lista
-   * pronta. Omitir a prop (`undefined`) esconde o sino; passar `[]` mostra
-   * o sino vazio.
+   * Notices shown in the Navbar's bell. The lib does not fetch this data —
+   * the consuming app fetches from its own API and passes the ready list.
+   * Omitting the prop (`undefined`) hides the bell entirely; passing `[]`
+   * shows the bell with an empty state.
    */
   notifications?: NotificationItem[];
   notificationsLoading?: boolean;
-  /** Link "Ver todos", geralmente para o sistema de Avisos. */
+  /** "View all" link, usually pointing at the notices system. */
   notificationsUrl?: string;
-  /** Disparado quando o usuário abre o popup — gancho para buscar/atualizar a lista sob demanda. */
+  /** Fired when the user opens the popup — a hook to fetch/refresh the list on demand. */
   onNotificationsOpen?: () => void;
   onNotificationMarkAsRead?: (id: string) => void;
   onNotificationDismiss?: (id: string) => void;
