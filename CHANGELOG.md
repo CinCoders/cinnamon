@@ -6,6 +6,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.2.0] — 2026-09-22
+
+### Added
+
+- **`Navbar`** — notification bell next to the user avatar, with an
+  unread-count badge and a popup listing items plus a "ver todos" link.
+  New optional props: `notifications`, `notificationsLoading`,
+  `notificationsUrl`, `onNotificationsOpen`, `onNotificationMarkAsRead`,
+  `onNotificationDismiss`. The lib does not fetch anything itself — the
+  consuming app fetches from its own API (e.g. Comunica's
+  `GET /comunica/api/me/avisos`) and passes the ready list. Omitting
+  `notifications` (the default, `undefined`) hides the bell entirely, so
+  existing consumers are unaffected; passing `[]` shows it with an empty
+  state. Exports the new `NotificationItem` type from the main entry.
+
 ## [2.1.0] — 2026-09-21
 
 ### Added
