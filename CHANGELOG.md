@@ -6,6 +6,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.2.1] — 2026-10-14
+
+### Changed
+
+- **`Navbar`** — the notification bell uses a lighter outline
+  (`Notification01Icon`, stroke 1.5) instead of `Notification03Icon` with a
+  2px stroke. The `bell` id in the icon registry points to the same icon.
+- **`Footer`** — the "CInnamon vX.Y.Z" label renders in the bar's muted gray
+  instead of the brand red.
+
 ## [2.2.0] — 2026-09-22
 
 ### Added
