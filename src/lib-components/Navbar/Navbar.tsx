@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { UserIcon, Notification03Icon } from "@hugeicons/core-free-icons";
+import { UserIcon, Notification01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import systemsMenuIcon from "@/assets/icons/menu_black.svg";
 
@@ -330,9 +330,9 @@ export function Navbar(props: NavbarProps) {
                   onClick={toggleNotifications}
                 >
                   <HugeiconsIcon
-                    icon={Notification03Icon}
+                    icon={Notification01Icon}
                     size={22}
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     className="text-cinnamon-dark"
                   />
                   {unreadNotificationsCount > 0 && (
