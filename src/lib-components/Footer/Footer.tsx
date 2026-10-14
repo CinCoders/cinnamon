@@ -435,9 +435,7 @@ export function Footer({
           )}
 
           <span className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-            <span className="text-cinnamon-primary">
-              CInnamon v{__CINNAMON_VERSION__}
-            </span>
+            <span>CInnamon v{__CINNAMON_VERSION__}</span>
             {appVersion && (
               <span className="text-foreground">v{appVersion}</span>
             )}
