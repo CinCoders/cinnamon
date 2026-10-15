@@ -6,6 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.2.2] — 2026-10-15
+
+### Changed
+
+- **`Footer`** — the `cin` variant's support block reads just "Helpdesk"
+  instead of "Helpdesk - Gerência de Sistemas". The room ("Sala B011") is
+  unchanged.
+
 ## [2.2.1] — 2026-10-14
 
 ### Changed
