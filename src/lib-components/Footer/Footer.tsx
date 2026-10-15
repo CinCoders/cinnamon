@@ -207,7 +207,7 @@ const CIN_PRESET: FooterPreset = {
     email: "helpdesk@cin.ufpe.br",
     siteLabel: "Site",
     siteHref: "https://helpdesk.cin.ufpe.br/",
-    description: "Helpdesk - Gerência de Sistemas",
+    description: "Helpdesk",
     location: "Sala B011",
   },
   socialLinks: [
